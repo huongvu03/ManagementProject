@@ -1,0 +1,14 @@
+
+.gradient{
+    -fx-background-color: linear-gradient(to bottom right,#74b59b,#025031);
+}
+
+.button{
+    -fx-background-color:#74b59b;
+    -fx-cursor:hand;
+    -fx-textfill:#fff;
+}
+.button:hover{
+    -fx-background-color:#025031;
+    -fx-textfill:#000;
+}
