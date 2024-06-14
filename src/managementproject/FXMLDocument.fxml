@@ -98,6 +98,7 @@
             <Button layoutX="444.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleSearch" stylesheets="@MainForm.css" text="SearchByName" />
             <Text fx:id="textNotice" layoutX="364.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="167.99999302625656" />
             <Button layoutX="444.0" layoutY="468.0" mnemonicParsing="false" onAction="#ClearrAllFields" text="ClearAll" />
+            <Text layoutX="626.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="abc" />
          </children>
       </AnchorPane>
    </children>
