@@ -72,8 +72,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private ComboBox<String> boxStatus;
     @FXML
-    private ImageView ImaeView;
-    @FXML
     private TextField txtSearch;
 
      //BUTTON
@@ -94,9 +92,10 @@ public class FXMLDocumentController implements Initializable {
     //NOTICE
     @FXML
     private Text textNotice;
-    
+    @FXML
+    private ImageView ImageView;
     //TODO
-    
+    private Image image;
     private ProductDAO dao = new ProductDAO();
     Product proSelected;
     int indexSelected;
@@ -107,6 +106,8 @@ public class FXMLDocumentController implements Initializable {
     private ObservableList<String> statusList;
 
     FilteredList<Product> filteredList;
+    
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         productList = FXCollections.observableArrayList(dao.listDB());
@@ -190,8 +191,9 @@ public class FXMLDocumentController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(mainform.getScene().getWindow());
         if (file != null) {
-             File selectedImageFile = file;
-            imageView.setImage(new Image(file.toURI().toString()));
+            data.path = file.getAbsolutePath();
+            image = new Image(file.toURI().toString(), 168, 158, false, true);
+            ImageView.setImage(image);
         }
     }
 

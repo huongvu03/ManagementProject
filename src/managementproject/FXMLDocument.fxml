@@ -82,9 +82,9 @@
             <TextField fx:id="txtProPrice" layoutX="499.0" layoutY="342.0" promptText="VND" />
             <ComboBox fx:id="boxName" layoutX="281.0" layoutY="392.0" prefWidth="150.0" promptText="Choose one" />
             <ComboBox fx:id="boxStatus" layoutX="499.0" layoutY="392.0" prefWidth="150.0" promptText="Choose Status" />
-            <AnchorPane layoutX="657.0" layoutY="298.0" prefHeight="154.0" prefWidth="168.0" style="-fx-border-color: grey;">
+            <AnchorPane layoutX="657.0" layoutY="298.0" prefHeight="142.0" prefWidth="160.0" style="-fx-border-color: grey;">
                <children>
-                  <ImageView fx:id="ImaeView" fitHeight="154.0" fitWidth="168.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="ImageView" fitHeight="158.0" fitWidth="168.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
             <Button fx:id="btnImport" layoutX="659.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleImport" prefHeight="25.0" prefWidth="168.0" stylesheets="@MainForm.css" text="Import" />
@@ -96,9 +96,8 @@
             <Button fx:id="btnUpdate" layoutX="304.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleUpdate" stylesheets="@MainForm.css" text="Update" />
             <TextField fx:id="txtSearch" layoutX="225.0" layoutY="523.0" prefHeight="25.0" prefWidth="208.0" />
             <Button fx:id="btnSearch" layoutX="444.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleSearch" stylesheets="@MainForm.css" text="SearchByName" />
-            <Text fx:id="textNotice" layoutX="364.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="167.99999302625656" />
+            <Text fx:id="textNotice" layoutX="364.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="167.99999302625656" />
             <Button fx:id="btnClear" layoutX="444.0" layoutY="468.0" mnemonicParsing="false" onAction="#ClearrAllFields" text="ClearAll" />
-            <Text layoutX="626.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="abc" />
          </children>
       </AnchorPane>
    </children>
