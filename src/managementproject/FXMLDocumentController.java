@@ -33,9 +33,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
-
 public class FXMLDocumentController implements Initializable {
-    
+
     private Label label;
     @FXML
     private AnchorPane mainform;
@@ -50,14 +49,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<Product, Integer> tcStock;
     @FXML
-    private TableColumn<Product,Double> tcProPrice;
+    private TableColumn<Product, Double> tcProPrice;
     @FXML
     private TableColumn<Product, String> tcStatus;
     @FXML
     private TableColumn<Product, Date> tcDate;
-    
-    
-    
+
     //FIELDS
     @FXML
     private TextField txtProId;
@@ -74,7 +71,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField txtSearch;
 
-     //BUTTON
+    //BUTTON
     @FXML
     private Button btnImport;
     @FXML
@@ -87,8 +84,7 @@ public class FXMLDocumentController implements Initializable {
     private Button btnSearch;
     @FXML
     private Button btnClear;
-    
-    
+
     //NOTICE
     @FXML
     private Text textNotice;
@@ -99,15 +95,13 @@ public class FXMLDocumentController implements Initializable {
     private ProductDAO dao = new ProductDAO();
     Product proSelected;
     int indexSelected;
-    
-    
+
     private ObservableList<Product> productList;
     private ObservableList<String> categoryList;
     private ObservableList<String> statusList;
 
     FilteredList<Product> filteredList;
-    
-   
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         productList = FXCollections.observableArrayList(dao.listDB());
@@ -118,9 +112,10 @@ public class FXMLDocumentController implements Initializable {
         boxName.setItems(categoryList);
         boxStatus.setItems(statusList);
         ShowProducts();
-        
-    }    
-     public void ShowProducts() {
+
+    }
+
+    public void ShowProducts() {
 
         tcProId.setCellValueFactory(new PropertyValueFactory<>("proId"));
         tcProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
@@ -139,7 +134,8 @@ public class FXMLDocumentController implements Initializable {
         tvProduct.setItems(filteredList);
 
     }
-      private String getCategoryName(int cateId) {
+
+    private String getCategoryName(int cateId) {
         if (cateId == 1) {
             return "food";
         } else if (cateId == 2) {
@@ -148,22 +144,20 @@ public class FXMLDocumentController implements Initializable {
             return "Unknown";
         }
     }
-      
-      private void clearFields() {
+
+    private void clearFields() {
         txtProId.clear();
         txtProName.clear();
         txtStock.clear();
-        txtProPrice.clear();    
+        txtProPrice.clear();
         boxName.getSelectionModel().clearSelection();
         boxStatus.getSelectionModel().clearSelection();
         textNotice.setText("");
     }
 
-
-
     @FXML
     private void ProductSelected(MouseEvent event) {
-         proSelected = tvProduct.getSelectionModel().getSelectedItem();
+        proSelected = tvProduct.getSelectionModel().getSelectedItem();
 
         // nếu có product được chọn
         if (proSelected != null) {
@@ -184,10 +178,10 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleImport(ActionEvent event) {
-         FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image File");
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
         File file = fileChooser.showOpenDialog(mainform.getScene().getWindow());
         if (file != null) {
@@ -204,9 +198,9 @@ public class FXMLDocumentController implements Initializable {
         newProduct.setProName(txtProName.getText());
         newProduct.setStock(Integer.parseInt(txtStock.getText()));
         newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
-        newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1); 
+        newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
         newProduct.setStatus(boxStatus.getValue());
-        newProduct.setProDate(new Date()); 
+        newProduct.setProDate(new Date());
         dao.AddDB(newProduct);
         productList.add(newProduct);
         clearFields();
@@ -214,13 +208,14 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleDelete(ActionEvent event) {
-         if (proSelected != null) {
-            return;
+       if (proSelected != null) {
+            dao.DeleteDB(proSelected.getProId());
+            productList.remove(indexSelected);
+            clearFields();
+            textNotice.setText("Product deleted successfully.");
+        } else {
+            textNotice.setText("No product selected for deletion.");
         }
-         dao.DeleteDB(proSelected.getProId());
-         productList.remove(indexSelected);
-        clearFields();
-        textNotice.setText("Delete successfully.");
     }
 
     @FXML
@@ -231,7 +226,7 @@ public class FXMLDocumentController implements Initializable {
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             proSelected.setStatus(boxStatus.getValue());
-            proSelected.setProDate(new Date()); 
+            proSelected.setProDate(new Date());
 
             dao.UpdateDB(proSelected);
             tvProduct.refresh();
@@ -250,5 +245,5 @@ public class FXMLDocumentController implements Initializable {
     private void ClearrAllFields(ActionEvent event) {
         clearFields();
     }
-    
+
 }
