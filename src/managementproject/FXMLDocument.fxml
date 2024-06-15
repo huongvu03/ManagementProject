@@ -87,17 +87,17 @@
                   <ImageView fx:id="ImaeView" fitHeight="154.0" fitWidth="168.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
-            <Button layoutX="659.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleImport" prefHeight="25.0" prefWidth="168.0" stylesheets="@MainForm.css" text="Import" />
-            <Button layoutX="227.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleAdd" prefHeight="25.0" prefWidth="56.0" stylesheets="@MainForm.css" text="Add">
+            <Button fx:id="btnImport" layoutX="659.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleImport" prefHeight="25.0" prefWidth="168.0" stylesheets="@MainForm.css" text="Import" />
+            <Button fx:id="btnAdd" layoutX="227.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleAdd" prefHeight="25.0" prefWidth="56.0" stylesheets="@MainForm.css" text="Add">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button layoutX="379.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleDelete" stylesheets="@MainForm.css" text="Delete" />
-            <Button layoutX="304.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleUpdate" stylesheets="@MainForm.css" text="Update" />
+            <Button fx:id="btnDelete" layoutX="379.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleDelete" stylesheets="@MainForm.css" text="Delete" />
+            <Button fx:id="btnUpdate" layoutX="304.0" layoutY="468.0" mnemonicParsing="false" onAction="#handleUpdate" stylesheets="@MainForm.css" text="Update" />
             <TextField fx:id="txtSearch" layoutX="225.0" layoutY="523.0" prefHeight="25.0" prefWidth="208.0" />
-            <Button layoutX="444.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleSearch" stylesheets="@MainForm.css" text="SearchByName" />
+            <Button fx:id="btnSearch" layoutX="444.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleSearch" stylesheets="@MainForm.css" text="SearchByName" />
             <Text fx:id="textNotice" layoutX="364.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="167.99999302625656" />
-            <Button layoutX="444.0" layoutY="468.0" mnemonicParsing="false" onAction="#ClearrAllFields" text="ClearAll" />
+            <Button fx:id="btnClear" layoutX="444.0" layoutY="468.0" mnemonicParsing="false" onAction="#ClearrAllFields" text="ClearAll" />
             <Text layoutX="626.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="abc" />
          </children>
       </AnchorPane>

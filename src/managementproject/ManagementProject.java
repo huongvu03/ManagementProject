@@ -4,21 +4,21 @@
  */
 package managementproject;
 
+import java.io.File;
+import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author PC-User
- */
+
 public class ManagementProject extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+         URL url = new File("src/managementproject/FXMLDocument.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
         
         Scene scene = new Scene(root);
         
@@ -26,9 +26,7 @@ public class ManagementProject extends Application {
         stage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) {
         launch(args);
     }
