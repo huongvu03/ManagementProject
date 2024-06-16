@@ -6,6 +6,7 @@ package managementproject;
 
 import Database.ProductDAO;
 import Models.Product;
+import Validation.errorMessage;
 import java.io.File;
 import java.net.URL;
 import java.util.Date;
@@ -101,6 +102,18 @@ public class FXMLDocumentController implements Initializable {
     private ObservableList<String> statusList;
 
     FilteredList<Product> filteredList;
+    @FXML
+    private Label proIdMsg;
+    @FXML
+    private Label proNameMsg;
+    @FXML
+    private Label stockMsg;
+    @FXML
+    private Label proPriceMsg;
+    @FXML
+    private Label cateNameMsg;
+    @FXML
+    private Label statusMsg;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -195,6 +208,40 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleAdd(ActionEvent event) {
         Product newProduct = new Product();
+        errorMessage validate = new errorMessage();
+        if(txtProId.getText().length()==0){
+        proIdMsg.setText(validate.getErrorMsg1());
+        }else{
+            proIdMsg.setText(null);
+        }
+
+        if(txtProName.getText().length()==0){
+        proNameMsg.setText(validate.getErrorMsg1());
+        }else{
+            proNameMsg.setText(null);
+        }
+        if(!txtStock.getText().matches("\\d+")){
+        stockMsg.setText(validate.getErrorMsg2());
+        }
+        else{
+            stockMsg.setText(null);
+        }
+        if(!txtProPrice.getText().matches("\\d+")){
+        proPriceMsg.setText(validate.getErrorMsg2());
+        }else{
+            proPriceMsg.setText(null);
+        }
+        if(boxName.getSelectionModel().isEmpty()){
+        cateNameMsg.setText(validate.getErrorMsg1());
+        }else{
+            cateNameMsg.setText(null);
+        }
+         if(boxStatus.getSelectionModel().isEmpty()){
+        statusMsg.setText(validate.getErrorMsg1());
+        return;
+        }else{
+            statusMsg.setText(null);
+        }
         newProduct.setProId(txtProId.getText());
         newProduct.setProName(txtProName.getText());
         newProduct.setStock(Integer.parseInt(txtStock.getText()));
