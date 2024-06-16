@@ -153,6 +153,7 @@ public class FXMLDocumentController implements Initializable {
         boxName.getSelectionModel().clearSelection();
         boxStatus.getSelectionModel().clearSelection();
         textNotice.setText("");
+        ImageView.setImage(null);
     }
 
     @FXML
