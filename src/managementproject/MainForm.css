@@ -1,14 +1,24 @@
 
 .gradient{
-    -fx-background-color: linear-gradient(to bottom right,#74b59b,#025031);
+    -fx-background-color: linear-gradient(to bottom right,#ab8b75,#703403);
 }
 
 .button{
-    -fx-background-color:#74b59b;
+    -fx-background-color:linear-gradient(to bottom right,#ab8b75,#703403);
     -fx-cursor:hand;
-    -fx-textfill:#fff;
+    -fx-textfill:#ffffff;
+    -fx-border-color: #ffffff;
 }
 .button:hover{
-    -fx-background-color:#025031;
-    -fx-textfill:#000;
+    -fx-background-color:#703403;
+    -fx-textfill:#ffffff;
+}
+.textfield{
+    -fx-border-color: linear-gradient(to bottom right,#ab8b75,#703403);
+    -fx-border-image-width: 0.5px;
+}
+.textfield:focused{
+    -fx-border-image-width: 1px;
+    -fx-border-color: #703403;
+
 }

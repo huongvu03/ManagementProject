@@ -8,6 +8,7 @@ package managementproject;
  *
  * @author LENOVO
  */
-class data {
+public class data {
     public static String path;
+    public static String username;
 }

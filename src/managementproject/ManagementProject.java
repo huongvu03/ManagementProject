@@ -17,7 +17,7 @@ public class ManagementProject extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-         URL url = new File("src/managementproject/FXMLDocument.fxml").toURI().toURL();
+         URL url = new File("src/managementproject/LogPage.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
         
         Scene scene = new Scene(root);

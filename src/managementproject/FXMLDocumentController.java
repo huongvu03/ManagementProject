@@ -10,6 +10,7 @@ import Validation.errorMessage;
 import java.io.File;
 import java.net.URL;
 import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -18,8 +19,13 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -33,6 +39,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class FXMLDocumentController implements Initializable {
 
@@ -87,6 +94,7 @@ public class FXMLDocumentController implements Initializable {
     private Button btnClear;
 
     //NOTICE
+    public Alert alert;
     @FXML
     private Text textNotice;
     @FXML
@@ -114,6 +122,8 @@ public class FXMLDocumentController implements Initializable {
     private Label cateNameMsg;
     @FXML
     private Label statusMsg;
+    @FXML
+    private Text txt_DisPlayName;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -125,7 +135,7 @@ public class FXMLDocumentController implements Initializable {
         boxName.setItems(categoryList);
         boxStatus.setItems(statusList);
         ShowProducts();
-
+        ShowUserName();
     }
 
     public void ShowProducts() {
@@ -209,37 +219,36 @@ public class FXMLDocumentController implements Initializable {
     private void handleAdd(ActionEvent event) {
         Product newProduct = new Product();
         errorMessage validate = new errorMessage();
-        if(txtProId.getText().length()==0){
-        proIdMsg.setText(validate.getErrorMsg1());
-        }else{
+        if (txtProId.getText().length() == 0) {
+            proIdMsg.setText(validate.getErrorMsg1());
+        } else {
             proIdMsg.setText(null);
         }
 
-        if(txtProName.getText().length()==0){
-        proNameMsg.setText(validate.getErrorMsg1());
-        }else{
+        if (txtProName.getText().length() == 0) {
+            proNameMsg.setText(validate.getErrorMsg1());
+        } else {
             proNameMsg.setText(null);
         }
-        if(!txtStock.getText().matches("\\d+")){
-        stockMsg.setText(validate.getErrorMsg2());
-        }
-        else{
+        if (!txtStock.getText().matches("\\d+")) {
+            stockMsg.setText(validate.getErrorMsg2());
+        } else {
             stockMsg.setText(null);
         }
-        if(!txtProPrice.getText().matches("\\d+")){
-        proPriceMsg.setText(validate.getErrorMsg2());
-        }else{
+        if (!txtProPrice.getText().matches("\\d+")) {
+            proPriceMsg.setText(validate.getErrorMsg2());
+        } else {
             proPriceMsg.setText(null);
         }
-        if(boxName.getSelectionModel().isEmpty()){
-        cateNameMsg.setText(validate.getErrorMsg1());
-        }else{
+        if (boxName.getSelectionModel().isEmpty()) {
+            cateNameMsg.setText(validate.getErrorMsg1());
+        } else {
             cateNameMsg.setText(null);
         }
-         if(boxStatus.getSelectionModel().isEmpty()){
-        statusMsg.setText(validate.getErrorMsg1());
-        return;
-        }else{
+        if (boxStatus.getSelectionModel().isEmpty()) {
+            statusMsg.setText(validate.getErrorMsg1());
+            return;
+        } else {
             statusMsg.setText(null);
         }
         newProduct.setProId(txtProId.getText());
@@ -256,7 +265,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void handleDelete(ActionEvent event) {
-       if (proSelected != null) {
+        if (proSelected != null) {
             dao.DeleteDB(proSelected.getProId());
             productList.remove(indexSelected);
             clearFields();
@@ -292,6 +301,47 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void ClearrAllFields(ActionEvent event) {
         clearFields();
+    }
+
+    //User
+    @FXML
+    private void LogOut(ActionEvent event) {
+        try {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to logout?");
+            Optional<ButtonType> option = alert.showAndWait();
+
+            if (option.get().equals(ButtonType.OK)) {
+
+                // TO HIDE MAIN FORM 
+                mainform.getScene().getWindow().hide();
+
+                // LINK YOUR LOGIN FORM AND SHOW IT 
+                URL url = new File("src/managementproject/LogPage.fxml").toURI().toURL();
+                Parent root = FXMLLoader.load(url);
+
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+
+                stage.setTitle("Log in Page");
+
+                stage.setScene(scene);
+                stage.show();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void ShowUserName() {
+        String user = data.username;
+        txt_DisPlayName.setText(user);
+
     }
 
 }

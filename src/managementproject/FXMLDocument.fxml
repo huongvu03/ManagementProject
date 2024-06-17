@@ -21,7 +21,7 @@
          <children>
             <AnchorPane prefHeight="600.0" prefWidth="200.0" styleClass="gradient" stylesheets="@MainForm.css">
                <children>
-                  <AnchorPane layoutX="-1.0" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: green;">
+                  <AnchorPane layoutX="-1.0" prefHeight="75.0" prefWidth="200.0" stylesheets="@MainForm.css">
                      <children>
                         <Label layoutX="9.0" layoutY="24.0" prefHeight="27.0" prefWidth="200.0" text="CoffeeShop Managment" textFill="#faf5f5">
                            <font>
@@ -35,22 +35,22 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="114.0" layoutY="101.0" prefHeight="17.0" prefWidth="69.0" text="Admin" textFill="#74b59b">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="17.0" layoutY="189.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="DASHBOARD" />
-                  <Button layoutX="17.0" layoutY="334.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="MENU" />
-                  <Button layoutX="17.0" layoutY="261.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="INVENTORY" />
-                  <Button layoutX="17.0" layoutY="405.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="CUSTOMERS" />
-                  <Button layoutX="17.0" layoutY="553.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" />
+                  <Button layoutX="17.0" layoutY="189.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="DASHBOARD" textFill="WHITE" />
+                  <Button layoutX="17.0" layoutY="334.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="MENU" textFill="WHITE" />
+                  <Button layoutX="17.0" layoutY="261.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="INVENTORY" textFill="WHITE" />
+                  <Button layoutX="17.0" layoutY="405.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" stylesheets="@MainForm.css" text="CUSTOMERS" textFill="WHITE" />
+                  <Button layoutX="17.0" layoutY="553.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="25.0" prefWidth="33.0" />
                   <!--<FontAwesomeIconView glyphName="SIGN_OUT" layoutX="24.0" layoutY="573.0" size="20" text="" wrappingWidth="19.642857551574707" />-->
                   <Label layoutX="66.0" layoutY="556.0" prefHeight="17.0" prefWidth="69.0" text="Sign Out" textFill="#faf4f4">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <Text fx:id="txt_DisPlayName" fill="WHITE" layoutX="109.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="52.99999684095383">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="202.0" prefHeight="288.0" prefWidth="617.0">
