@@ -193,9 +193,18 @@ public class FXMLDocumentController implements Initializable {
             txtProName.setText(proSelected.getProName());
             txtStock.setText(String.valueOf(proSelected.getStock()));
             txtProPrice.setText(String.valueOf(proSelected.getProPrice()));
+            
 
             boxName.setValue(getCategoryName(proSelected.getCateId()));
             boxStatus.setValue(proSelected.getStatus());
+            
+            
+             if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
+                image = new Image(proSelected.getProImage(), 168, 158, false, true);
+                ImageView.setImage(image);
+            } else {
+                ImageView.setImage(null);
+            }
 
         }
     }
@@ -258,6 +267,7 @@ public class FXMLDocumentController implements Initializable {
         newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
         newProduct.setStatus(boxStatus.getValue());
         newProduct.setProDate(new Date());
+        newProduct.setProImage(image.getUrl());
         dao.AddDB(newProduct);
         productList.add(newProduct);
         clearFields();
