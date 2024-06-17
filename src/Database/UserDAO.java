@@ -146,10 +146,12 @@ public class UserDAO {
                 return u;
             } else {
                 return null;
+                
 
             }
         } catch (Exception e) {
             e.getMessage();
+            return null;
         } finally {
             try {
                 cn.close();
@@ -158,7 +160,7 @@ public class UserDAO {
                 e.getMessage();
             }
         }
-        return u;
+        
     }
 
     public UserInfo searchUser(UserInfo u) {
