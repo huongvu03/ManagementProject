@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML2.java to edit this template
- */
+
 package managementproject;
 
 import Database.ProductDAO;
 import Models.Product;
 import Validation.errorMessage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
@@ -37,11 +35,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class FXMLDocumentController implements Initializable {
+public class InventoryController implements Initializable  {
 
     private Label label;
     @FXML
@@ -61,7 +60,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<Product, String> tcStatus;
     @FXML
-    private TableColumn<Product, Date> tcDate;
+    private TableColumn<Product, String> tcDate;
 
     //FIELDS
     @FXML
@@ -99,7 +98,7 @@ public class FXMLDocumentController implements Initializable {
     private Text textNotice;
     @FXML
     private ImageView ImageView;
-    //TODO
+   //TODO
     private Image image;
     private ProductDAO dao = new ProductDAO();
     Product proSelected;
@@ -109,20 +108,19 @@ public class FXMLDocumentController implements Initializable {
     private ObservableList<String> categoryList;
     private ObservableList<String> statusList;
 
-    FilteredList<Product> filteredList;
+   FilteredList<Product> filteredList;
     @FXML
-    private Label proIdMsg;
+    private Text proIdMsg;
     @FXML
-    private Label proNameMsg;
+    private Text proNameMsg;
     @FXML
-    private Label stockMsg;
+    private Text stockMsg;
     @FXML
-    private Label proPriceMsg;
+    private Text proPriceMsg;
     @FXML
-    private Label cateNameMsg;
+    private Text cateNameMsg;
     @FXML
-    private Label statusMsg;
-    @FXML
+    private Text statusMsg;
     private Text txt_DisPlayName;
 
     @Override
@@ -135,7 +133,6 @@ public class FXMLDocumentController implements Initializable {
         boxName.setItems(categoryList);
         boxStatus.setItems(statusList);
         ShowProducts();
-        ShowUserName();
     }
 
     public void ShowProducts() {
@@ -193,9 +190,7 @@ public class FXMLDocumentController implements Initializable {
             txtProName.setText(proSelected.getProName());
             txtStock.setText(String.valueOf(proSelected.getStock()));
             txtProPrice.setText(String.valueOf(proSelected.getProPrice()));
-            
-
-            boxName.setValue(getCategoryName(proSelected.getCateId()));
+boxName.setValue(getCategoryName(proSelected.getCateId()));
             boxStatus.setValue(proSelected.getStatus());
             
             
@@ -277,7 +272,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleDelete(ActionEvent event) {
         if (proSelected != null) {
             dao.DeleteDB(proSelected.getProId());
-            productList.remove(indexSelected);
+productList.remove(indexSelected);
             clearFields();
             textNotice.setText("Product deleted successfully.");
         } else {
@@ -314,7 +309,6 @@ public class FXMLDocumentController implements Initializable {
     }
 
     //User
-    @FXML
     private void LogOut(ActionEvent event) {
         try {
             alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -348,10 +342,6 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-    public void ShowUserName() {
-        String user = data.username;
-        txt_DisPlayName.setText(user);
 
-    }
 
 }

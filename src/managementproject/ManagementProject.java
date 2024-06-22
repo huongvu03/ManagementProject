@@ -12,23 +12,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 public class ManagementProject extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-         URL url = new File("src/managementproject/LogPage.fxml").toURI().toURL();
+        URL url = new File("src/managementproject/LogPage.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
-        
+
         Scene scene = new Scene(root);
-        
+        stage.setTitle("Log In Page");
+
         stage.setScene(scene);
         stage.show();
     }
 
-    
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

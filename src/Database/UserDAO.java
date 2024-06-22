@@ -1,14 +1,9 @@
 package Database;
 
-import Database.ConnectDB;
 import Models.UserInfo;
-import com.sun.jdi.connect.spi.Connection;
-import java.beans.Statement;
-import java.util.Scanner;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.ArrayList;
-import managementproject.data;
+import java.util.Scanner;
 
 public class UserDAO {
 
@@ -19,7 +14,7 @@ public class UserDAO {
     static Scanner sc;// gia btri la null -> tao doi tuong
     static PreparedStatement pStm = null;
 
-    ArrayList<UserInfo> userlist = new ArrayList<>();
+    ArrayList<UserInfo> uList = new ArrayList<>();
 
     public ArrayList<UserInfo> listDB() {
 
@@ -34,8 +29,10 @@ public class UserDAO {
                 b.setUserName(rs.getString(2));
                 b.setUserPassWord(rs.getString(3));
                 b.setUserPosition(rs.getString(4));
-                b.setUserDate(rs.getDate(5));
-                userlist.add(b);
+                b.setQuestion(rs.getString(5));
+                b.setAnswer(rs.getString(6));
+                b.setUserDate(rs.getDate(7));
+                uList.add(b);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -47,7 +44,8 @@ public class UserDAO {
                 e.getMessage();
             }
         }
-        return userlist;
+
+        return uList;
     }
 
     public UserInfo addDB(UserInfo u) {
@@ -119,6 +117,35 @@ public class UserDAO {
             pStm = cn.prepareStatement(sql);
             pStm.setString(1, u.getUserPassWord());
             pStm.setString(2, u.getUserName());
+
+            pStm.execute();
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            try {
+                cn.close();
+                pStm.close();
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        }
+    }
+
+    public void AdminEditDB(UserInfo u) {
+        String sql = "update UserInfo  set  userName=?, userPassWord=?,userPosition=?, question=?"
+                + "answer=?,userDate=? where userId=? ";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setString(1, u.getUserPassWord());
+            pStm.setString(2, u.getUserName());
+            pStm.setString(3, u.getUserPosition());
+            pStm.setString(4, u.getQuestion());
+            pStm.setString(5, u.getAnswer());
+            java.sql.Date sqlDate = new java.sql.Date(u.getUserDate().getTime());
+            pStm.setDate(6, sqlDate);
+            pStm.setString(7, u.getUserId());
+
             pStm.execute();
         } catch (Exception e) {
             e.getMessage();
@@ -133,8 +160,7 @@ public class UserDAO {
     }
 
     public UserInfo searchDB(UserInfo u) {
-        String sql = "select * from UserInfo"
-                + " WHERE userName=? and userPassWord=? ";
+        String sql = "SELECT * FROM UserInfo WHERE userName=? AND userPassWord=?";
         try {
             cn = connect.GetConnectDB();
             pStm = cn.prepareStatement(sql);
@@ -143,15 +169,16 @@ public class UserDAO {
             rs = pStm.executeQuery();
 
             if (rs.next()) {
+                u.setUserPosition(rs.getString("userPosition"));
                 return u;
             } else {
+                System.out.println("Ko co user ");
                 return null;
-                
-
             }
         } catch (Exception e) {
             e.getMessage();
             return null;
+
         } finally {
             try {
                 cn.close();
@@ -160,11 +187,11 @@ public class UserDAO {
                 e.getMessage();
             }
         }
-        
+
     }
 
     public UserInfo searchUser(UserInfo u) {
-        String sql = "select * from UserInfo"
+        String sql = "select userId from UserInfo"
                 + " WHERE userName=? and question=? and  answer=? ";
         try {
             cn = connect.GetConnectDB();
@@ -179,10 +206,11 @@ public class UserDAO {
                 return u;
             } else {
                 return null;
-
             }
         } catch (Exception e) {
             e.getMessage();
+            return null;
+
         } finally {
             try {
                 cn.close();
@@ -191,6 +219,5 @@ public class UserDAO {
                 e.getMessage();
             }
         }
-        return u;
     }
 }
