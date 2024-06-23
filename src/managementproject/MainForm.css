@@ -4,10 +4,11 @@
 }
 
 .button{
-    -fx-background-color:linear-gradient(to bottom right,#ab8b75,#703403);
     -fx-cursor:hand;
     -fx-textfill:#ffffff;
-    -fx-border-color: #ffffff;
+    -fx-border-color: none;
+    -fx-background-radius: 20px;
+    -fx-background-color:linear-gradient(to bottom right,#ab8b75,#703403);
 }
 .button:hover{
     -fx-background-color:#703403;
