@@ -118,9 +118,8 @@ public class MenuController implements Initializable {
 
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
-
+                
                 stage.setTitle("Log in Page");
-
                 stage.setScene(scene);
                 stage.show();
 
