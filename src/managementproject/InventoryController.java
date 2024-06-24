@@ -190,7 +190,7 @@ public class InventoryController implements Initializable  {
             txtProName.setText(proSelected.getProName());
             txtStock.setText(String.valueOf(proSelected.getStock()));
             txtProPrice.setText(String.valueOf(proSelected.getProPrice()));
-boxName.setValue(getCategoryName(proSelected.getCateId()));
+            boxName.setValue(getCategoryName(proSelected.getCateId()));
             boxStatus.setValue(proSelected.getStatus());
             
             
@@ -272,7 +272,7 @@ boxName.setValue(getCategoryName(proSelected.getCateId()));
     private void handleDelete(ActionEvent event) {
         if (proSelected != null) {
             dao.DeleteDB(proSelected.getProId());
-productList.remove(indexSelected);
+            productList.remove(indexSelected);
             clearFields();
             textNotice.setText("Product deleted successfully.");
         } else {
@@ -288,6 +288,8 @@ productList.remove(indexSelected);
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             proSelected.setStatus(boxStatus.getValue());
+            proSelected.setProImage(image.getUrl());
+
             proSelected.setProDate(new Date());
 
             dao.UpdateDB(proSelected);
