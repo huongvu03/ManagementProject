@@ -273,14 +273,18 @@ public class InventoryController implements Initializable  {
     private void handleAdd(ActionEvent event) {
         Product newProduct = new Product();
          if (validateInput()) {
+        String path = data.path.replace("\\","\\\\");
         newProduct.setProId(txtProId.getText());
         newProduct.setProName(txtProName.getText());
         newProduct.setStock(Integer.parseInt(txtStock.getText()));
         newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
         newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
         newProduct.setStatus(boxStatus.getValue());
+        //        newProduct.setProImage(image.getUrl());
+        newProduct.setProImage(path);
         newProduct.setProDate(new Date());
-        newProduct.setProImage(image.getUrl());
+        
+
         dao.AddDB(newProduct);
         
         productList.add(newProduct);
