@@ -3,11 +3,7 @@ package managementproject;
 import Database.UserDAO;
 import Models.UserInfo;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -19,13 +15,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class LogPageController implements Initializable {
@@ -67,6 +63,10 @@ public class LogPageController implements Initializable {
     public ObservableList<UserInfo> uList = FXCollections.observableArrayList(udao.listDB());
     public Alert alert;
     public ObservableList<String> questionList;
+    @FXML
+    private StackPane LogIn;
+ 
+ 
 
     private void questionList() {
         questionList = FXCollections.observableArrayList("What is your favorite Color?", "What is your favorite food?", "what is your  favorite Place?");
@@ -136,7 +136,7 @@ public class LogPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //TO DO
     }
 
     @FXML

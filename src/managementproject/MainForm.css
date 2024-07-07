@@ -1,6 +1,6 @@
 
 .gradient{
-    -fx-background-color: linear-gradient(to bottom right,#b3a494,#703403);
+    -fx-background-color: linear-gradient(to bottom right,#e2e0dc,#613204);
 }
 
 .button{
@@ -8,18 +8,26 @@
     -fx-textfill:#ffffff;
     -fx-border-color: none;
     -fx-background-radius: 20px;
-    -fx-background-color:linear-gradient(to bottom right,#ab8b75,#703403);
+    -fx-background-color:linear-gradient(to bottom right,#e2e0dc,#613204);
 }
 .button:hover{
-    -fx-background-color:#703403;
+    -fx-background-color:#613204;
     -fx-textfill:#ffffff;
 }
 .textfield{
-    -fx-border-color: linear-gradient(to bottom right,#ab8b75,#703403);
+    -fx-border-color: linear-gradient(to bottom right,#e2e0dc,#613204);
     -fx-border-image-width: 0.5px;
 }
 .textfield:focused{
     -fx-border-image-width: 1px;
     -fx-border-color: #703403;
+
+}
+
+.border-pane {
+    -fx-opacity: 0.87 ;
+    -fx-background-image: url("../image/login900x600.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
 
 }

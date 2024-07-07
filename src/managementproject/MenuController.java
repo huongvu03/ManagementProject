@@ -18,6 +18,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -28,7 +31,7 @@ public class MenuController implements Initializable {
     @FXML
     private Text txt_DisPlayName;
     @FXML
-    private AnchorPane Menu;
+    private StackPane Menu;
 
     public Alert alert;
 

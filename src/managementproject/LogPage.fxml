@@ -12,86 +12,75 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="600.0" maxWidth="500.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="gradient" stylesheets="@MainForm.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.LogPageController">
+<StackPane fx:id="LogIn" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.LogPageController">
    <children>
-      <AnchorPane prefHeight="600.0" prefWidth="900.0">
+      <AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="border-pane" stylesheets="@MainForm.css" />
+      <AnchorPane fx:id="LogInPage" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <ImageView opacity="0.86" pickOnBounds="true" preserveRatio="true" styleClass="backgroundimage">
-               <image>
-                  <Image url="@../image/login900x600.jpg" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="LogInPage" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
-         <children>
-            <AnchorPane fx:id="tvLogInForm" layoutY="27.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: none;" stylesheets="@MainForm.css">
+            <AnchorPane fx:id="tvLogInForm" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css">
                <children>
-                  <Text fill="WHITE" layoutX="420.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN " textAlignment="CENTER" wrappingWidth="86.63671875">
+                  <Text fill="WHITE" layoutX="930.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN " textAlignment="CENTER" wrappingWidth="86.63671875">
                      <font>
                         <Font size="24.0" />
                      </font>
                     
-                  </Text>
-                  <TextField fx:id="txtUserName" layoutX="356.0" layoutY="234.0" prefHeight="40.0" prefWidth="186.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <TextField fx:id="txtPassWord" layoutX="356.0" layoutY="325.0" prefHeight="40.0" prefWidth="186.0" promptText="password" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <Hyperlink fx:id="txtForgotPass" layoutX="357.0" layoutY="403.0" onAction="#switchForgotPass" text="Forgot password ?" textFill="WHITE" />
-                  <Button layoutX="358.0" layoutY="457.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="40.0" prefWidth="186.0" stylesheets="@MainForm.css" text="Log in" textFill="WHITE">
+                                                                        </Text>
+                  <TextField fx:id="txtUserName" layoutX="866.0" layoutY="459.0" prefHeight="40.0" prefWidth="186.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <TextField fx:id="txtPassWord" layoutX="866.0" layoutY="550.0" prefHeight="40.0" prefWidth="186.0" promptText="password" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <Hyperlink fx:id="txtForgotPass" layoutX="867.0" layoutY="628.0" onAction="#switchForgotPass" text="Forgot password ?" textFill="WHITE" />
+                  <Button layoutX="868.0" layoutY="682.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="40.0" prefWidth="186.0" stylesheets="@MainForm.css" text="Log in" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
-                     </font></Button>
-                  <FontAwesomeIcon fill="#f5f1f1" glyphName="USER" layoutX="362.0" layoutY="184.0" size="5em" />
-                  <AnchorPane layoutX="7.0" prefHeight="232.0" prefWidth="214.0">
-                     <children>
-                        <ImageView fitHeight="248.0" fitWidth="241.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../image/WHITELOGO.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </AnchorPane>
+                     </font>
+                  </Button>
+                  <FontAwesomeIcon fill="#f5f1f1" glyphName="USER" layoutX="872.0" layoutY="409.0" size="5em" />
+                  <ImageView fitHeight="420.0" fitWidth="851.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/WHITELOGO.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="tvForgotPass" layoutY="54.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@MainForm.css" visible="false">
+            <AnchorPane fx:id="tvForgotPass" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css" visible="false">
                <children>
-                  <Text fill="WHITE" layoutX="347.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot PassWord" textAlignment="CENTER" wrappingWidth="206.63671875">
+                  <Text fill="WHITE" layoutX="826.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot PassWord" textAlignment="CENTER" wrappingWidth="286.63671875">
                      <font>
-                        <Font size="26.0" />
+                        <Font name="System Bold Italic" size="26.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="txt_FGUserName" layoutX="355.0" layoutY="171.0" prefHeight="40.0" prefWidth="186.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <Button layoutX="357.0" layoutY="394.0" mnemonicParsing="false" onAction="#ResetPass" prefHeight="40.0" prefWidth="186.0" stylesheets="@MainForm.css" text="Reset PasWord" textFill="WHITE">
+                  <TextField fx:id="txt_FGUserName" layoutX="844.0" layoutY="414.0" prefHeight="50.0" prefWidth="250.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <Button layoutX="844.0" layoutY="724.0" mnemonicParsing="false" onAction="#ResetPass" prefHeight="50.0" prefWidth="250.0" stylesheets="@MainForm.css" text="Reset PasWord" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <ComboBox fx:id="combo_ForgotList" layoutX="357.0" layoutY="239.0" onAction="#switchForgotPass" prefHeight="40.0" prefWidth="186.0" promptText="Please choose question" />
-                  <TextField fx:id="txt_FGAnswer" layoutX="357.0" layoutY="299.0" prefHeight="40.0" prefWidth="186.0" promptText="answer" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <Button layoutX="33.0" layoutY="494.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="52.0" prefWidth="18.0" style="-fx-background-color: none;" stylesheets="@MainForm.css" textFill="WHITE">
+                  <ComboBox fx:id="combo_ForgotList" layoutX="846.0" layoutY="515.0" onAction="#switchForgotPass" prefHeight="50.0" prefWidth="250.0" promptText="Please choose question" />
+                  <TextField fx:id="txt_FGAnswer" layoutX="846.0" layoutY="613.0" prefHeight="50.0" prefWidth="250.0" promptText="answer" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <Button layoutX="33.0" layoutY="494.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;" stylesheets="@MainForm.css" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
-                     <graphic>
-                        <FontAwesomeIcon fill="#faf5f5" glyphName="HOME" size="2em" />
-                     </graphic>
                   </Button>
+                  <FontAwesomeIcon fill="WHITE" glyphName="QUESTION_CIRCLE" layoutX="934.0" layoutY="261.0" size="5em" />
+                  <FontAwesomeIcon fill="#faf5f5" glyphName="HOME" layoutX="161.0" layoutY="926.0" size="8em" wrappingWidth="103.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="tvResetPassForm" layoutX="14.0" layoutY="27.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@MainForm.css" visible="false">
+            <AnchorPane fx:id="tvResetPassForm" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css" visible="false">
                <children>
-                  <Text fill="#ab8b75" layoutX="347.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reset PassWord" textAlignment="CENTER" wrappingWidth="206.63671875">
+                  <Text fill="#fdfdfd" layoutX="850.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reset PassWord" textAlignment="CENTER" wrappingWidth="254.13671875">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="System Bold" size="28.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="txt_ResetUserName" layoutX="355.0" layoutY="178.0" prefHeight="40.0" prefWidth="186.0" promptText="UserName" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <TextField fx:id="txt_NewPass" layoutX="357.0" layoutY="240.0" prefHeight="40.0" prefWidth="186.0" promptText="New Pass" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <Button layoutX="357.0" layoutY="403.0" mnemonicParsing="false" onAction="#UpdatePass" prefHeight="40.0" prefWidth="186.0" stylesheets="@MainForm.css" text="Update PassWord" textFill="WHITE">
+                  <TextField fx:id="txt_ResetUserName" layoutX="853.0" layoutY="476.0" prefHeight="50.0" prefWidth="250.0" promptText="UserName" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <TextField fx:id="txt_NewPass" layoutX="855.0" layoutY="571.0" prefHeight="50.0" prefWidth="250.0" promptText="New Pass" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <Button layoutX="855.0" layoutY="785.0" mnemonicParsing="false" onAction="#UpdatePass" prefHeight="40.0" prefWidth="245.0" stylesheets="@MainForm.css" text="Update PassWord" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="txt_ConfirmNewPass" layoutX="357.0" layoutY="308.0" prefHeight="40.0" prefWidth="186.0" promptText="Confirm Pass" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <TextField fx:id="txt_ConfirmNewPass" layoutX="853.0" layoutY="671.0" prefHeight="50.0" prefWidth="250.0" promptText="Confirm Pass" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <FontAwesomeIcon fill="WHITE" glyphName="KEY" layoutX="930.0" layoutY="345.0" size="5em" />
                </children>
             </AnchorPane>
          </children>
