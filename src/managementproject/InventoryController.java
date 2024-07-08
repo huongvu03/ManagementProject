@@ -1,4 +1,3 @@
-
 package managementproject;
 
 import Database.ProductDAO;
@@ -40,7 +39,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class InventoryController implements Initializable  {
+public class InventoryController implements Initializable {
 
     private Label label;
     @FXML
@@ -98,7 +97,7 @@ public class InventoryController implements Initializable  {
     private Text textNotice;
     @FXML
     private ImageView ImageView;
-   //TODO
+    //TODO
     private Image image;
     private ProductDAO dao = new ProductDAO();
     Product proSelected;
@@ -108,7 +107,7 @@ public class InventoryController implements Initializable  {
     private ObservableList<String> categoryList;
     private ObservableList<String> statusList;
 
-   FilteredList<Product> filteredList;
+    FilteredList<Product> filteredList;
     @FXML
     private Text proIdMsg;
     @FXML
@@ -192,9 +191,8 @@ public class InventoryController implements Initializable  {
             txtProPrice.setText(String.valueOf(proSelected.getProPrice()));
             boxName.setValue(getCategoryName(proSelected.getCateId()));
             boxStatus.setValue(proSelected.getStatus());
-            
-            
-             if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
+
+            if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
                 image = new Image(proSelected.getProImage(), 168, 158, false, true);
                 ImageView.setImage(image);
             } else {
@@ -203,56 +201,47 @@ public class InventoryController implements Initializable  {
 
         }
     }
+
     // validate input , nếu isValid trả về false nghĩa là báo lỗi, ko chạy tiếp, true thì tiếp tục
     private boolean validateInput() {
-    boolean isValid = true;
-    errorMessage validate = new errorMessage();
+        boolean isValid = true;
+        errorMessage validate = new errorMessage();
 
-    if (txtProId.getText().trim().isEmpty()) {
-        proIdMsg.setText(validate.getErrorMsg1());
-        isValid = false;
-    } else {
-        proIdMsg.setText(null);
+        if (txtProId.getText().trim().isEmpty()) {
+            textNotice.setText("ProId "+validate.getErrorMsg1());
+            isValid = false;
+        } 
+
+        else if (txtProName.getText().trim().isEmpty()) {
+            textNotice.setText("ProName "+validate.getErrorMsg1());
+            isValid = false;
+        } 
+
+        
+
+        else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
+            textNotice.setText("ProPrice "+ validate.getErrorMsg2());
+            isValid = false;
+        } 
+        else if (!txtStock.getText().matches("\\d+")) {
+            textNotice.setText("ProStock "+validate.getErrorMsg2());
+            isValid = false;
+        } 
+
+        else if (boxName.getSelectionModel().isEmpty()) {
+            textNotice.setText("CateName "+validate.getErrorMsg1());
+            isValid = false;
+        }
+
+        else if (boxStatus.getSelectionModel().isEmpty()) {
+            textNotice.setText("Status "+validate.getErrorMsg1());
+            isValid = false;
+        } else {
+            textNotice.setText(null);
+        }
+
+        return isValid;
     }
-
-    if (txtProName.getText().trim().isEmpty()) {
-        proNameMsg.setText(validate.getErrorMsg1());
-        isValid = false;
-    } else {
-        proNameMsg.setText(null);
-    }
-
-    if (!txtStock.getText().matches("\\d+")) {
-        stockMsg.setText(validate.getErrorMsg2());
-        isValid = false;
-    } else {
-        stockMsg.setText(null);
-    }
-
-    if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
-        proPriceMsg.setText(validate.getErrorMsg2());
-        isValid = false;
-    } else {
-        proPriceMsg.setText(null);
-    }
-
-    if (boxName.getSelectionModel().isEmpty()) {
-        cateNameMsg.setText(validate.getErrorMsg1());
-        isValid = false;
-    } else {
-        cateNameMsg.setText(null);
-    }
-
-    if (boxStatus.getSelectionModel().isEmpty()) {
-        statusMsg.setText(validate.getErrorMsg1());
-        isValid = false;
-    } else {
-        statusMsg.setText(null);
-    }
-
-    return isValid;
-}
-
 
     @FXML
     private void handleImport(ActionEvent event) {
@@ -272,36 +261,40 @@ public class InventoryController implements Initializable  {
     @FXML
     private void handleAdd(ActionEvent event) {
         Product newProduct = new Product();
-         if (validateInput()) {
-        String path = null;
-        newProduct.setProId(txtProId.getText());
-        newProduct.setProName(txtProName.getText());
-        newProduct.setStock(Integer.parseInt(txtStock.getText()));
-        newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
-        newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-        newProduct.setStatus(boxStatus.getValue());
-        //newProduct.setProImage(image.getUrl());
-        if(data.path == null){
-            newProduct.setProImage(null);    
-        }else{
-            path = data.path.replace("\\","\\\\");
-            newProduct.setProImage(path);    
-        }
-           
-        newProduct.setProDate(new Date());
-        
+        if (validateInput()) {
+            String path = null;
+            newProduct.setProId(txtProId.getText());
+            newProduct.setProName(txtProName.getText());
+            newProduct.setStock(Integer.parseInt(txtStock.getText()));
+            newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
+            newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+            newProduct.setStatus(boxStatus.getValue());
+            //newProduct.setProImage(image.getUrl());
+            if (data.path == null) {
+                newProduct.setProImage(null);
+            } else {
+                path = data.path.replace("\\", "\\\\");
+                newProduct.setProImage(path);
+            }
 
-        dao.AddDB(newProduct);
-        
-        productList.add(newProduct);
-        clearFields();
-        
-        textNotice.setText("Product added successfully.");
-    }else {
-        textNotice.setText("Please correct the errors and try again.");
-    }
-    
-    
+            newProduct.setProDate(new Date());
+
+            if (dao.AddDB(newProduct) != null) {
+                productList.add(newProduct);
+                clearFields();
+                textNotice.setText("Product added successfully.");
+            } else {
+
+                textNotice.setText("trung id");
+
+            }
+
+        } else {
+
+                //textNotice.setText("Please fill");
+
+            }
+
     }
 
     @FXML
@@ -318,23 +311,23 @@ public class InventoryController implements Initializable  {
 
     @FXML
     private void handleUpdate(ActionEvent event) {
-    if (proSelected != null && validateInput()) {
-        proSelected.setProName(txtProName.getText());
-        proSelected.setStock(Integer.parseInt(txtStock.getText()));
-        proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
-        proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-        proSelected.setStatus(boxStatus.getValue());
-        proSelected.setProImage(image != null ? image.getUrl() : null);
-        proSelected.setProDate(new Date());
+        if (proSelected != null && validateInput()) {
+            proSelected.setProName(txtProName.getText());
+            proSelected.setStock(Integer.parseInt(txtStock.getText()));
+            proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
+            proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+            proSelected.setStatus(boxStatus.getValue());
+            proSelected.setProImage(image != null ? image.getUrl() : null);
+            proSelected.setProDate(new Date());
 
-        dao.UpdateDB(proSelected);
-        tvProduct.refresh();
-        clearFields();
-        textNotice.setText("Product updated successfully.");
-    } else {
-        textNotice.setText("Please correct the errors and try again.");
+            dao.UpdateDB(proSelected);
+            tvProduct.refresh();
+            clearFields();
+            textNotice.setText("Product updated successfully.");
+        } else {
+//            textNotice.setText("Please correct the errors and try again.");
+        }
     }
-}
 
     @FXML
     private void handleSearch(ActionEvent event) {
@@ -381,7 +374,5 @@ public class InventoryController implements Initializable  {
         }
 
     }
-
-
 
 }

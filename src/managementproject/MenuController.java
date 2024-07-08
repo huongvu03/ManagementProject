@@ -123,7 +123,8 @@ public class MenuController implements Initializable {
                 Scene scene = new Scene(root);
                 
                 stage.setTitle("Log in Page");
-                stage.setScene(scene);
+                //stage.setScene(scene);
+                stage.setFullScreen(true);
                 stage.show();
 
             }else if (option.isPresent() && option.get() == ButtonType.CANCEL) {

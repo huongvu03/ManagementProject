@@ -179,6 +179,7 @@ public class LogPageController implements Initializable {
 
                         stage.setTitle("Order Page");
                         stage.setScene(scene);
+                        //stage.setFullScreen(true);
                         stage.show();
                     }
                 } else {

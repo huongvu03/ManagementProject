@@ -63,35 +63,40 @@ public class ProductDAO {
     }
 
     public Product AddDB(Product pro) {
+        String checksql = "SELECT ProId FROM Product WHERE ProId =?";
         try {
             cn = connect.GetConnectDB();
-            String sql = "INSERT INTO Product (proId, proName, cateId, stock, proPrice, status, proImage, proDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            pStm = cn.prepareStatement(sql);
+            pStm = cn.prepareStatement(checksql);
             pStm.setString(1, pro.getProId());
-            pStm.setString(2, pro.getProName());
-            pStm.setInt(3, pro.getCateId());
-            pStm.setInt(4, pro.getStock());
-            pStm.setDouble(5, pro.getProPrice());
-            pStm.setString(6, pro.getStatus());
-            pStm.setString(7, pro.getProImage());
-            pStm.setDate(8, new java.sql.Date(pro.getProDate().getTime()));
+            rs = pStm.executeQuery();
 
-            pStm.execute();
-
+            if (rs.next()) {
+                return null;
+            } else {
+                String sql = "INSERT INTO Product (proId, proName, cateId, stock, proPrice, status, proImage, proDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                pStm = cn.prepareStatement(sql);
+                pStm.setString(1, pro.getProId());
+                pStm.setString(2, pro.getProName());
+                pStm.setInt(3, pro.getCateId());
+                pStm.setInt(4, pro.getStock());
+                pStm.setDouble(5, pro.getProPrice());
+                pStm.setString(6, pro.getStatus());
+                pStm.setString(7, pro.getProImage());
+                pStm.setDate(8, new java.sql.Date(pro.getProDate().getTime()));
+                pStm.execute();
+                return pro;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getMessage();
         } finally {
             try {
-
                 cn.close();
                 pStm.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.getMessage();
             }
         }
-
-        return pro;
-
+        return null;
     }
 
     public void UpdateDB(Product pro) {
