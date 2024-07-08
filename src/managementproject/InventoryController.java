@@ -273,15 +273,21 @@ public class InventoryController implements Initializable  {
     private void handleAdd(ActionEvent event) {
         Product newProduct = new Product();
          if (validateInput()) {
-        String path = data.path.replace("\\","\\\\");
+        String path = null;
         newProduct.setProId(txtProId.getText());
         newProduct.setProName(txtProName.getText());
         newProduct.setStock(Integer.parseInt(txtStock.getText()));
         newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
         newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
         newProduct.setStatus(boxStatus.getValue());
-        //        newProduct.setProImage(image.getUrl());
-        newProduct.setProImage(path);
+        //newProduct.setProImage(image.getUrl());
+        if(data.path == null){
+            newProduct.setProImage(null);    
+        }else{
+            path = data.path.replace("\\","\\\\");
+            newProduct.setProImage(path);    
+        }
+           
         newProduct.setProDate(new Date());
         
 
@@ -289,6 +295,7 @@ public class InventoryController implements Initializable  {
         
         productList.add(newProduct);
         clearFields();
+        
         textNotice.setText("Product added successfully.");
     }else {
         textNotice.setText("Please correct the errors and try again.");
