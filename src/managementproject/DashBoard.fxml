@@ -1,16 +1,242 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="1080.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.DashBoardController">
     <children>
-        <Text layoutX="105.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard Page">
-            <font>
-                <Font size="30.0" />
-            </font>
-        </Text>
-    </children>
+      <BorderPane prefHeight="1080.0" prefWidth="1500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <VBox prefHeight="1080.0" prefWidth="1500.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="1500.0">
+                     <children>
+                        <Label prefHeight="92.0" prefWidth="215.0" text="View" textFill="#0a0a0a">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="60.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="2.0" prefWidth="1500.0" style="-fx-background-color: black; -fx-border-radius: 30px;" />
+                  <VBox prefHeight="979.0" prefWidth="1500.0">
+                     <children>
+                        <HBox prefHeight="119.0" prefWidth="1499.0">
+                           <children>
+                              <VBox prefHeight="91.0" prefWidth="100.0" />
+                              <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                 <children>
+                                    <VBox prefHeight="150.0" prefWidth="147.0">
+                                       <children>
+                                          <Label fx:id="totalSale" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                             <font>
+                                                <Font size="40.0" />
+                                             </font>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="product">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="119.0" prefWidth="114.0">
+                                       <children>
+                                          <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="20.0" />
+                                             </HBox.margin>
+                                             <image>
+                                                <Image url="@../image/icon/coffee.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <Pane prefHeight="119.0" prefWidth="60.0" />
+                              <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                 <children>
+                                    <VBox prefHeight="150.0" prefWidth="147.0">
+                                       <children>
+                                          <Label fx:id="totalCustomer" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                             <font>
+                                                <Font name="Calibri" size="40.0" />
+                                             </font>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="category">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="119.0" prefWidth="114.0">
+                                       <children>
+                                          <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="20.0" />
+                                             </HBox.margin>
+                                             <image>
+                                                <Image url="@../image/icon/customer.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <Pane prefHeight="119.0" prefWidth="60.0" />
+                              <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                 <children>
+                                    <VBox prefHeight="150.0" prefWidth="147.0">
+                                       <children>
+                                          <Label fx:id="totalRevenue" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                             <font>
+                                                <Font name="Calibri" size="40.0" />
+                                             </font>
+                                          </Label>
+                                          <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="user">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <HBox prefHeight="119.0" prefWidth="114.0">
+                                       <children>
+                                          <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="20.0" />
+                                             </HBox.margin>
+                                             <image>
+                                                <Image url="@../image/icon/money.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets bottom="50.0" top="50.0" />
+                           </VBox.margin></HBox>
+                        <HBox prefHeight="792.0" prefWidth="1500.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);">
+                           <children>
+                              <VBox prefHeight="776.0" prefWidth="40.0" />
+                              <VBox prefHeight="776.0" prefWidth="650.0">
+                                 <children>
+                                    <ScrollPane prefHeight="756.0" prefWidth="666.0">
+                                       <content>
+                                          <HBox prefHeight="636.0" prefWidth="650.0">
+                                             <children>
+                                                <AreaChart fx:id="areaChart1" prefHeight="663.0" prefWidth="635.0" style="-fx-background-color: #e9e9e9;">
+                                                  <xAxis>
+                                                    <CategoryAxis side="BOTTOM" fx:id="xAxis1" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" />
+                                                  </yAxis>
+                                                </AreaChart>
+                                             </children>
+                                          </HBox>
+                                       </content>
+                                    </ScrollPane>
+                                    <VBox prefHeight="131.0" prefWidth="639.0">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" text="Total product Price Statistics" textFill="#e11313">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font></Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="776.0" prefWidth="40.0" />
+                              <VBox prefHeight="776.0" prefWidth="650.0">
+                                 <children>
+                                    <ScrollPane prefHeight="756.0" prefWidth="666.0">
+                                       <content>
+                                          <HBox prefHeight="636.0" prefWidth="650.0">
+                                             <children>
+                                                <AreaChart fx:id="areaChart2" prefHeight="633.0" prefWidth="637.0" style="-fx-background-color: #e9e9e9;">
+                                                   <xAxis>
+                                                      <CategoryAxis side="BOTTOM" fx:id="xAxis2" />
+                                                   </xAxis>
+                                                   <yAxis>
+                                                      <NumberAxis side="LEFT" />
+                                                   </yAxis>
+                                                </AreaChart>
+                                             </children>
+                                          </HBox>
+                                       </content>
+                                    </ScrollPane>
+                                    <VBox prefHeight="131.0" prefWidth="650.0">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" textFill="#e11313" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="776.0" prefWidth="173.0">
+                                 <children>
+                                    <HBox prefHeight="39.0" prefWidth="203.0">
+                                       <children>
+                                          <RadioButton fx:id="ratioDay" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByDay" prefHeight="52.0" prefWidth="155.0" text="Day">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="50.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox prefHeight="39.0" prefWidth="203.0">
+                                       <children>
+                                          <RadioButton fx:id="ratioMonth" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByMonth" prefHeight="52.0" prefWidth="155.0" text="Month">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="39.0" prefWidth="203.0">
+                                       <children>
+                                          <RadioButton fx:id="ratioYear" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByYear" prefHeight="52.0" prefWidth="155.0" text="Year">
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </top>
+      </BorderPane>
+   </children>
 </AnchorPane>
