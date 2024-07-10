@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="PageView" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
+<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
    <left>
       <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
          <children>
@@ -96,24 +103,161 @@
       </AnchorPane>
    </left>
    <center>
-      <StackPane fx:id="Menu" layoutX="405.0" prefHeight="1080.0" prefWidth="1500.0">
+      <AnchorPane fx:id="MenuItem" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0">
          <children>
-            <AnchorPane layoutX="405.0" prefHeight="1080.0" prefWidth="1500.0">
+            <AnchorPane layoutX="995.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1057.0" prefWidth="487.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+               <styleClass>
+                  <String fx:value="shadow" />
+                  <String fx:value="radius" />
+               </styleClass>
                <children>
-                  <TableView layoutX="3.0" layoutY="7.0" prefHeight="368.0" prefWidth="1507.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
+                  <TableView fx:id="menu_TbView" layoutX="12.0" layoutY="8.0" prefHeight="504.0" prefWidth="463.0">
+                     <columns>
+                        <TableColumn fx:id="menu_Col_ProName" prefWidth="225.3333740234375" text="ProName">
+                           <columns>
+                              <TableColumn fx:id="menu_Col_Note" prefWidth="225.3333740234375" text="Note" />
+                           </columns></TableColumn>
+                        <TableColumn fx:id="menu_Col_Quantity" prefWidth="107.666748046875" text="Quantity" />
+                        <TableColumn fx:id="menu_Col_Price" prefWidth="128.0" text="Price" />
+                     </columns>
                   </TableView>
-                  <Text layoutX="241.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TRANG ORDER" wrappingWidth="161.63671875">
+                  <Label layoutX="195.0" layoutY="547.0" text="Total:" AnchorPane.rightAnchor="248.0">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                      </font>
-                  </Text>
+                  </Label>
+                  <Label fx:id="menu_Total" layoutX="263.0" layoutY="547.0" prefHeight="27.0" prefWidth="166.0" text="1.000.000" AnchorPane.leftAnchor="263.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="206.0" layoutY="574.0" prefHeight="27.0" prefWidth="38.0" text="Tax:" AnchorPane.rightAnchor="243.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menu_Tax" layoutX="263.0" layoutY="574.0" prefHeight="27.0" prefWidth="200.0" text="0.000" AnchorPane.leftAnchor="263.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="115.0" layoutY="601.0" prefHeight="27.0" prefWidth="129.0" text="Service Charge:" AnchorPane.rightAnchor="243.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menu_Service" layoutX="263.0" layoutY="601.0" prefHeight="27.0" prefWidth="200.0" text="0.000" AnchorPane.leftAnchor="263.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="163.0" layoutY="628.0" prefHeight="30.0" prefWidth="91.0" text="Subtotal:" AnchorPane.rightAnchor="258.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menu_Subtotal" layoutX="263.0" layoutY="628.0" prefHeight="27.0" prefWidth="200.0" text="0.000" AnchorPane.leftAnchor="263.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="158.0" layoutY="733.0" prefHeight="27.0" prefWidth="76.0" text="Change:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menu_Change" layoutX="263.0" layoutY="733.0" prefHeight="27.0" prefWidth="200.0" text="0.000">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="158.0" layoutY="690.0" prefHeight="27.0" prefWidth="76.0" text="Amount">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="menu_txtAmount" layoutX="263.0" layoutY="678.0" prefHeight="48.0" prefWidth="203.0">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="menu_btnPAY" layoutX="92.0" layoutY="791.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="345.0" text="PAY">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="menu_btnREMOVE" layoutX="97.0" layoutY="873.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="137.0" text="REMOVE">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="menu_btnRECEIPT" layoutX="296.0" layoutY="873.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="135.0" text="RECEIPT">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Button>
                </children>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+            </AnchorPane>
+            <AnchorPane layoutX="14.0" layoutY="10.0" prefHeight="1061.0" prefWidth="937.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+               <children>
+                  <TabPane layoutX="10.0" layoutY="5.0" prefHeight="914.0" prefWidth="916.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="5.0">
+                    <tabs>
+                      <Tab text="DRINK">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="886.0" prefWidth="940.0">
+                                 <children>
+                                    <ScrollPane layoutX="3.0" layoutY="2.0" prefHeight="894.0" prefWidth="935.0">
+                                       <content>
+                                          <GridPane fx:id="menu_gridPaneDrink" prefHeight="25.0" prefWidth="115.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                          </GridPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="FOOD">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ScrollPane prefHeight="894.0" prefWidth="935.0">
+                                       <content>
+                                          <GridPane fx:id="menu_gridPaneFood" prefHeight="25.0" prefWidth="115.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                          </GridPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <TextField fx:id="menu_TextNote" layoutX="549.0" layoutY="934.0" prefHeight="45.0" prefWidth="315.0" promptText="NOTE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <AnchorPane layoutX="876.0" layoutY="932.0" prefHeight="49.0" prefWidth="47.0">
+                     <children>
+                        <FontAwesomeIcon glyphName="PENCIL" layoutX="6.0" layoutY="37.0" size="3em" wrappingWidth="34.85714340209961" />
+                     </children>
+                  </AnchorPane>
+               </children>
+               <styleClass>
+                  <String fx:value="shadow" />
+                  <String fx:value="radius" />
+               </styleClass>
             </AnchorPane>
          </children>
-      </StackPane>
+      </AnchorPane>
    </center>
 </BorderPane>

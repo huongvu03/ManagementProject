@@ -19,6 +19,8 @@ public class ProductDAO {
     static PreparedStatement pStm = null;// de chay cau lenh co bien
 
     ArrayList<Product> list = new ArrayList<>();
+     ArrayList<Product> menulist = new ArrayList<>();
+          ArrayList<Product> menuFoodlist = new ArrayList<>();
 
     public ArrayList<Product> listDB() {
         String sql = "SELECT p.proId, p.proName, p.proPrice, p.cateId, p.stock, p.status, p.proImage, p.proDate," + "c.cateName FROM Product p JOIN Category c ON p.cateId = c.cateId";
@@ -60,6 +62,71 @@ public class ProductDAO {
 
         }
         return list;
+    }
+    
+        public ArrayList<Product> menuListDB() {
+        String sql = "SELECT * from Product where CateId='2' ";
+        try {
+            cn = connect.GetConnectDB();
+            stm = cn.createStatement();
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProId(rs.getString("proId"));
+                pro.setProName(rs.getString("proName"));
+                pro.setProPrice(rs.getDouble("proPrice"));
+                pro.setProImage(rs.getString("proImage"));
+                pro.setCateId(rs.getInt("cateId"));
+
+                menulist.add(pro);
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            try {
+                cn.close();
+                stm.close();
+
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
+        }
+
+        return menulist;
+    }
+
+    public ArrayList<Product> menuListFoodDB() {
+        String sql = "SELECT * from Product where CateId=1 ";
+        try {
+            cn = connect.GetConnectDB();
+            stm = cn.createStatement();
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                Product pro = new Product();
+                pro.setProId(rs.getString("proId"));
+                pro.setProName(rs.getString("proName"));
+                pro.setProPrice(rs.getDouble("proPrice"));
+                pro.setProImage(rs.getString("proImage"));
+                pro.setCateId(rs.getInt("cateId"));
+
+                menuFoodlist.add(pro);
+                System.out.println("food" + pro.getCateId());
+
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            try {
+                cn.close();
+                stm.close();
+
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
+        }
+        return menuFoodlist;
     }
 
     public Product AddDB(Product pro) {

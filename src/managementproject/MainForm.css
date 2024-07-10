@@ -31,3 +31,18 @@
     -fx-background-position: center center;
 
 }
+
+.radius{
+    -fx-background-radius: 20px;
+
+}
+
+.shadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
+}
+
+.productSet{
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
+    -fx-background-color: linear-gradient(to bottom right,#e2e0dc,#613204);
+}
