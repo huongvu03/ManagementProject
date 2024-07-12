@@ -5,6 +5,7 @@ import Models.Product;
 import Validation.errorMessage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
@@ -101,14 +102,14 @@ public class InventoryController implements Initializable {
     //TODO
     private Image image;
     private ProductDAO dao = new ProductDAO();
-    Product proSelected;
-    int indexSelected;
+    private Product proSelected;
+    private int indexSelected;
 
     private ObservableList<Product> productList;
     private ObservableList<String> categoryList;
     private ObservableList<String> statusList;
 
-    FilteredList<Product> filteredList;
+    private FilteredList<Product> filteredList;
     @FXML
     private Text proIdMsg;
     @FXML
@@ -123,6 +124,8 @@ public class InventoryController implements Initializable {
     private Text statusMsg;
     private Text txt_DisPlayName;
     private SortedList<Product> sortedList;
+   
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         productList = FXCollections.observableArrayList(dao.listDB());
@@ -273,7 +276,8 @@ public class InventoryController implements Initializable {
             if (data.path == null) {
                 newProduct.setProImage(null);
             } else {
-                path = data.path.replace("\\", "\\\\");
+                File file = new File(URI.create(data.path));
+                path = file.getAbsolutePath().replace("\\","\\\\");
                 newProduct.setProImage(path);
             }
 
