@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Chi/Documents/NetBeansProjects/ManagementProject/src/managementproject/ManagementProject.java</file>
-            <file>file:/C:/Users/Chi/Documents/NetBeansProjects/ManagementProject/src/managementproject/MenuController.java</file>
-            <file>file:/C:/Users/Chi/Documents/NetBeansProjects/ManagementProject/src/Database/ProductDAO.java</file>
-            <file>file:/C:/Users/Chi/Documents/NetBeansProjects/ManagementProject/src/managementproject/LogPageController.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/LogPageController.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/Models/Product.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/Validation/errorMessage.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/imageView.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/Database/ProductDAO.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/MenuController.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/data.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/ProductItemController.java</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/InventoryController.java</file>
         </group>
     </open-files>
 </project-private>
