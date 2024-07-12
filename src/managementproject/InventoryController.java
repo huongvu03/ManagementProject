@@ -5,7 +5,6 @@ import Models.Product;
 import Validation.errorMessage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
@@ -99,9 +98,10 @@ public class InventoryController implements Initializable {
     private Text textNotice;
     @FXML
     private ImageView ImageView;
-    //TODO
     private Image image;
+    
     private ProductDAO dao = new ProductDAO();
+    
     private Product proSelected;
     private int indexSelected;
 
@@ -276,8 +276,7 @@ public class InventoryController implements Initializable {
             if (data.path == null) {
                 newProduct.setProImage(null);
             } else {
-                File file = new File(URI.create(data.path));
-                path = file.getAbsolutePath().replace("\\","\\\\");
+                path = data.path.replace("\\", "\\\\");
                 newProduct.setProImage(path);
             }
 
