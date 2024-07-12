@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
@@ -96,17 +97,18 @@ public class InventoryController implements Initializable {
     private Text textNotice;
     @FXML
     private ImageView ImageView;
-    //TODO
     private Image image;
+    
     private ProductDAO dao = new ProductDAO();
-    Product proSelected;
-    int indexSelected;
+    
+    private Product proSelected;
+    private int indexSelected;
 
     private ObservableList<Product> productList;
     private ObservableList<String> categoryList;
     private ObservableList<String> statusList;
 
-    FilteredList<Product> filteredList;
+    private FilteredList<Product> filteredList;
     @FXML
     private Text proIdMsg;
     @FXML
@@ -120,7 +122,9 @@ public class InventoryController implements Initializable {
     @FXML
     private Text statusMsg;
     private Text txt_DisPlayName;
-
+    private SortedList<Product> sortedList;
+   
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         productList = FXCollections.observableArrayList(dao.listDB());
@@ -128,6 +132,8 @@ public class InventoryController implements Initializable {
         statusList = FXCollections.observableArrayList("Available", "OutOfStock");
 
         filteredList = new FilteredList<>(productList, p -> true);
+        sortedList = new SortedList<>(filteredList);
+        sortedList.setComparator((p1, p2) -> p1.getProId().compareTo(p2.getProId()));
         boxName.setItems(categoryList);
         boxStatus.setItems(statusList);
         ShowProducts();
@@ -149,7 +155,7 @@ public class InventoryController implements Initializable {
             return new SimpleStringProperty(categoryName);
         });
 
-        tvProduct.setItems(filteredList);
+        tvProduct.setItems(sortedList);
 
     }
 
@@ -221,9 +227,6 @@ public class InventoryController implements Initializable {
             textNotice.setText("ProName "+validate.getErrorMsg1());
             isValid = false;
         } 
-
-        
-
         else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
             textNotice.setText("ProPrice "+ validate.getErrorMsg2());
             isValid = false;
@@ -274,7 +277,7 @@ public class InventoryController implements Initializable {
             newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
             newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             newProduct.setStatus(boxStatus.getValue());
-            //newProduct.setProImage(image.getUrl());
+            
             if (data.path == null) {
                 newProduct.setProImage(null);
             } else {
@@ -296,7 +299,7 @@ public class InventoryController implements Initializable {
 
         } else {
 
-                //textNotice.setText("Please fill");
+               
 
             }
 
@@ -340,7 +343,7 @@ public class InventoryController implements Initializable {
             clearFields();
             textNotice.setText("Product updated successfully.");
         } else {
-//            textNotice.setText("Please correct the errors and try again.");
+
         }
     }
 
