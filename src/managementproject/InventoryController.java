@@ -34,7 +34,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -178,7 +177,6 @@ public class InventoryController implements Initializable {
     @FXML
     private void ProductSelected(MouseEvent event) {
         proSelected = tvProduct.getSelectionModel().getSelectedItem();
-
         // nếu có product được chọn
         if (proSelected != null) {
             // lấy index của pro được click
@@ -193,10 +191,17 @@ public class InventoryController implements Initializable {
             boxStatus.setValue(proSelected.getStatus());
 
             if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
-                image = new Image(proSelected.getProImage(), 168, 158, false, true);
+                //File file = new File(proSelected.getProImage());
+                
+                //image = new Image(proSelected.getProImage(), 168, 158, false, true);
+                String path = proSelected.getProImage();
+                image = new Image("file:" + path, 250, 161, false, true);
+                //ImageView.setImage(image);
                 ImageView.setImage(image);
+                System.out.println("có tìm thấy hình");
             } else {
                 ImageView.setImage(null);
+                System.out.println("không tìm thấy hình");
             }
 
         }
@@ -257,7 +262,7 @@ public class InventoryController implements Initializable {
             ImageView.setImage(image);
         }
     }
-
+    
     @FXML
     private void handleAdd(ActionEvent event) {
         Product newProduct = new Product();
@@ -296,7 +301,7 @@ public class InventoryController implements Initializable {
             }
 
     }
-
+     
     @FXML
     private void handleDelete(ActionEvent event) {
         if (proSelected != null) {
@@ -312,12 +317,22 @@ public class InventoryController implements Initializable {
     @FXML
     private void handleUpdate(ActionEvent event) {
         if (proSelected != null && validateInput()) {
+            String path = null;
             proSelected.setProName(txtProName.getText());
             proSelected.setStock(Integer.parseInt(txtStock.getText()));
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             proSelected.setStatus(boxStatus.getValue());
-            proSelected.setProImage(image != null ? image.getUrl() : null);
+            //proSelected.setProImage(image != null ? image.getUrl() : null);
+            if (data.path == null) {
+                proSelected.setProImage(null);
+            } else {
+                path = data.path.replace("\\", "\\\\");
+                proSelected.setProImage(path);
+            }
+
+            proSelected.setProDate(new Date());
+
             proSelected.setProDate(new Date());
 
             dao.UpdateDB(proSelected);
