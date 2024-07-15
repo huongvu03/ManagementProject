@@ -242,7 +242,7 @@ public class InventoryController implements Initializable {
             newProduct.setStock(Integer.parseInt(txtStock.getText()));
             newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
             newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-            newProduct.setStatus(boxStatus.getValue());
+            
             if (newProduct.getStock() == 0) {
                 newProduct.setStatus("OutOfStock");
             } else if (newProduct.getStock() > 0) {
@@ -284,7 +284,7 @@ public class InventoryController implements Initializable {
             proSelected.setStock(Integer.parseInt(txtStock.getText()));
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-            proSelected.setStatus(boxStatus.getValue());
+            
             if (proSelected.getStock() == 0) {
                 proSelected.setStatus("OutOfStock");
             } else if (proSelected.getStock() > 0) {
