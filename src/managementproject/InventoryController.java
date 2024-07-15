@@ -113,7 +113,7 @@ public class InventoryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         productList = FXCollections.observableArrayList(dao.listDB());
-        categoryList = FXCollections.observableArrayList("food", "drink","other");
+        categoryList = FXCollections.observableArrayList("food", "drink", "other");
         statusList = FXCollections.observableArrayList("Available", "Unavailable");
 
         filteredList = new FilteredList<>(productList, p -> true);
@@ -242,15 +242,8 @@ public class InventoryController implements Initializable {
             newProduct.setStock(Integer.parseInt(txtStock.getText()));
             newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
             newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-            
-            if (newProduct.getStock() == 0) {
-                newProduct.setStatus("OutOfStock");
-            } else if (newProduct.getStock() > 0) {
-                newProduct.setStatus("Available");
+            newProduct.setStatus(boxStatus.getValue());
 
-            } else {
-                newProduct.setStatus(boxStatus.getValue());
-            }
             newProduct.setProImage(imagePath != null ? imagePath.replace("\\", "\\\\") : null);
             newProduct.setProDate(new Date());
 
@@ -284,15 +277,7 @@ public class InventoryController implements Initializable {
             proSelected.setStock(Integer.parseInt(txtStock.getText()));
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-            
-            if (proSelected.getStock() == 0) {
-                proSelected.setStatus("OutOfStock");
-            } else if (proSelected.getStock() > 0) {
-                proSelected.setStatus("Available");
-
-            } else {
-                proSelected.setStatus(boxStatus.getValue());
-            }
+            proSelected.setStatus(boxStatus.getValue());
 
             proSelected.setProImage(imagePath != null ? imagePath.replace("\\", "\\\\") : null);
             proSelected.setProDate(new Date());
