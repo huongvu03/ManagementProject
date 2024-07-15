@@ -109,7 +109,7 @@ public class MenuController implements Initializable {
             URL url = new File("src/managementproject/" + page + ".fxml").toURI().toURL();
             root = FXMLLoader.load(url);
         } catch (IOException ex) {
-            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
         PageView.setCenter(root);
     }
@@ -210,14 +210,14 @@ public class MenuController implements Initializable {
         cardListDrinkData.addAll(pdao.menuListDB());
         menu_gridPaneDrink.getChildren().clear();
         menu_gridPaneDrink.getRowConstraints().clear();
-        menu_gridPaneDrink.getColumnConstraints().clear();
+menu_gridPaneDrink.getColumnConstraints().clear();
 
         for (int q = 0; q < cardListDrinkData.size(); q++) {
 
             try {
                 URL fxmlLocation = getClass().getResource("/managementproject/ProductItem.fxml");
                 if (fxmlLocation == null) {
-                    System.err.println("Cannot find ProductItem.fxml");
+                    System.err.println("Cannot find ProductItem1.fxml");
                     return;
                 }
 
@@ -256,7 +256,7 @@ public class MenuController implements Initializable {
             try {
                 URL fxmlLocation = getClass().getResource("/managementproject/ProductItem.fxml");
                 if (fxmlLocation == null) {
-                    System.err.println("Cannot find ProductItem.fxml");
+                    System.err.println("Cannot find ProductItem2.fxml");
                     return;
                 }
 

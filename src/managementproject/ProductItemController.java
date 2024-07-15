@@ -42,9 +42,16 @@ public class ProductItemController implements Initializable {
         this.pro = pro;
         proItem_Name.setText(pro.getProName());
         proItem_Price.setText(String.valueOf(pro.getProPrice()));
-        image = new Image(pro.getProImage(), 250, 161, false, true);
-        proItem_Image.setImage(image);
+         String path =pro.getProImage();
+               
 
+        if (path != null) {
+
+        image = new Image(path, 250, 161, false, true);
+            proItem_Image.setImage(image);
+        } else {
+            proItem_Image.setImage(null);
+        }
     }
     
         public void setQuantity() {
