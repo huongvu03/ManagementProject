@@ -4,7 +4,6 @@ import Database.ProductDAO;
 import Models.Product;
 import Validation.errorMessage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,7 +31,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -41,7 +38,6 @@ import javafx.stage.Stage;
 
 public class InventoryController implements Initializable {
 
-    private Label label;
     @FXML
     private AnchorPane mainform;
     @FXML
@@ -60,8 +56,6 @@ public class InventoryController implements Initializable {
     private TableColumn<Product, String> tcStatus;
     @FXML
     private TableColumn<Product, String> tcDate;
-
-    //FIELDS
     @FXML
     private TextField txtProId;
     @FXML
@@ -76,8 +70,6 @@ public class InventoryController implements Initializable {
     private ComboBox<String> boxStatus;
     @FXML
     private TextField txtSearch;
-
-    //BUTTON
     @FXML
     private Button btnImport;
     @FXML
@@ -90,25 +82,19 @@ public class InventoryController implements Initializable {
     private Button btnSearch;
     @FXML
     private Button btnClear;
-
-    //NOTICE
-    public Alert alert;
     @FXML
     private Text textNotice;
     @FXML
     private ImageView ImageView;
     private Image image;
-    
     private ProductDAO dao = new ProductDAO();
-    
     private Product proSelected;
     private int indexSelected;
-
     private ObservableList<Product> productList;
     private ObservableList<String> categoryList;
     private ObservableList<String> statusList;
-
     private FilteredList<Product> filteredList;
+    private SortedList<Product> sortedList;
     @FXML
     private Text proIdMsg;
     @FXML
@@ -121,15 +107,14 @@ public class InventoryController implements Initializable {
     private Text cateNameMsg;
     @FXML
     private Text statusMsg;
-    private Text txt_DisPlayName;
-    private SortedList<Product> sortedList;
-   
-    
+
+    private String imagePath;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         productList = FXCollections.observableArrayList(dao.listDB());
-        categoryList = FXCollections.observableArrayList("food", "drink");
-        statusList = FXCollections.observableArrayList("Available", "OutOfStock");
+        categoryList = FXCollections.observableArrayList("food", "drink","other");
+        statusList = FXCollections.observableArrayList("Available", "Unavailable");
 
         filteredList = new FilteredList<>(productList, p -> true);
         sortedList = new SortedList<>(filteredList);
@@ -140,7 +125,6 @@ public class InventoryController implements Initializable {
     }
 
     public void ShowProducts() {
-
         tcProId.setCellValueFactory(new PropertyValueFactory<>("proId"));
         tcProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tcCateName.setCellValueFactory(new PropertyValueFactory<>("cateName"));
@@ -156,16 +140,18 @@ public class InventoryController implements Initializable {
         });
 
         tvProduct.setItems(sortedList);
-
     }
 
     private String getCategoryName(int cateId) {
-        if (cateId == 1) {
-            return "food";
-        } else if (cateId == 2) {
-            return "drink";
-        } else {
-            return "Unknown";
+        switch (cateId) {
+            case 1:
+                return "food";
+            case 2:
+                return "drink";
+            case 3:
+                return "other";
+            default:
+                return "Unknown";
         }
     }
 
@@ -178,17 +164,14 @@ public class InventoryController implements Initializable {
         boxStatus.getSelectionModel().clearSelection();
         textNotice.setText("");
         ImageView.setImage(null);
+        imagePath = null;
     }
 
     @FXML
     private void ProductSelected(MouseEvent event) {
         proSelected = tvProduct.getSelectionModel().getSelectedItem();
-        // nếu có product được chọn
         if (proSelected != null) {
-            // lấy index của pro được click
             indexSelected = tvProduct.getSelectionModel().getSelectedIndex();
-
-            //gán giá trị của textfield tương ứng với product được selected
             txtProId.setText(proSelected.getProId());
             txtProName.setText(proSelected.getProName());
             txtStock.setText(String.valueOf(proSelected.getStock()));
@@ -197,52 +180,36 @@ public class InventoryController implements Initializable {
             boxStatus.setValue(proSelected.getStatus());
 
             if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
-                //File file = new File(proSelected.getProImage());
-                
-                //image = new Image(proSelected.getProImage(), 168, 158, false, true);
                 String path = proSelected.getProImage();
                 image = new Image("file:" + path, 250, 161, false, true);
-                //ImageView.setImage(image);
                 ImageView.setImage(image);
-                System.out.println("có tìm thấy hình");
             } else {
                 ImageView.setImage(null);
-                System.out.println("không tìm thấy hình");
             }
-
         }
     }
 
-    // validate input , nếu isValid trả về false nghĩa là báo lỗi, ko chạy tiếp, true thì tiếp tục
     private boolean validateInput() {
         boolean isValid = true;
         errorMessage validate = new errorMessage();
 
         if (txtProId.getText().trim().isEmpty()) {
-            textNotice.setText("ProId "+validate.getErrorMsg1());
+            textNotice.setText("ProId " + validate.getErrorMsg1());
             isValid = false;
-        } 
-
-        else if (txtProName.getText().trim().isEmpty()) {
-            textNotice.setText("ProName "+validate.getErrorMsg1());
+        } else if (txtProName.getText().trim().isEmpty()) {
+            textNotice.setText("ProName " + validate.getErrorMsg1());
             isValid = false;
-        } 
-        else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
-            textNotice.setText("ProPrice "+ validate.getErrorMsg2());
+        } else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) {
+            textNotice.setText("ProPrice " + validate.getErrorMsg2());
             isValid = false;
-        } 
-        else if (!txtStock.getText().matches("\\d+")) {
-            textNotice.setText("ProStock "+validate.getErrorMsg2());
+        } else if (!txtStock.getText().matches("\\d+")) {
+            textNotice.setText("ProStock " + validate.getErrorMsg2());
             isValid = false;
-        } 
-
-        else if (boxName.getSelectionModel().isEmpty()) {
-            textNotice.setText("CateName "+validate.getErrorMsg1());
+        } else if (boxName.getSelectionModel().isEmpty()) {
+            textNotice.setText("CateName " + validate.getErrorMsg1());
             isValid = false;
-        }
-
-        else if (boxStatus.getSelectionModel().isEmpty()) {
-            textNotice.setText("Status "+validate.getErrorMsg1());
+        } else if (boxStatus.getSelectionModel().isEmpty()) {
+            textNotice.setText("Status " + validate.getErrorMsg1());
             isValid = false;
         } else {
             textNotice.setText(null);
@@ -260,31 +227,31 @@ public class InventoryController implements Initializable {
         );
         File file = fileChooser.showOpenDialog(mainform.getScene().getWindow());
         if (file != null) {
-            data.path = file.getAbsolutePath();
+            imagePath = file.getAbsolutePath();
             image = new Image(file.toURI().toString(), 168, 158, false, true);
             ImageView.setImage(image);
         }
     }
-    
+
     @FXML
     private void handleAdd(ActionEvent event) {
-        Product newProduct = new Product();
         if (validateInput()) {
-            String path = null;
+            Product newProduct = new Product();
             newProduct.setProId(txtProId.getText());
             newProduct.setProName(txtProName.getText());
             newProduct.setStock(Integer.parseInt(txtStock.getText()));
             newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
             newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             newProduct.setStatus(boxStatus.getValue());
-            
-            if (data.path == null) {
-                newProduct.setProImage(null);
-            } else {
-                path = data.path.replace("\\", "\\\\");
-                newProduct.setProImage(path);
-            }
+            if (newProduct.getStock() == 0) {
+                newProduct.setStatus("OutOfStock");
+            } else if (newProduct.getStock() > 0) {
+                newProduct.setStatus("Available");
 
+            } else {
+                newProduct.setStatus(boxStatus.getValue());
+            }
+            newProduct.setProImage(imagePath != null ? imagePath.replace("\\", "\\\\") : null);
             newProduct.setProDate(new Date());
 
             if (dao.AddDB(newProduct) != null) {
@@ -292,25 +259,18 @@ public class InventoryController implements Initializable {
                 clearFields();
                 textNotice.setText("Product added successfully.");
             } else {
-
-                textNotice.setText("trung id");
-
+                textNotice.setText("Product ID already exists.");
             }
-
-        } else {
-
-               
-
-            }
-
+        }
     }
-     
+
     @FXML
     private void handleDelete(ActionEvent event) {
         if (proSelected != null) {
             dao.DeleteDB(proSelected.getProId());
             productList.remove(indexSelected);
             clearFields();
+            tvProduct.refresh();
             textNotice.setText("Product deleted successfully.");
         } else {
             textNotice.setText("No product selected for deletion.");
@@ -320,30 +280,27 @@ public class InventoryController implements Initializable {
     @FXML
     private void handleUpdate(ActionEvent event) {
         if (proSelected != null && validateInput()) {
-            String path = null;
             proSelected.setProName(txtProName.getText());
             proSelected.setStock(Integer.parseInt(txtStock.getText()));
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             proSelected.setStatus(boxStatus.getValue());
-            //proSelected.setProImage(image != null ? image.getUrl() : null);
-            if (data.path == null) {
-                proSelected.setProImage(null);
+            if (proSelected.getStock() == 0) {
+                proSelected.setStatus("OutOfStock");
+            } else if (proSelected.getStock() > 0) {
+                proSelected.setStatus("Available");
+
             } else {
-                path = data.path.replace("\\", "\\\\");
-                proSelected.setProImage(path);
+                proSelected.setStatus(boxStatus.getValue());
             }
 
-            proSelected.setProDate(new Date());
-
+            proSelected.setProImage(imagePath != null ? imagePath.replace("\\", "\\\\") : null);
             proSelected.setProDate(new Date());
 
             dao.UpdateDB(proSelected);
             tvProduct.refresh();
             clearFields();
             textNotice.setText("Product updated successfully.");
-        } else {
-
         }
     }
 
@@ -359,38 +316,27 @@ public class InventoryController implements Initializable {
         clearFields();
     }
 
-    //User
+    @FXML
     private void LogOut(ActionEvent event) {
         try {
-            alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Are you sure you want to logout?");
             Optional<ButtonType> option = alert.showAndWait();
 
             if (option.get().equals(ButtonType.OK)) {
-
-                // TO HIDE MAIN FORM 
                 mainform.getScene().getWindow().hide();
-
-                // LINK YOUR LOGIN FORM AND SHOW IT 
                 URL url = new File("src/managementproject/LogPage.fxml").toURI().toURL();
                 Parent root = FXMLLoader.load(url);
-
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
-
                 stage.setTitle("Log in Page");
-
                 stage.setScene(scene);
                 stage.show();
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }
