@@ -202,8 +202,8 @@ public class InventoryController implements Initializable {
         } else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) {
             textNotice.setText("ProPrice " + validate.getErrorMsg2());
             isValid = false;
-        } else if (!txtStock.getText().matches("\\d+")) {
-            textNotice.setText("ProStock " + validate.getErrorMsg2());
+        } else if (!txtStock.getText().matches("\\d+") || Integer.parseInt(txtStock.getText()) <= 0) {
+            textNotice.setText("ProStock " + validate.getErrorMsg2() + " and must be greater than 0");
             isValid = false;
         } else if (boxName.getSelectionModel().isEmpty()) {
             textNotice.setText("CateName " + validate.getErrorMsg1());
@@ -279,7 +279,9 @@ public class InventoryController implements Initializable {
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             proSelected.setStatus(boxStatus.getValue());
 
-            proSelected.setProImage(imagePath != null ? imagePath.replace("\\", "\\\\") : null);
+            if (imagePath != null && !imagePath.isEmpty()) {
+                proSelected.setProImage(imagePath.replace("\\", "\\\\"));
+            }
             proSelected.setProDate(new Date());
 
             dao.UpdateDB(proSelected);
