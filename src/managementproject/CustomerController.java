@@ -63,6 +63,11 @@ public class CustomerController implements Initializable {
     private Button updateButton;
     @FXML
     private Button deleteButton;
+     @FXML
+    private Button clearallButton;
+    
+    
+     
      private ObservableList<Customer> customerList;
     
 
@@ -111,14 +116,28 @@ public class CustomerController implements Initializable {
         String email = emailField.getText();
         int discount = Integer.parseInt(discountField.getText());
         int deleted = Integer.parseInt(deletedField.getText());
+        if (!phone.matches("\\d{1,10}")) {
+        
+        System.out.println("Invalid phone number format or length.");
+        return; 
+    }
+
+   
+   if (!email.isEmpty() && !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+      
+        System.out.println("Invalid email format.");
+      
+        return;
+    }
 
         Customer newCustomer = new Customer(null, name, phone, email, discount, deleted);
         int inserted = CustomerDAO.insert(newCustomer);
+        
         if (inserted > 0) {
             customerTable.getItems().add(newCustomer);
             clearFields();
-        }
     }
+        }
 
     @FXML
     private void handleUpdateCustomer() {
@@ -166,6 +185,10 @@ public class CustomerController implements Initializable {
                 customerTable.getItems().setAll(searchResults);
             }
       }
+     @FXML
+    private void handleClearAllCustomer(){
+            clearFields();
+    }
 
 
 

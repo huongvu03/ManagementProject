@@ -25,9 +25,11 @@
         <TextField fx:id="discountField" layoutX="110.0" layoutY="840.0" prefHeight="50.0" prefWidth="300.0" promptText="Discount" styleClass="textfield" />
         <TextField fx:id="deletedField" layoutX="459.0" layoutY="840.0" prefHeight="50.0" prefWidth="300.0" promptText="Deleted" styleClass="textfield" />
         <TextField fx:id="searchField" layoutX="459.0" layoutY="22.0" prefHeight="50.0" prefWidth="300.0" promptText="Search by Phone" styleClass="textfield" />
-        <Button fx:id="addButton" layoutX="211.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Add" />
-        <Button fx:id="updateButton" layoutX="475.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Update" />
-        <Button fx:id="deleteButton" layoutX="722.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Delete" />
+        <Button fx:id="addButton" layoutX="133.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Add" />
+        <Button fx:id="updateButton" layoutX="375.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Update" />
+        <Button fx:id="deleteButton" layoutX="609.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Delete" />
         <Button fx:id="searchButton" layoutX="797.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleSearchByPhone" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Search" />
+      <Button fx:id="clearallButton" layoutX="836.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleClearAllCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Clear All" />
+        
     </children>
 </AnchorPane>
