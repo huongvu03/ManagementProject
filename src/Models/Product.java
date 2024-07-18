@@ -12,6 +12,7 @@ public class Product {
     private String status;
     private String proImage;
     private Date proDate; 
+    private int quantity;
 
    
     private Category category ;
@@ -20,6 +21,34 @@ public class Product {
         this.category = new Category();
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Product(String proId, String proName, double proPrice, int quantity) {
+        this.proId = proId;
+        this.proName = proName;
+        this.proPrice = proPrice;
+        this.quantity = quantity;
+    }
+
+    public Product(String proId, String proName, int cateId, int stock, double proPrice, String status, String proImage, Date proDate, int quantity, Category category) {
+        this.proId = proId;
+        this.proName = proName;
+        this.cateId = cateId;
+        this.stock = stock;
+        this.proPrice = proPrice;
+        this.status = status;
+        this.proImage = proImage;
+        this.proDate = proDate;
+        this.quantity = quantity;
+        this.category = category;
+    }
+ 
     public Product(String proId, String proName, int cateId, int stock, double proPrice, String status, String proImage, Date proDate) {
         this.proId = proId;
         this.proName = proName;
@@ -31,6 +60,13 @@ public class Product {
         this.proDate = proDate;
         this.category = new Category(cateId,"Default Name");
     }
+
+    @Override
+    public String toString() {
+        return "Product{" + "proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", stock=" + stock + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", proDate=" + proDate + ", category=" + category + '}';
+    }
+
+     
 
     public String getProId() {
         return proId;

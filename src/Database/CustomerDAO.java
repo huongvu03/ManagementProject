@@ -190,6 +190,28 @@ public class CustomerDAO {
 
         return str_result;
     }
+    
+   public static List<Customer> getCustomerIdList() {
+        List<Customer> ds = new ArrayList<>();
+        String sql = "SELECT cus_id,name FROM tbCustomer ";
+
+        try (Connection cn = new ConnectDB().GetConnectDB();
+           Statement stm = cn.createStatement();
+          ResultSet  rs = stm.executeQuery(sql);) {
+
+            while (rs.next()) {
+                Customer newitem = new Customer();
+                newitem.setCus_id(rs.getString(1));
+                newitem.setName(rs.getString(2));             
+                ds.add(newitem);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ds;
+    }
 }
 
 

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="productItem" prefHeight="250.0" prefWidth="250.0" styleClass="productSet" stylesheets="@MainForm.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.ProductItemController">
+<AnchorPane fx:id="productItem" prefHeight="250.0" prefWidth="250.0" styleClass="productSet" stylesheets="@MainForm.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.ProductItemController">
    <children>
       <VBox layoutX="20.0" layoutY="36.0" prefHeight="250.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -49,7 +49,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Spinner>
-                  <Button fx:id="proItem_btnAdd" mnemonicParsing="false" prefHeight="30.0" prefWidth="73.0" styleClass="gradient" stylesheets="@MainForm.css" text="Add" textFill="#090909">
+                  <Button fx:id="proItem_btnAdd" mnemonicParsing="false" onAction="#Menu_AddProItem" prefHeight="30.0" prefWidth="73.0" styleClass="gradient" stylesheets="@MainForm.css" text="Add" textFill="#090909">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
