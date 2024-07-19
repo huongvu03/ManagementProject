@@ -167,8 +167,7 @@ public class LogPageController implements Initializable {
 
                     Optional<ButtonType> option = alert.showAndWait();
                     if (option.get().equals(ButtonType.OK)) {
-                        // TO HIDE MAIN FORM 
-                        LogInPage.getScene().getWindow().hide();
+                       
 
                         // LINK YOUR LOGIN FORM AND SHOW IT 
                         URL url = new File("src/managementproject/Menu.fxml").toURI().toURL();
@@ -181,6 +180,9 @@ public class LogPageController implements Initializable {
                         stage.setScene(scene);
                         //stage.setFullScreen(true);
                         stage.show();
+                        
+                         // TO HIDE MAIN FORM 
+                        LogInPage.getScene().getWindow().hide();
                     }
                 } else {
                     alert.setContentText("Incorrect Username/Password.No user Avaiable");
