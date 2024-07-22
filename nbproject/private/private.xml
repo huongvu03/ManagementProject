@@ -3,15 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< Updated upstream
-            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/InventoryController.java</file>
-            <file>file:/D:/cafe_management_project/ManagementProject/src/Database/ProductDAO.java</file>
-=======
-            <file>file:/C:/Users/huynh/OneDrive/Documents/GitHub/ManagementProject/src/managementproject/ProductItem.fxml</file>
-            <file>file:/C:/Users/huynh/OneDrive/Documents/GitHub/ManagementProject/src/managementproject/ProductItemController.java</file>
-            <file>file:/C:/Users/huynh/OneDrive/Documents/GitHub/ManagementProject/src/managementproject/MenuController.java</file>
-            <file>file:/C:/Users/huynh/OneDrive/Documents/GitHub/ManagementProject/src/managementproject/Menu.fxml</file>
->>>>>>> Stashed changes
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/MainForm.css</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/Menu.fxml</file>
+            <file>file:/D:/cafe_management_project/ManagementProject/src/managementproject/MenuController.java</file>
         </group>
     </open-files>
 </project-private>

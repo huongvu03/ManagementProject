@@ -15,18 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import managementproject.MenuController;
+import managementproject.data;
 
 public class CustomerDAO {
-    
-    
-   public static List<Customer> getList() {
+
+    public static List<Customer> getList() {
         List<Customer> ds = new ArrayList<>();
+
         String sql = "SELECT * FROM tbCustomer WHERE deleted = 0";
 
-        try (Connection cn = new ConnectDB().GetConnectDB();
-             PreparedStatement st = cn.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 Customer newitem = new Customer();
@@ -50,9 +49,7 @@ public class CustomerDAO {
         List<Customer> ds = new ArrayList<>();
         String sql = "SELECT * FROM tbCustomer";
 
-        try (Connection cn = new ConnectDB().GetConnectDB();
-             PreparedStatement st = cn.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 Customer newitem = new Customer();
@@ -74,14 +71,12 @@ public class CustomerDAO {
 
     public static int insert(Customer new_cus) {
         String sql = "SELECT COUNT(cus_id) FROM tbCustomer"; // tạo id mới cho customer cần thêm vào database
-        try (Connection cn = new ConnectDB().GetConnectDB();
-             PreparedStatement st = cn.prepareStatement(sql);
-             ResultSet rs = st.executeQuery();) {
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql); ResultSet rs = st.executeQuery();) {
 
             if (rs.next()) {
                 int current_number_oftbCustomer = rs.getInt(1);
 
-                sql = "INSERT INTO tbCustomer VALUES (?, ?, ?, ?, ?, ?)";
+                sql = "INSERT INTO tbCustomer (cus_id,name,phone,email,discount,deleted) VALUES (?, ?, ?, ?, ?, ?)";
                 int result = 0;
                 do {
                     String newid = createid("CUS", String.valueOf(++current_number_oftbCustomer), 10);
@@ -111,8 +106,7 @@ public class CustomerDAO {
     public static int update(Customer c, String newname, String newphone, String newemail, int newdiscount, int newdeleted) {
         String sql = "UPDATE tbCustomer SET name = ?, phone = ?, email = ?, discount = ?, deleted = ? WHERE cus_id = ?";
 
-        try (Connection cn = new ConnectDB().GetConnectDB();
-             PreparedStatement st = cn.prepareStatement(sql);) {
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql);) {
             st.setString(1, newname);
             st.setString(2, newphone);
             st.setString(3, newemail);
@@ -132,8 +126,7 @@ public class CustomerDAO {
     public static int delete(String cus_id) {
         String sql = "DELETE tbCustomer WHERE cus_id = ?";
 
-        try (Connection cn = new ConnectDB().GetConnectDB();
-             PreparedStatement st = cn.prepareStatement(sql);) {
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql);) {
 
             st.setString(1, cus_id);
 
@@ -145,37 +138,34 @@ public class CustomerDAO {
 
         return 0;
     }
+
     public static List<Customer> searchByPhone(String phone) {
-    List<Customer> ds = new ArrayList<>();
-    String sql = "SELECT * FROM tbCustomer WHERE phone LIKE ? AND deleted = 0";
+        List<Customer> ds = new ArrayList<>();
+        String sql = "SELECT * FROM tbCustomer WHERE phone=? AND deleted = 0";
 
-    try (Connection cn = new ConnectDB().GetConnectDB();
-         PreparedStatement st = cn.prepareStatement(sql)) {
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql)) {
 
-        st.setString(1, "%" + phone + "%"); // Tìm kiếm các kết quả có số điện thoại chứa chuỗi phone
+            st.setString(1, phone); // Tìm kiếm các kết quả có số điện thoại chứa chuỗi phone
 
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                Customer newitem = new Customer();
-                newitem.setCus_id(rs.getString(1));
-                newitem.setName(rs.getString(2));
-                newitem.setPhone(rs.getString(3));
-                newitem.setEmail(rs.getString(4));
-                newitem.setDiscount(rs.getInt(5));
-                newitem.setDeleted(rs.getInt(6));
-                ds.add(newitem);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Customer newitem = new Customer();
+                    newitem.setCus_id(rs.getString(1));
+                    newitem.setName(rs.getString(2));
+                    newitem.setPhone(rs.getString(3));
+                    newitem.setEmail(rs.getString(4));
+                    newitem.setDiscount(rs.getInt(5));
+                    newitem.setDeleted(rs.getInt(6));
+                    ds.add(newitem);
+                }
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+
+        return ds;
     }
-
-    return ds;
-}
-
-
-    
 
     // WARNING: những DAO có dùng hàm createid thì các record đã tạo rồi sẽ không xoá. Tức là ko nên tạo method delete() để xoá record trong table
     private static String createid(String startid, String number_want_toset, int idsize) {
@@ -190,33 +180,5 @@ public class CustomerDAO {
 
         return str_result;
     }
-    
-   public static List<Customer> getCustomerIdList() {
-        List<Customer> ds = new ArrayList<>();
-        String sql = "SELECT cus_id,name FROM tbCustomer ";
-
-        try (Connection cn = new ConnectDB().GetConnectDB();
-           Statement stm = cn.createStatement();
-          ResultSet  rs = stm.executeQuery(sql);) {
-
-            while (rs.next()) {
-                Customer newitem = new Customer();
-                newitem.setCus_id(rs.getString(1));
-                newitem.setName(rs.getString(2));             
-                ds.add(newitem);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return ds;
-    }
+ 
 }
-
-
-
-
-
-    
-   

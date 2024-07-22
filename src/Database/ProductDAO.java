@@ -216,7 +216,6 @@ public class ProductDAO {
         }
     }
 
-  
     public Integer CheckStock(String proId) {
         int stock = 0;
         String checksql = "SELECT * FROM Product WHERE proId =?";
@@ -234,6 +233,17 @@ public class ProductDAO {
                 String status = pro.getStatus();
                 stock = pro.getStock();
                 if (status.equals("OutOfStock")) {
+                    stock = 0;
+                }
+                if(status.equals("OutOfStock") && stock != 0){
+                      alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error:");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Please check Status ");
+                    alert.showAndWait();
+                    return stock;
+                }
+                if (status.equals("Available") && stock == 0) {
                     stock = 0;
                 }
                 return stock;
@@ -256,7 +266,7 @@ public class ProductDAO {
     public void UpdateStock(String proId, int newStock) {
         try {
             cn = connect.GetConnectDB();
-            String sql = "UPDATE Product SET stock = ?,status=? WHERE proId = ?";
+            String sql = "UPDATE Product SET stock =?,status=? WHERE proId = ?";
             pStm = cn.prepareStatement(sql);
             pStm.setInt(1, newStock);
             if (newStock == 0) {
@@ -319,5 +329,5 @@ public class ProductDAO {
 
         return product;
     }
- 
+
 }
