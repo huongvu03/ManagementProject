@@ -144,6 +144,12 @@ public class MenuController implements Initializable {
     @FXML
     private ComboBox<String> boxStatus;
     @FXML
+    private ComboBox<String> boxCateSort;
+    @FXML
+    private ComboBox<String> boxStatusSort;
+    @FXML
+    private Button searchButton;
+    @FXML
     private ImageView ImageView;
     //Menu_Anchor
     @FXML
@@ -312,9 +318,10 @@ public class MenuController implements Initializable {
     @FXML
     private TextField txt_menuTableNo;
     
+
     //bill fxml
-    @FXML
-    private Button searchButton;
+//    @FXML
+//    private Button searchButton;
     @FXML
     private Button bill_btn;
     @FXML
@@ -400,6 +407,7 @@ public class MenuController implements Initializable {
     @FXML
     private Button bill_cancelButton1;
 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         alert = new Alert(Alert.AlertType.ERROR);
@@ -419,14 +427,22 @@ public class MenuController implements Initializable {
         // inventory
         productList = FXCollections.observableArrayList(dao.listDB());
         categoryList = FXCollections.observableArrayList("food", "drink");
-        statusList = FXCollections.observableArrayList("Available","UnAvailable", "OutOfStock");
+
+        statusList = FXCollections.observableArrayList("Available", "UnAvailable", "OutOfStock");
+
 
         filteredList = new FilteredList<>(productList, p -> true);
         sortedList = new SortedList<>(filteredList);
         sortedList.setComparator((p1, p2) -> p1.getProId().compareTo(p2.getProId()));
+        
         boxName.setItems(categoryList);
         boxStatus.setItems(statusList);
+        boxCateSort.setItems(categoryList);
+        boxStatusSort.setItems(statusList);
         ShowProducts();
+        //check
+//        System.out.println("Category List: " + categoryList);
+//        System.out.println("Status List: " + statusList);
         //Menu
         menu_Col_ProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         menu_Col_Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -725,15 +741,33 @@ public class MenuController implements Initializable {
         tvProduct.setItems(sortedList);
     }
 
+//    private String getCategoryName(int cateId) {
+//           switch (cateId) {
+//        case 1:
+//            return "food";
+//        case 2:
+//            return "drink";
+//        default:
+//            return "Unknown";
+//    }
+//    }
     private String getCategoryName(int cateId) {
-        if (cateId == 1) {
-            return "food";
-        } else if (cateId == 2) {
-            return "drink";
-        } else {
-            return "Unknown";
-        }
+    String categoryName;
+    switch (cateId) {
+        case 1:
+            categoryName = "food";
+            break;
+        case 2:
+            categoryName = "drink";
+            break;
+        default:
+            categoryName = "Unknown";
+            break;
     }
+    //System.out.println("Category ID: " + cateId + " corresponds to Category Name: " + categoryName);
+    return categoryName;
+}
+
 
     private void clearFields() {
         txtProId.clear();
@@ -746,42 +780,15 @@ public class MenuController implements Initializable {
         ImageView.setImage(null);
     }
 
-    // validate input , nếu isValid trả về false nghĩa là báo lỗi, ko chạy tiếp, true thì tiếp tục
-//    private boolean validateInput() {
-//        boolean isValid = true;
-//        errorMessage validate = new errorMessage();
-//
-//        if (txtProId.getText().trim().isEmpty()) {
-//            textNotice.setText("ProId " + validate.getErrorMsg1());
-//            isValid = false;
-//        } else if (txtProName.getText().trim().isEmpty()) {
-//            textNotice.setText("ProName " + validate.getErrorMsg1());
-//            isValid = false;
-//        } else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
-//            textNotice.setText("ProPrice " + validate.getErrorMsg2());
-//            isValid = false;
-//        } else if (!txtStock.getText().matches("\\d+")) {
-//            textNotice.setText("ProStock " + validate.getErrorMsg2());
-//            isValid = false;
-//        } else if (boxName.getSelectionModel().isEmpty()) {
-//            textNotice.setText("CateName " + validate.getErrorMsg1());
-//            isValid = false;
-//        } else if (boxStatus.getSelectionModel().isEmpty()) {
-//            textNotice.setText("Status " + validate.getErrorMsg1());
-//            isValid = false;
-//        } else {
-//            textNotice.setText(null);
-//        }
-//
-//        return isValid;
-//    }
-//test validate ----------------------------------------------------
+
+
  private boolean validateInput() {
     boolean isValid = true;
     errorMessage validate = new errorMessage();
 
     // Clear previous error message
     textNotice.setText(null);
+
 
     // Validate ProId
     if (txtProId.getText().trim().isEmpty()) {
@@ -878,38 +885,7 @@ public class MenuController implements Initializable {
         }
     }
 
-//    @FXML
-//    private void inven_Add(ActionEvent event) {
-//
-//        Product newProduct = new Product();
-//        if (validateInput()) {
-//            String path = null;
-//            newProduct.setProId(txtProId.getText());
-//            newProduct.setProName(txtProName.getText());
-//            newProduct.setStock(Integer.parseInt(txtStock.getText()));
-//            newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
-//            newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-//            newProduct.setStatus(boxStatus.getValue());
-//
-//            if (data.path == null) {
-//                newProduct.setProImage(null);
-//            } else {
-//                path = data.path.replace("\\", "\\\\");
-//                newProduct.setProImage(path);
-//            }
-//            newProduct.setProDate(new Date());
-//
-//            if (dao.AddDB(newProduct) != null) {
-//                productList.add(newProduct);
-//                data.path = null;
-//                clearFields();
-//                textNotice.setText("Product added successfully.");
-//            } else {
-//                textNotice.setText("Duplicate ID");
-//            }
-//        }
-//    }
-    //test add ----------------------------------------------------
+
     @FXML
 private void inven_Add(ActionEvent event) {
     Product newProduct = new Product();
@@ -955,34 +931,7 @@ private void inven_Add(ActionEvent event) {
         }
     }
 
-//    @FXML
-//    private void inven_Update(ActionEvent event) {
-//
-//        if (proSelected != null && validateInput()) {
-//            proSelected.setProName(txtProName.getText());
-//            proSelected.setStock(Integer.parseInt(txtStock.getText()));
-//            proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
-//            proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-//            proSelected.setStatus(boxStatus.getValue());
-//
-//            // Only update the image path if a new image was imported
-//            if (data.path != null) {
-//                String path = data.path.replace("\\", "\\\\");
-//                proSelected.setProImage(path);
-//            }
-//
-//            proSelected.setProDate(new Date());
-//
-//            dao.UpdateDB(proSelected);
-//            tvProduct.refresh();
-//            clearFields();
-//            textNotice.setText("Product updated successfully.");
-//
-//            // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
-//            data.path = null;
-//        }
-//    }
-    // test updateeeeeeeeee ----------------------------------------------
+
     @FXML
 private void inven_Update(ActionEvent event) {
     if (proSelected != null && validateInput()) {
@@ -1018,6 +967,40 @@ private void inven_Update(ActionEvent event) {
         String searchValue = invent_txtSearch.getText().toLowerCase().trim();
         filteredList.setPredicate(p -> p.getProName().toLowerCase().contains(searchValue));
         textNotice.setText("Search successfully.");
+    }
+    
+
+    @FXML
+private void inven_Sort(ActionEvent event) {
+    String selectedCategory = boxCateSort.getValue();
+    String selectedStatus = boxStatusSort.getValue();
+
+//    System.out.println("Selected Category: " + selectedCategory);
+//    System.out.println("Selected Status: " + selectedStatus);
+
+    filteredList.setPredicate(product -> {
+        String categoryName = getCategoryName(product.getCateId());
+
+        boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
+        boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
+
+//        System.out.println("Product: " + product.getProName() + " matchesCategory: " + matchesCategory + " matchesStatus: " + matchesStatus);
+
+        return matchesCategory && matchesStatus;
+    });
+
+    // Apply sortedList to TableView
+    tvProduct.setItems(sortedList);
+    textNotice.setText("Products sorted successfully.");
+}
+
+    @FXML
+    private void inven_ClearSort(ActionEvent event) {
+    boxCateSort.getSelectionModel().clearSelection();
+    boxStatusSort.getSelectionModel().clearSelection();
+    invent_txtSearch.clear();
+    filteredList.setPredicate(p -> true); // Reset to show all products
+    textNotice.setText("Sorting and Search cleared.");
     }
 
     @FXML
