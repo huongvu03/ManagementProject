@@ -3,42 +3,38 @@ package Models;
 import java.util.Date;
 
 public class Bill {
-
     private Integer billId;
-    private String cus_id;
+     private String tableNo ;   
+     private String cus_id;
+    private String userName;
+       private String proId;
+    private String proName;
+    private int cateId;
+        private int quantity;
+      private double proPrice;      
+    private String status;
+    private String proImage;
     private Double billTotal;
     private Double billTax;
     private Double billService;
     private Double billSubTotal;
     private Date billDate;
-    private String userName;
-    private String proId;
-    private String proName;
-    private Integer cateId;
-    private Integer quantity;
-    private Double proPrice;
-    private String status;
-    private String proImage;
-     private String note;
+    private String billStatus;
 
-    public Bill(String cus_id, String proId, String proName, Integer quantity, Double proPrice) {
-        this.cus_id = cus_id;
-        this.proId = proId;
-        this.proName = proName;
-        this.quantity = quantity;
-        this.proPrice = proPrice;
+    public Bill() {
     }
 
-   
+    @Override
+    public String toString() {
+        return "Bill{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id + ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + '}';
+    }
 
-    public Bill(Integer billId, String cus_id, Double billTotal, Double billTax, Double billService, Double billSubTotal, Date billDate, String userName, String proId, String proName, Integer cateId, Integer quantity, Double proPrice, String status, String proImage) {
+       public Bill(Integer billId, String tableNo, String cus_id, String userName,
+               String proId, String proName, int cateId, int quantity, double proPrice, String status, String proImage,
+               Double billTotal, Double billTax, Double billService, Double billSubTotal, Date billDate, String billStatus) {
         this.billId = billId;
+        this.tableNo = tableNo;
         this.cus_id = cus_id;
-        this.billTotal = billTotal;
-        this.billTax = billTax;
-        this.billService = billService;
-        this.billSubTotal = billSubTotal;
-        this.billDate = billDate;
         this.userName = userName;
         this.proId = proId;
         this.proName = proName;
@@ -47,22 +43,12 @@ public class Bill {
         this.proPrice = proPrice;
         this.status = status;
         this.proImage = proImage;
-    }
-
-    @Override
-    public String toString() {
-        return "Bill{" + "billId=" + billId + ", cus_id=" + cus_id + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", note=" + note + '}';
-    }
-
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-    public Bill() {
+        this.billTotal = billTotal;
+        this.billTax = billTax;
+        this.billService = billService;
+        this.billSubTotal = billSubTotal;
+        this.billDate = billDate;
+        this.billStatus = billStatus;
     }
 
     public Integer getBillId() {
@@ -73,12 +59,84 @@ public class Bill {
         this.billId = billId;
     }
 
+    public String getTableNo() {
+        return tableNo;
+    }
+
+    public void setTableNo(String tableNo) {
+        this.tableNo = tableNo;
+    }
+
     public String getCus_id() {
         return cus_id;
     }
 
-    public void setCustomerId(String cus_id) {
+    public void setCus_id(String cus_id) {
         this.cus_id = cus_id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getProId() {
+        return proId;
+    }
+
+    public void setProId(String proId) {
+        this.proId = proId;
+    }
+
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    public int getCateId() {
+        return cateId;
+    }
+
+    public void setCateId(int cateId) {
+        this.cateId = cateId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getProPrice() {
+        return proPrice;
+    }
+
+    public void setProPrice(double proPrice) {
+        this.proPrice = proPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getProImage() {
+        return proImage;
+    }
+
+    public void setProImage(String proImage) {
+        this.proImage = proImage;
     }
 
     public Double getBillTotal() {
@@ -121,69 +179,16 @@ public class Bill {
         this.billDate = billDate;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getBillStatus() {
+        return billStatus;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setBillStatus(String billStatus) {
+        this.billStatus = billStatus;
     }
 
-    public String getProId() {
-        return proId;
-    }
+ 
+   
 
-    public void setProId(String proId) {
-        this.proId = proId;
-    }
-
-    public String getProName() {
-        return proName;
-    }
-
-    public void setProName(String proName) {
-        this.proName = proName;
-    }
-
-    public Integer getCateId() {
-        return cateId;
-    }
-
-    public void setCateId(Integer cateId) {
-        this.cateId = cateId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getProPrice() {
-        return proPrice;
-    }
-
-    public void setProPrice(Double proPrice) {
-        this.proPrice = proPrice;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getProImage() {
-        return proImage;
-    }
-
-    public void setProImage(String proImage) {
-        this.proImage = proImage;
-    }
-
-
+   
 }

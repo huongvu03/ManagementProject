@@ -5,11 +5,13 @@
 package managementproject;
 
 import Database.BillDAO;
+import Database.CustomerDAO;
 import Database.ProductDAO;
 import Models.Bill;
+import Models.Customer;
 import Models.Product;
 import java.net.URL;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -88,11 +90,17 @@ public class ProductItemController implements Initializable {
         proItem_Spinner.setValueFactory(spin);
     }
 
-    public BillDAO billDAO = new BillDAO();
-// public  ObservableList<Bill> billOrder = FXCollections.observableArrayList(billDAO.getOrderDB());
+    ProductDAO pdao = new ProductDAO();
+    private BillDAO billDAO = new BillDAO();
 
     @FXML
     private void Menu_AddProItem(ActionEvent event) {
+        if (menuController.getCustomerId() != null) {
+            data.customerId = menuController.getCustomerId();
+        } else {
+            data.customerId = "New Customer";
+        }
+        System.out.println("ham add ProductItem");
         int qty = proItem_Spinner.getValue();
         if (qty == 0) {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -103,45 +111,49 @@ public class ProductItemController implements Initializable {
             return;
         }
         // Kiểm tra và trừ hàng tồn kho
-        ProductDAO dao = new ProductDAO();
-        int stock = dao.CheckStock(prodId);
+        int stock = pdao.CheckStock(prodId);
         if (stock != 0 && qty <= stock) {
             stock -= qty;
 
             // Lấy thông tin sản phẩm để thêm vào hóa đơn
-            Product product = dao.getProductById(prodId);
-
+            Product product = pdao.getProductById(prodId);
             // Tạo đối tượng Bill
             Bill bill = new Bill();
-            bill.setCustomerId(data.customerId);
-            bill.setBillTotal(product.getProPrice() * qty);
-            double billTotal = bill.getBillTotal();
-            bill.setBillTax(billTotal * data.tax);
-            bill.setBillService((billTotal * data.tax) * data.service);
-            bill.setBillSubTotal(billTotal + bill.getBillTax() + bill.getBillService());
-            bill.setBillDate(new Date(System.currentTimeMillis()));
+            bill.setTableNo("null");
+            bill.setCus_id(data.customerId);
             bill.setUserName(data.username);
-            bill.setProId(prodId);
+            bill.setProId(product.getProId());
             bill.setProName(product.getProName());
             bill.setCateId(product.getCateId());
-            bill.setQuantity(qty);
+            bill.setQuantity(proItem_Spinner.getValue());
             bill.setProPrice(product.getProPrice());
             bill.setStatus(product.getStatus());
             bill.setProImage(product.getProImage());
+            bill.setBillTotal(product.getProPrice() * proItem_Spinner.getValue());
+            bill.setBillTax(bill.getBillTotal() * data.tax);
+            bill.setBillService(bill.getBillTotal() * data.tax * data.service);
+            bill.setBillSubTotal(bill.getBillTotal() + bill.getBillTax() + bill.getBillService());
+            bill.setBillStatus("Unpay");
 
-            // Thêm vào bảng Bill
-            BillDAO bdao = new BillDAO();
-            bdao.insertBillDB(bill);
+           // Add the Bill object to a list
+        ArrayList<Bill> billList = new ArrayList<>();
+        billList.add(bill);
+
+        // Thêm sản phẩm vào hóa đơn
+        int billId = billDAO.insertOrder(billList);
+
+            // Cập nhật hàng tồn kho & cap nhat hien thi
+            pdao.UpdateStock(prodId, stock);
+            setQuantity();
 
             // Update the order data in the existing MenuController instance
             if (menuController != null) {
                 menuController.menuShowOrderData();
                 menuController.menuDisplayTotal();
+                menuController.ShowProducts();
+
             }
 
-            // Cập nhật hàng tồn kho
-            dao.UpdateStock(prodId, stock);
-             setQuantity();
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error:");

@@ -436,7 +436,7 @@
                               </Tab>
                            </tabs>
                         </TabPane>
-                        <TextField fx:id="menu_TextNote" layoutX="549.0" layoutY="934.0" prefHeight="45.0" prefWidth="315.0" promptText="NOTE">
+                        <TextField fx:id="menu_TextNote" layoutX="549.0" layoutY="934.0" prefHeight="45.0" prefWidth="315.0" promptText="Note">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -458,90 +458,118 @@
                         <String fx:value="radius" />
                      </styleClass>
                      <children>
-                        <TableView fx:id="menu_TbView" layoutX="12.0" layoutY="8.0" prefHeight="504.0" prefWidth="454.0">
+                        <TableView fx:id="menu_TbView" layoutX="12.0" layoutY="8.0" onMouseClicked="#menu_productSelected" prefHeight="504.0" prefWidth="454.0">
                            <columns>
                               <TableColumn fx:id="menu_Col_ProName" prefWidth="140.0" text="ProName" />
                               <TableColumn fx:id="menu_Col_Quantity" prefWidth="101.3333740234375" text="Quantity" />
                               <TableColumn fx:id="menu_Col_Price" prefWidth="97.0" text="Price" />
                            </columns>
                         </TableView>
-                        <Label layoutX="195.0" layoutY="547.0" text="Total:" AnchorPane.rightAnchor="248.0">
+                        <Label layoutX="190.0" layoutY="519.0" text="Total:" AnchorPane.rightAnchor="253.33333333333331">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Total" layoutX="263.0" layoutY="547.0" prefHeight="27.0" prefWidth="166.0" AnchorPane.leftAnchor="263.0">
+                        <Label fx:id="menu_Total" layoutX="264.0" layoutY="519.0" prefHeight="27.0" prefWidth="166.0" AnchorPane.leftAnchor="264.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="206.0" layoutY="574.0" prefHeight="27.0" prefWidth="38.0" text="Tax:" AnchorPane.rightAnchor="243.0">
+                        <Label layoutX="201.0" layoutY="546.0" prefHeight="27.0" prefWidth="38.0" text="Tax:" AnchorPane.rightAnchor="248.33333333333331">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Tax" layoutX="263.0" layoutY="574.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="263.0">
+                        <Label fx:id="menu_Tax" layoutX="264.0" layoutY="546.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="115.0" layoutY="601.0" prefHeight="27.0" prefWidth="129.0" text="Service Charge:" AnchorPane.rightAnchor="243.0">
+                        <Label layoutX="110.0" layoutY="573.0" prefHeight="27.0" prefWidth="129.0" text="Service Charge:" AnchorPane.rightAnchor="247.99999999999997">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Service" layoutX="263.0" layoutY="601.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="263.0">
+                        <Label fx:id="menu_Service" layoutX="264.0" layoutY="573.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="163.0" layoutY="628.0" prefHeight="30.0" prefWidth="91.0" text="Subtotal:" AnchorPane.rightAnchor="258.0">
+                        <Label layoutX="139.0" layoutY="600.0" prefHeight="30.0" prefWidth="91.0" text="Subtotal:" AnchorPane.rightAnchor="257.0">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Subtotal" layoutX="263.0" layoutY="628.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="263.0">
+                        <Label fx:id="menu_Subtotal" layoutX="264.0" layoutY="600.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="158.0" layoutY="733.0" prefHeight="27.0" prefWidth="76.0" text="Change:">
+                        <Label layoutX="154.0" layoutY="678.0" prefHeight="27.0" prefWidth="76.0" text="Change:">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Change" layoutX="263.0" layoutY="733.0" prefHeight="27.0" prefWidth="200.0">
+                        <Label fx:id="menu_Change" layoutX="259.0" layoutY="678.0" onDragDetected="#menu_DisplayChange" prefHeight="27.0" prefWidth="200.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label layoutX="158.0" layoutY="690.0" prefHeight="27.0" prefWidth="76.0" text="Amount">
+                        <Label layoutX="154.0" layoutY="635.0" prefHeight="27.0" prefWidth="76.0" text="Amount">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="menu_txtAmount" layoutX="263.0" layoutY="678.0" prefHeight="48.0" prefWidth="203.0">
+                        <TextField fx:id="menu_txtAmount" layoutX="259.0" layoutY="623.0" prefHeight="48.0" prefWidth="203.0">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="menu_btnPAY" layoutX="92.0" layoutY="791.0" mnemonicParsing="false" onAction="#menuDisplayChange" prefHeight="52.0" prefWidth="345.0" text="PAY">
+                        <Button fx:id="menu_btnPAY" layoutX="88.0" layoutY="736.0" mnemonicParsing="false" onAction="#menu_Pay" prefHeight="52.0" prefWidth="345.0" text="PAY">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
                         </Button>
-                        <Button fx:id="menu_btnREMOVE" layoutX="97.0" layoutY="873.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="137.0" text="REMOVE">
+                        <Button fx:id="menu_btnREMOVE" layoutX="174.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_RemoveItem" prefHeight="52.0" prefWidth="137.0" text="REMOVE">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Button>
-                        <Button fx:id="menu_btnRECEIPT" layoutX="296.0" layoutY="873.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="135.0" text="RECEIPT">
+                        <Button fx:id="menu_btnRECEIPT" layoutX="333.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_Receipt" prefHeight="52.0" prefWidth="135.0" text="RECEIPT">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Button>
-                        <Label layoutX="39.0" layoutY="974.0" prefHeight="28.0" prefWidth="83.0" text="CustomerName" />
-                        <Text fx:id="txt_displayCusName" layoutX="133.0" layoutY="993.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Label layoutX="38.0" layoutY="932.0" prefHeight="28.0" prefWidth="111.0" text=" CustomerName :">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <Text fx:id="txt_displayCusName" layoutX="133.0" layoutY="965.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <TextField fx:id="menu_txtPhoneSearching" layoutX="38.0" layoutY="968.0" prefHeight="45.0" prefWidth="315.0" promptText="Customer Phone">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <AnchorPane layoutX="363.0" layoutY="966.0" prefHeight="49.0" prefWidth="47.0">
+                           <children>
+                              <Button layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#menu_SearchCus_id">
+                                 <graphic>
+                                    <FontAwesomeIcon glyphName="SEARCH" size="2em" wrappingWidth="34.85714340209961" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <Button fx:id="menu_btnStore" layoutX="19.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_StoreBill" prefHeight="52.0" prefWidth="137.0" text="STORE">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Button>
+                        <Label layoutX="38.0" layoutY="898.0" prefHeight="34.0" prefWidth="111.0" text="Table No :">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txt_menuTableNo" layoutX="150.0" layoutY="906.0" />
                      </children>
                      <padding>
                         <Insets right="5.0" />

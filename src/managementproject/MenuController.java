@@ -276,6 +276,12 @@ public class MenuController implements Initializable {
 
     public Alert alert;
     private ProductDAO dao = new ProductDAO();
+    @FXML
+    private TextField menu_txtPhoneSearching;
+    @FXML
+    private Button menu_btnStore;
+    @FXML
+    private TextField txt_menuTableNo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -305,11 +311,15 @@ public class MenuController implements Initializable {
         boxStatus.setItems(statusList);
         ShowProducts();
         //Menu
+        menu_Col_ProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
+        menu_Col_Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        menu_Col_Price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+        menuShowOrderData();
         menuDisplayCard();
         menuShowOrderData();
         menuDisplayTotal();
-        getCustomerId();
-        //customer
+
+        //Customer
         // Initialize TableView columns
         cusIdColumn.setCellValueFactory(new PropertyValueFactory<>("cus_id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -365,11 +375,10 @@ public class MenuController implements Initializable {
             Menu_Anchor.setVisible(true);
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
-//            Clear();
             menuDisplayCard();
             menuShowOrderData();
             menuDisplayTotal();
-            getCustomerId();
+            menu_DisplayChange();
 
         } else if (event.getSource() == customer_btn) {
             DashBoard_Anchor.setVisible(false);
@@ -638,7 +647,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void HanleImportImage(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
+     FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
@@ -646,20 +655,50 @@ public class MenuController implements Initializable {
         File file = fileChooser.showOpenDialog(MainForm.getScene().getWindow());
         if (file != null) {
             data.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 168, 158, false, true);
+            //image = new Image(file.toURI().toString(), 168, 158, false, true);
+            //image = new Image(file.toURI().toString(), 250, 161, false, true);
+            image = new Image(file.toURI().toString(), 200, 200, false, true);
+
             ImageView.setImage(image);
         }
     }
 
     @FXML
     private void inventory_proSlected(MouseEvent event) {
-        proSelected = tvProduct.getSelectionModel().getSelectedItem();
-        // nếu có product được chọn
-        if (proSelected != null) {
-            // lấy index của pro được click
-            indexSelected = tvProduct.getSelectionModel().getSelectedIndex();
+       //        proSelected = tvProduct.getSelectionModel().getSelectedItem();
+//        // nếu có product được chọn
+//        if (proSelected != null) {
+//            // lấy index của pro được click
+//            indexSelected = tvProduct.getSelectionModel().getSelectedIndex();
+//
+//            //gán giá trị của textfield tương ứng với product được selected
+//            txtProId.setText(proSelected.getProId());
+//            txtProName.setText(proSelected.getProName());
+//            txtStock.setText(String.valueOf(proSelected.getStock()));
+//            txtProPrice.setText(String.valueOf(proSelected.getProPrice()));
+//            boxName.setValue(getCategoryName(proSelected.getCateId()));
+//            boxStatus.setValue(proSelected.getStatus());
+//
+//            if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
+//                //File file = new File(proSelected.getProImage());
+//
+//                //image = new Image(proSelected.getProImage(), 168, 158, false, true);
+//                String path = proSelected.getProImage();
+//                image = new Image("file:" + path, 250, 161, false, true);
+//                //ImageView.setImage(image);
+//                ImageView.setImage(image);
+//                System.out.println("có tìm thấy hình");
+//            } else {
+//                ImageView.setImage(null);
+//                System.out.println("không tìm thấy hình");
+//            }
+//
+//        }
 
-            //gán giá trị của textfield tương ứng với product được selected
+        //test
+        proSelected = tvProduct.getSelectionModel().getSelectedItem();
+        if (proSelected != null) {
+            indexSelected = tvProduct.getSelectionModel().getSelectedIndex();
             txtProId.setText(proSelected.getProId());
             txtProName.setText(proSelected.getProName());
             txtStock.setText(String.valueOf(proSelected.getStock()));
@@ -668,24 +707,51 @@ public class MenuController implements Initializable {
             boxStatus.setValue(proSelected.getStatus());
 
             if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
-                //File file = new File(proSelected.getProImage());
-
-                //image = new Image(proSelected.getProImage(), 168, 158, false, true);
                 String path = proSelected.getProImage();
-                image = new Image("file:" + path, 250, 161, false, true);
-                //ImageView.setImage(image);
+                //image = new Image("file:" + path, 250, 161, false, true);
+                image = new Image("file:" + path, 200, 200, false, true);
+
                 ImageView.setImage(image);
-                System.out.println("có tìm thấy hình");
+                System.out.println("Image found");
             } else {
                 ImageView.setImage(null);
-                System.out.println("không tìm thấy hình");
+                System.out.println("Image not found");
             }
-
         }
     }
 
     @FXML
     private void inven_Add(ActionEvent event) {
+       //        Product newProduct = new Product();
+//        if (validateInput()) {
+//            String path = null;
+//            newProduct.setProId(txtProId.getText());
+//            newProduct.setProName(txtProName.getText());
+//            newProduct.setStock(Integer.parseInt(txtStock.getText()));
+//            newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
+//            newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+//            newProduct.setStatus(boxStatus.getValue());
+//
+//            if (data.path == null) {
+//                newProduct.setProImage(null);
+//            } else {
+//                path = data.path.replace("\\", "\\\\");
+//                newProduct.setProImage(path);
+//            }
+//            newProduct.setProDate(new Date());
+//
+//            if (dao.AddDB(newProduct) != null) {
+//                productList.add(newProduct);
+//                data.path = null;
+//                clearFields();
+//                textNotice.setText("Product added successfully.");
+//            } else {
+//
+//                textNotice.setText("trung id");
+//
+//            }
+//        } 
+        //test
         Product newProduct = new Product();
         if (validateInput()) {
             String path = null;
@@ -706,20 +772,27 @@ public class MenuController implements Initializable {
 
             if (dao.AddDB(newProduct) != null) {
                 productList.add(newProduct);
+                data.path = null;
                 clearFields();
                 textNotice.setText("Product added successfully.");
             } else {
-
-                textNotice.setText("trung id");
-
+                textNotice.setText("Duplicate ID");
             }
-        } else {
-
         }
     }
 
     @FXML
     private void Inven_Delete(ActionEvent event) {
+       //        if (proSelected != null) {
+//            dao.DeleteDB(proSelected.getProId());
+//            productList.remove(indexSelected);
+//            clearFields();
+//            textNotice.setText("Product deleted successfully.");
+//        } else {
+//            textNotice.setText("No product selected for deletion.");
+//        }
+
+        //test
         if (proSelected != null) {
             dao.DeleteDB(proSelected.getProId());
             productList.remove(indexSelected);
@@ -732,22 +805,45 @@ public class MenuController implements Initializable {
 
     @FXML
     private void inven_Update(ActionEvent event) {
+       //      if (proSelected != null && validateInput()) {
+////            String path = null;
+//            proSelected.setProName(txtProName.getText());
+//            proSelected.setStock(Integer.parseInt(txtStock.getText()));
+//            proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
+//            proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+//            proSelected.setStatus(boxStatus.getValue());
+////            proSelected.setProImage(image != null ? image.getUrl() : null);
+//            if (data.path == null) {
+//                proSelected.setProImage(null);
+//            } else {
+//               String path = data.path.replace("\\", "\\\\");
+//                proSelected.setProImage(path);
+//            }
+//            
+//            proSelected.setProDate(new Date());
+//
+//            dao.UpdateDB(proSelected);
+//            proSelected.setProImage(null);
+//            tvProduct.refresh();
+//            clearFields();
+//            textNotice.setText("Product updated successfully.");
+//        } else {
+//
+//        }
+
+        //test
         if (proSelected != null && validateInput()) {
-            String path = null;
             proSelected.setProName(txtProName.getText());
             proSelected.setStock(Integer.parseInt(txtStock.getText()));
             proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
             proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
             proSelected.setStatus(boxStatus.getValue());
-            //proSelected.setProImage(image != null ? image.getUrl() : null);
-            if (data.path == null) {
-                proSelected.setProImage(null);
-            } else {
-                path = data.path.replace("\\", "\\\\");
+
+            // Only update the image path if a new image was imported
+            if (data.path != null) {
+                String path = data.path.replace("\\", "\\\\");
                 proSelected.setProImage(path);
             }
-
-            proSelected.setProDate(new Date());
 
             proSelected.setProDate(new Date());
 
@@ -755,8 +851,9 @@ public class MenuController implements Initializable {
             tvProduct.refresh();
             clearFields();
             textNotice.setText("Product updated successfully.");
-        } else {
 
+            // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
+            data.path = null;
         }
     }
 
@@ -848,34 +945,34 @@ public class MenuController implements Initializable {
 
     }
 
-    public ObservableList<Bill> orderList = FXCollections.observableArrayList();
     public BillDAO billDAO = new BillDAO();
+    public ObservableList<Bill> orderList = FXCollections.observableArrayList();
+    private int currentBillId=1;
 
     public void menuShowOrderData() {
-        orderList.setAll(billDAO.getOrderDB());
-
-        menu_Col_ProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
-        menu_Col_Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        menu_Col_Price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
-        menu_TbView.setItems(orderList);
-        System.out.println("danh sach order" + orderList);
-        menu_TbView.refresh();
-
+        if (currentBillId != 0) { // Ensure you have a valid billId
+            orderList.clear();
+            orderList.addAll(billDAO.getOrderDB(currentBillId));
+            menu_TbView.setItems(orderList);
+        } else {
+            System.out.println("Invalid billId. Cannot fetch orders.");
+        }
     }
 
-    private int count = 0;
-
     public String getCustomerId() {
-        if (!CustomerDAO.getCustomerIdList().isEmpty()) {
-            for (Customer c : CustomerDAO.getCustomerIdList()) {
+        String cusPhoneSearching = menu_txtPhoneSearching.getText();
+        if (!cusPhoneSearching.isEmpty() && !CustomerDAO.searchByPhone(cusPhoneSearching).isEmpty()) {
+            for (Customer c : CustomerDAO.searchByPhone(cusPhoneSearching)) {
                 data.customerId = c.getCus_id();
                 txt_displayCusName.setText(c.getName());
+                return data.customerId;
             }
         } else {
-            data.customerId = "New Customer" + count++;
-            txt_displayCusName.setText("" + data.customerId);
-            System.out.println("ten customer: " + data.customerId);
+//            data.customerId = "New Customer" + count++;
+//            txt_displayCusName.setText("null" + data.customerId);
+            txt_displayCusName.setText("null");
         }
+        System.out.println("Ham getCusId" + data.customerId);
         return data.customerId;
 
     }
@@ -883,34 +980,32 @@ public class MenuController implements Initializable {
     private double subtotal = 0;
     private double amount = 0;
     private double change = 0;
-    public ObservableList<Bill> list = FXCollections.observableArrayList();
+    private double total = 0;
+    private double billtax = 0;
+    private double billservice = 0;
 
-    public double menuGetSubtotal() {
-        list.setAll(billDAO.getbillSubTotalDB());
-        for (Bill b : list) {
-            subtotal = b.getBillSubTotal();
+    public void menuGetSubtotal() {
+        ObservableList<Bill> menuSubList = FXCollections.observableArrayList();
+        menuSubList.setAll(billDAO.getbillSubTotalDB(currentBillId));
+        if (!menuSubList.isEmpty()) {
+            Bill c = menuSubList.get(0);
+            total = c.getBillTotal();
+            billtax = c.getBillTax();
+            billservice = c.getBillService();
+            subtotal = c.getBillSubTotal();
+        } else {
+            total = 0.0;
+            billtax = 0.0;
+            billservice = 0.0;
+            subtotal = 0.0;
         }
-        return subtotal;
     }
 
     public void menuDisplayTotal() {
-        System.out.println("Ham menuDisplayTotal duoc goi ");
-        list.setAll(billDAO.getbillSubTotalDB());
-        double total = 0;
-        double tax = 0;
-        double service = 0;
-//        double subtotal = 0;
-        // Calculate total values from all Bill objects in the list
-        for (Bill b : list) {
-            total = b.getBillTotal();
-            tax = b.getBillTax();
-            service = b.getBillService();
-            subtotal = b.getBillSubTotal();
-        }
-
+        menuGetSubtotal();
         menu_Total.setText(total + " VND ");
-        menu_Tax.setText(tax + " VND ");
-        menu_Service.setText(service + " VND ");
+        menu_Tax.setText(billtax + " VND ");
+        menu_Service.setText(billservice + " VND ");
         menu_Subtotal.setText(subtotal + " VND ");
         if (subtotal != 0) {
             menu_Subtotal.setText(subtotal + "VND ");
@@ -920,19 +1015,19 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    private void menuDisplayChange(ActionEvent event) {
+    private void menu_SearchCus_id(ActionEvent event) {
+        getCustomerId();
+    }
+
+    @FXML
+    private void menu_DisplayChange() {
         try {
-            // Lấy giá trị từ TextField và loại bỏ dấu phân cách hàng ngàn (nếu có)
             String amountStr = menu_txtAmount.getText().trim();
-
-            // Xóa các ký tự không phải là số hoặc dấu chấm
+            if (amountStr.isEmpty()) {
+                return;
+            }
             amountStr = amountStr.replaceAll("[^\\d.]", "");
-
-            // Chuyển đổi thành số double
             amount = Double.parseDouble(amountStr);
-
-            // Định dạng và hiển thị lại giá trị trên TextField
-//            menu_txtAmount.setText(amount);       
             if (amount > 0) {
                 if (amount < subtotal) {
                     alert = new Alert(Alert.AlertType.ERROR);
@@ -944,7 +1039,6 @@ public class MenuController implements Initializable {
                     change = amount - subtotal;
                     menu_Change.setText(String.format("%,.3f", change) + "VND ");
                 }
-
             }
         } catch (NumberFormatException e) {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -952,11 +1046,11 @@ public class MenuController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Invalid amount entered. Please enter a valid number.");
             alert.showAndWait();
-            return;
         }
     }
 
-    public void Pay() {
+    @FXML
+    private void menu_Pay(ActionEvent event) {
         if (subtotal == 0 || menu_txtAmount.getText().isEmpty()) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error:");
@@ -964,11 +1058,104 @@ public class MenuController implements Initializable {
             alert.setContentText("Subtotal or Amount cant be blank");
             alert.showAndWait();
         } else {
+            getCustomerId();
+            menuGetSubtotal();
+            String tableNo = "null";
+            if (txt_menuTableNo.getText() != null) {
+                tableNo = txt_menuTableNo.getText();
+            }
+            Bill bill = new Bill();
+            for (Bill c : billDAO.getOrderDB(currentBillId)) {
+                bill.setBillId(c.getBillId());
+                bill.setTableNo(tableNo);
+                bill.setBillStatus("Pay");
+            }
+            java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+            bill.setBillDate(sqlDate);
+
+            billDAO.UpdateDB(bill);
+            menuShowOrderData();
+            menuRestart();
 
         }
     }
-//CUSTOMER
 
+    public void menuRestart() {
+        total = 0;
+        billtax = 0;
+        billservice = 0;
+        subtotal = 0;
+        amount = 0;
+        change = 0;
+        menu_Total.setText("0.0");
+        menu_Tax.setText(" 0.0");
+        menu_Service.setText("0.0");
+        menu_Subtotal.setText(" 0.0");
+        menu_txtAmount.setText("");
+        menu_Change.setText("0.0");
+        menu_TbView.getItems().clear();
+    }
+    private String getProId;
+
+    @FXML
+    private void menu_productSelected(MouseEvent event) {
+        Bill proId = menu_TbView.getSelectionModel().getSelectedItem();
+        int num = menu_TbView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < -1) {
+            return;
+        }
+        getProId = proId.getProId();
+    }
+
+    @FXML
+    private void menu_RemoveItem(ActionEvent event) {
+        if (getProId == null) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText("");
+            alert.setContentText("Please select the order you want to remove");
+            alert.showAndWait();
+        } else {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete ?");
+            Optional<ButtonType> option = alert.showAndWait();
+
+            if (option.get().equals(ButtonType.OK)) {
+                billDAO.DeleteDB(getProId);
+                menuShowOrderData();
+            }
+        }
+    }
+
+    @FXML
+    private void menu_Receipt(ActionEvent event) {
+    }
+
+    @FXML
+    private void menu_StoreBill(ActionEvent event) {
+        getCustomerId();
+        menuGetSubtotal();
+        String tableNo = "null";
+        if (txt_menuTableNo.getText() != null) {
+            tableNo = txt_menuTableNo.getText();
+        }
+        Bill bill = new Bill();
+        for (Bill c : billDAO.getOrderDB(currentBillId)) {
+            bill.setBillId(c.getBillId());
+            bill.setTableNo(tableNo);
+            bill.setBillStatus("UnPay");
+        }
+        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+        bill.setBillDate(sqlDate);
+        billDAO.UpdateDB(bill);
+        menuShowOrderData();
+        menuRestart();
+    }
+
+//CUSTOMER
     private void loadData() {
         // Load data from database using CustomerDAO
         List<Customer> customers = CustomerDAO.getList();
@@ -1090,7 +1277,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void userSelected(MouseEvent event) {
-         userSelected = tvUserInfo.getSelectionModel().getSelectedItem();
+        userSelected = tvUserInfo.getSelectionModel().getSelectedItem();
 
         // nếu có product được chọn
         if (userSelected != null) {
@@ -1112,7 +1299,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void Staff_SignUp(ActionEvent event) {
-          if (txt_ReUserId.getText().isEmpty() || txt_ReUserName.getText().isEmpty()
+        if (txt_ReUserId.getText().isEmpty() || txt_ReUserName.getText().isEmpty()
                 || txt_RePass.getText().isEmpty() || txt_ReAnswer.getText().isEmpty()
                 || userPosition.getSelectionModel().getSelectedItem().isEmpty()
                 || userQuestion.getSelectionModel().getSelectedItem().isEmpty()) {
@@ -1148,38 +1335,38 @@ public class MenuController implements Initializable {
 
     @FXML
     private void Staff_Delete(ActionEvent event) {
-           alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Notice:");
         alert.setHeaderText(null);
         alert.setContentText("Are you sure you want to delete?");
 
-       if (userSelected != null) {
-        Optional<ButtonType> option = alert.showAndWait();
-        if (option.isPresent() && option.get() == ButtonType.OK) {
-            String id = userSelected.getUserId();
-            udao.deleteDB(id);
-            uList.remove(userindexSelected);
-            userSelected = null;
-            userindexSelected = 0;
-        } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
-            alert = new Alert(Alert.AlertType.INFORMATION);
+        if (userSelected != null) {
+            Optional<ButtonType> option = alert.showAndWait();
+            if (option.isPresent() && option.get() == ButtonType.OK) {
+                String id = userSelected.getUserId();
+                udao.deleteDB(id);
+                uList.remove(userindexSelected);
+                userSelected = null;
+                userindexSelected = 0;
+            } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Notice:");
+                alert.setHeaderText(null);
+                alert.setContentText("Delete operation was cancelled.");
+                alert.showAndWait();
+            }
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Notice:");
             alert.setHeaderText(null);
-            alert.setContentText("Delete operation was cancelled.");
+            alert.setContentText("Please choose a user to delete.");
             alert.showAndWait();
         }
-    } else {
-        alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Notice:");
-        alert.setHeaderText(null);
-        alert.setContentText("Please choose a user to delete.");
-        alert.showAndWait();
-    }
     }
 
     @FXML
     private void Staff_Update(ActionEvent event) {
-            alert = new Alert(Alert.AlertType.ERROR);
+        alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error:");
         alert.setHeaderText(null);
 
@@ -1224,7 +1411,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void Staff_Search(ActionEvent event) {
-          String sname = txt_SeachStaff.getText();
+        String sname = txt_SeachStaff.getText();
         userfilteredList.setPredicate(p -> p.getUserName().contains(sname));
         if (userfilteredList.isEmpty()) {
             txt_SeachStaff.setText("No result. Please input key words");
@@ -1235,8 +1422,8 @@ public class MenuController implements Initializable {
     private void Staff_ClearAllFields(ActionEvent event) {
         StaffClear();
     }
-    
-     public void StaffClear() {
+
+    public void StaffClear() {
         txt_ReUserId.clear();
         txt_ReUserName.clear();
         txt_RePass.clear();

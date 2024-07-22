@@ -5,151 +5,197 @@ import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import managementproject.data;
 
 public class BillDAO {
 
-    static ConnectDB connect = new ConnectDB();
-    static Connection cn = null;
-    static Statement stm = null;// de chay cau lenh ko co bien
-    static ResultSet rs = null; // hung ket qua tra ve
-    static Scanner sc;
-    static PreparedStatement pStm = null;// de chay cau lenh co bien
-
     ArrayList<Bill> billOrderList = new ArrayList<>();
+   private int billId = -1; // Biến để lưu trữ billId hiện tại
 
-    public ArrayList<Bill> insertBillDB(Bill bill) {
-        String sql = "INSERT INTO Bill (cus_id, billTotal, billTax, billService, billSubTotal, billDate, userName, proId, proName, cateId, quantity, proPrice, status, proImage)"
-                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int insertOrder(ArrayList<Bill> billItems) {
+        if (billItems.isEmpty()) {
+            return -1; // Không có sản phẩm để thêm
+        }
 
         try {
-            cn = connect.GetConnectDB();
-            pStm = cn.prepareStatement(sql);
-            pStm.setString(1, bill.getCus_id());
-            pStm.setDouble(2, bill.getBillTotal());
-            pStm.setDouble(3, bill.getBillTax());
-            pStm.setDouble(4, bill.getBillService());
-            pStm.setDouble(5, bill.getBillSubTotal());
-            // Convert java.util.Date to java.sql.Date
-            java.sql.Date sqlDate = new java.sql.Date(bill.getBillDate().getTime());
-            pStm.setDate(6, sqlDate);
-            pStm.setString(7, bill.getUserName());
-            pStm.setString(8, bill.getProId());
-            pStm.setString(9, bill.getProName());
-            pStm.setInt(10, bill.getCateId());
-            pStm.setInt(11, bill.getQuantity());
-            pStm.setDouble(12, bill.getProPrice());
-            pStm.setString(13, bill.getStatus());
-            pStm.setString(14, bill.getProImage());
+            String sql = "INSERT INTO Bill (tableNo, cus_id, userName, proId, proName, cateId, quantity, proPrice, status, proImage, billTotal, billTax, billService, billSubTotal, billDate, billStatus) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Connection cn = new ConnectDB().GetConnectDB();
+            PreparedStatement pStm = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            pStm.executeUpdate();
+            for (Bill bill : billItems) {
+                // Set parameters for each product item
+                pStm.setString(1, bill.getTableNo());
+                pStm.setString(2, bill.getCus_id());
+                pStm.setString(3, bill.getUserName());
+                pStm.setString(4, bill.getProId());
+                pStm.setString(5, bill.getProName());
+                pStm.setInt(6, bill.getCateId());
+                pStm.setInt(7, bill.getQuantity());
+                pStm.setDouble(8, bill.getProPrice());
+                pStm.setString(9, bill.getStatus());
+                pStm.setString(10, bill.getProImage());
+                pStm.setDouble(11, bill.getBillTotal());
+                pStm.setDouble(12, bill.getBillTax());
+                pStm.setDouble(13, bill.getBillService());
+                pStm.setDouble(14, bill.getBillSubTotal());
+                java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+                pStm.setDate(15, sqlDate);
+                pStm.setString(16, bill.getBillStatus());
 
-            boolean customerExists = false;
-            for (Bill oldbill : billOrderList) {
-                if (oldbill.getCus_id().equals(bill.getCus_id())) {
-                    // Set the same billId for the same cus_id
-                    if (oldbill.getBillId() == null) {
-                        oldbill.setBillId(bill.getBillId());
-                    }
-                    // Update quantity if the same proId exists
-                    if (oldbill.getProId().equals(bill.getProId())) {
-                        oldbill.setQuantity(oldbill.getQuantity() + bill.getQuantity());
-                    }
-                    customerExists = true;
-                    break;
-                }
+                pStm.addBatch(); // Add to batch
             }
 
-            // If the customer does not exist in billOrderList, add the new bill
-            if (!customerExists) {
-                billOrderList.add(bill);
+            // Execute batch insert
+            int[] updateCounts = pStm.executeBatch();
+
+            // Get generated keys for each inserted row
+            ResultSet generatedKeys = pStm.getGeneratedKeys();
+            int index = 0;
+            while (generatedKeys.next()) {
+                int generatedBillId = generatedKeys.getInt(1); // Get the generated billId
+                billItems.get(index).setBillId(generatedBillId); // Set generated billId to each Bill object
+                index++;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                cn.close();
-                pStm.close();
-            } catch (Exception e) {
-                e.getMessage();
-            }
-        }
-        return billOrderList;
+
+            generatedKeys.close();
+            pStm.close();
+            cn.close();
+        } catch (SQLException ex) {
+        ex.printStackTrace();
+        Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
+        return -1; // Return -1 to indicate failure
     }
 
-    public ArrayList<Bill> billOrder = new ArrayList<>();
+    return billId; // Return the billId if necessary
+}
+  
+    public ArrayList<Bill> getOrderDB(int billId) {
+           ArrayList<Bill> billOrderInfo = new ArrayList<>();
+        billOrderInfo.clear();
+        String sql = "SELECT proId, proName,cateId, quantity, proPrice,status,proImage,billStatus FROM Bill where billId=? ";
+        try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement pstmt = cn.prepareStatement(sql)) {
 
-    public ArrayList<Bill> getOrderDB() {
-        billOrder.clear();
-        String sql = "SELECT proId, proName, quantity, proPrice FROM Bill WHERE cus_id=?";
+            pstmt.setInt(1, billId);
+            ResultSet rs = pstmt.executeQuery();
 
-        try (Connection cn = connect.GetConnectDB(); PreparedStatement pStm = cn.prepareStatement(sql)) {
-            pStm.setString(1, data.customerId);
+            while (rs.next()) {
+                Bill c = new Bill();
+                c.setBillId(billId);
+                c.setProId(rs.getString("proId"));
+                c.setProName(rs.getString("proName"));
+                c.setCateId(rs.getInt("cateId"));
+                c.setQuantity(rs.getInt("quantity"));
+                c.setProPrice(rs.getDouble("proPrice"));
+                c.setStatus(rs.getString("status"));
+                c.setProImage(rs.getString("proImage"));
+                c.setBillStatus(rs.getString("billStatus"));
 
-            try (ResultSet rs = pStm.executeQuery()) {
-                while (rs.next()) {
-                    Bill bill = new Bill();
-                    bill.setProId(rs.getString("proId"));
-                    bill.setProName(rs.getString("proName"));
-                    bill.setQuantity(rs.getInt("quantity"));
-                    bill.setProPrice(rs.getDouble("proPrice"));
-
-                    boolean found = false;
-                    for (Bill old : billOrder) {
-                        if (old.getProId().equals(bill.getProId())) {
-                            old.setQuantity(old.getQuantity() + bill.getQuantity());
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-
-                        billOrder.add(bill);
+                // Check if this proId already exists in billOrderInfo
+                boolean found = false;
+                for (Bill old : billOrderInfo) {
+                    if (old.getProId().equals(c.getProId())) {
+                        // Update quantity
+                        old.setQuantity(old.getQuantity() + c.getQuantity());
+                        found = true;
+                        break;
+                    }else{
+                         old.setQuantity(c.getQuantity());
                     }
                 }
+                // If not found, add new Bill to billOrderInfo
+                if (!found) {
+                    billOrderInfo.add(c);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Order list: " + billOrder);
-        return billOrder;
+
+        System.out.println("order list: " + billOrderInfo);
+        return billOrderInfo;
     }
+
     public ArrayList<Bill> billSubtotalList = new ArrayList<>();
 
-    public ArrayList<Bill> getbillSubTotalDB() {
+    public ArrayList<Bill> getbillSubTotalDB(int billId) {
         System.out.println("ham getbill duoc goi");
         String sql = "SELECT SUM(billTotal) as billTotal, SUM(billTax) as billTax,"
-                + "SUM(billService) as billService,  SUM(billSubTotal) as billSubTotal  FROM Bill WHERE cus_id =?";
+                + "SUM(billService) as billService,  SUM(billSubTotal) as billSubTotal  FROM Bill WHERE billId =?";
         try {
-            cn = connect.GetConnectDB();
-            pStm = cn.prepareStatement(sql);
-            pStm.setString(1, data.customerId);
-            rs = pStm.executeQuery();
+            Connection cn = new ConnectDB().GetConnectDB();
+            PreparedStatement pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, billId);
+            ResultSet rs = pStm.executeQuery();
             billSubtotalList.clear();
             if (rs.next()) {
-                Bill bill = new Bill();
-                bill.setBillTotal(rs.getDouble("billTotal"));
-                bill.setBillTax(rs.getDouble("billTax"));
-                bill.setBillService(rs.getDouble("billService"));
-                bill.setBillSubTotal(rs.getDouble("billSubTotal"));
-                billSubtotalList.add(bill);
+                Bill c = new Bill();
+                c.setBillTotal(rs.getDouble("billTotal"));
+                c.setBillTax(rs.getDouble("billTax"));
+                c.setBillService(rs.getDouble("billService"));
+                c.setBillSubTotal(rs.getDouble("billSubTotal"));
+                billSubtotalList.add(c);
 
             }
-        } catch (Exception e) {
-            e.getMessage();
-        } finally {
-            try {
-                cn.close();
-                pStm.close();
-            } catch (Exception e) {
-                e.getMessage();
-            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("billsub info" + billSubtotalList);
         return billSubtotalList;
     }
+
+    public void UpdateDB(Bill bill) {
+        try {
+            Connection cn = new ConnectDB().GetConnectDB();
+            String sql = "UPDATE Bill SET tableNo=?, billStatus=? ,billDate=?  WHERE billId = ?";
+            PreparedStatement pStm = cn.prepareStatement(sql);
+            pStm.setString(1, bill.getTableNo());
+
+            pStm.setString(2, bill.getStatus());
+            java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+            pStm.setDate(3, sqlDate);
+            pStm.setInt(4, bill.getBillId());
+            pStm.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void DeleteDB(String id) {
+        try {
+            Connection cn = new ConnectDB().GetConnectDB();
+            String sql = "DELETE FROM Bill WHERE proId = ?";
+            PreparedStatement pStm = cn.prepareStatement(sql);
+            pStm.setString(1, id);
+            pStm.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void ClearDB(int billId) {
+        try {
+            Connection cn = new ConnectDB().GetConnectDB();
+            String sql = "DELETE FROM tbBill WHERE billId = ?";
+            PreparedStatement pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, billId);
+            pStm.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
