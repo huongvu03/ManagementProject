@@ -29,619 +29,631 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
-   <left>
-      <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
-         <children>
-            <AnchorPane prefHeight="1080.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Button fx:id="inventory_btn" layoutX="62.0" layoutY="575.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="INVENTORY" textFill="WHITE">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIcon glyphName="BOOK" size="2.5em" wrappingWidth="45.85714340209961" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="customer_btn" layoutX="62.0" layoutY="768.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="CUSTOMERS" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIcon glyphName="USERS" size="2.5em" />
-                     </graphic>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="staff_btn" layoutX="62.0" layoutY="859.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="STAFF" textAlignment="JUSTIFY" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIcon glyphName="USER_PLUS" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
-                     </graphic>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="menu_btn" layoutX="62.0" layoutY="672.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="MENU" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIcon glyphName="COFFEE" size="2.5em" wrappingWidth="45.85714340209961" />
-                     </graphic>
-                  </Button>
-                  <Button layoutX="27.0" layoutY="973.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="66.0" prefWidth="173.0" style="-fx-border-color: none; -fx-background-color: none;" text="Sign Out" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIcon glyphName="SIGN_OUT" size="3em" />
-                     </graphic>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <AnchorPane layoutX="3.0" layoutY="4.0" prefHeight="305.0" prefWidth="398.0">
-                     <children>
-                        <ImageView fitHeight="401.0" fitWidth="400.0" pickOnBounds="true">
-                           <image>
-                              <Image url="@../image/BLACKLOGO.png" />
-                           </image>
-                           <effect>
-                              <ColorAdjust brightness="-1.0" />
-                           </effect>
-                        </ImageView>
-                     </children>
-                  </AnchorPane>
-                  <Button fx:id="dashboard_btn" layoutX="62.0" layoutY="473.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="DASHBOARD" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIcon glyphName="LINE_CHART" size="2.5em" wrappingWidth="52.92856979370117" />
-                     </graphic>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <Label layoutX="114.0" layoutY="405.0" text="Welcome," textFill="#edfdf7">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Text fx:id="txt_DisPlayName" fill="WHITE" layoutX="212.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="132.99999684095383">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-   </left>
-   <center>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0">
-         <children>
-            <AnchorPane id="AnchorPane" fx:id="DashBoard_Anchor" prefHeight="1080.0" prefWidth="1500.0" visible="false">
-               <children>
-                  <AnchorPane id="AnchorPane" prefHeight="1080.0" prefWidth="1500.0">
-                     <children>
-                        <BorderPane prefHeight="1080.0" prefWidth="1500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <top>
-                              <VBox prefHeight="1080.0" prefWidth="1500.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <HBox prefHeight="100.0" prefWidth="1500.0">
-                                       <children>
-                                          <Label prefHeight="92.0" prefWidth="215.0" text="View" textFill="#0a0a0a">
-                                             <font>
-                                                <Font size="38.0" />
-                                             </font>
-                                             <graphic>
-                                                <ImageView fitHeight="60.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" />
-                                             </graphic>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox prefHeight="2.0" prefWidth="1500.0" style="-fx-background-color: black; -fx-border-radius: 30px;" />
-                                    <VBox prefHeight="979.0" prefWidth="1500.0">
-                                       <children>
-                                          <HBox prefHeight="119.0" prefWidth="1499.0">
-                                             <children>
-                                                <VBox prefHeight="91.0" prefWidth="100.0" />
-                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
-                                                   <children>
-                                                      <VBox prefHeight="150.0" prefWidth="147.0">
-                                                         <children>
-                                                            <Label fx:id="totalSale" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
-                                                               <font>
-                                                                  <Font size="40.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="product">
-                                                               <font>
-                                                                  <Font size="20.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </VBox>
-                                                      <HBox prefHeight="119.0" prefWidth="114.0">
-                                                         <children>
-                                                            <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" top="20.0" />
-                                                               </HBox.margin>
-                                                               <image>
-                                                                  <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/coffee.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </HBox>
-                                                <Pane prefHeight="119.0" prefWidth="60.0" />
-                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
-                                                   <children>
-                                                      <VBox prefHeight="150.0" prefWidth="147.0">
-                                                         <children>
-                                                            <Label fx:id="totalCustomer" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
-                                                               <font>
-                                                                  <Font name="Calibri" size="40.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="category">
-                                                               <font>
-                                                                  <Font size="20.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </VBox>
-                                                      <HBox prefHeight="119.0" prefWidth="114.0">
-                                                         <children>
-                                                            <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" top="20.0" />
-                                                               </HBox.margin>
-                                                               <image>
-                                                                  <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/customer.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </HBox>
-                                                <Pane prefHeight="119.0" prefWidth="60.0" />
-                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
-                                                   <children>
-                                                      <VBox prefHeight="150.0" prefWidth="147.0">
-                                                         <children>
-                                                            <Label fx:id="totalRevenue" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
-                                                               <font>
-                                                                  <Font name="Calibri" size="40.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="user">
-                                                               <font>
-                                                                  <Font size="20.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </VBox>
-                                                      <HBox prefHeight="119.0" prefWidth="114.0">
-                                                         <children>
-                                                            <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" top="20.0" />
-                                                               </HBox.margin>
-                                                               <image>
-                                                                  <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/money.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <VBox.margin>
-                                                <Insets bottom="50.0" top="50.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox prefHeight="792.0" prefWidth="1500.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);">
-                                             <children>
-                                                <VBox prefHeight="776.0" prefWidth="40.0" />
-                                                <VBox prefHeight="776.0" prefWidth="650.0">
-                                                   <children>
-                                                      <ScrollPane prefHeight="756.0" prefWidth="666.0">
-                                                         <content>
-                                                            <HBox prefHeight="636.0" prefWidth="650.0">
-                                                               <children>
-                                                                  <AreaChart fx:id="areaChart1" prefHeight="663.0" prefWidth="635.0" style="-fx-background-color: #e9e9e9;">
-                                                                     <xAxis>
-                                                                        <CategoryAxis side="BOTTOM" fx:id="xAxis1" />
-                                                                     </xAxis>
-                                                                     <yAxis>
-                                                                        <NumberAxis side="LEFT" />
-                                                                     </yAxis>
-                                                                  </AreaChart>
-                                                               </children>
-                                                            </HBox>
-                                                         </content>
-                                                      </ScrollPane>
-                                                      <VBox prefHeight="131.0" prefWidth="639.0">
-                                                         <children>
-                                                            <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" text="Total product Price Statistics" textFill="#e11313">
-                                                               <font>
-                                                                  <Font size="15.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </VBox>
-                                                   </children>
-                                                </VBox>
-                                                <VBox prefHeight="776.0" prefWidth="40.0" />
-                                                <VBox prefHeight="776.0" prefWidth="650.0">
-                                                   <children>
-                                                      <ScrollPane prefHeight="756.0" prefWidth="666.0">
-                                                         <content>
-                                                            <HBox prefHeight="636.0" prefWidth="650.0">
-                                                               <children>
-                                                                  <AreaChart fx:id="areaChart2" prefHeight="633.0" prefWidth="637.0" style="-fx-background-color: #e9e9e9;">
-                                                                     <xAxis>
-                                                                        <CategoryAxis side="BOTTOM" fx:id="xAxis2" />
-                                                                     </xAxis>
-                                                                     <yAxis>
-                                                                        <NumberAxis side="LEFT" />
-                                                                     </yAxis>
-                                                                  </AreaChart>
-                                                               </children>
-                                                            </HBox>
-                                                         </content>
-                                                      </ScrollPane>
-                                                      <VBox prefHeight="131.0" prefWidth="650.0">
-                                                         <children>
-                                                            <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" textFill="#e11313" />
-                                                         </children>
-                                                      </VBox>
-                                                   </children>
-                                                </VBox>
-                                                <VBox prefHeight="776.0" prefWidth="173.0">
-                                                   <children>
-                                                      <HBox prefHeight="39.0" prefWidth="203.0">
-                                                         <children>
-                                                            <RadioButton fx:id="ratioDay" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByDay" prefHeight="52.0" prefWidth="155.0" text="Day">
-                                                               <HBox.margin>
-                                                                  <Insets left="20.0" />
-                                                               </HBox.margin>
-                                                            </RadioButton>
-                                                         </children>
-                                                         <VBox.margin>
-                                                            <Insets top="50.0" />
-                                                         </VBox.margin>
-                                                      </HBox>
-                                                      <HBox prefHeight="39.0" prefWidth="203.0">
-                                                         <children>
-                                                            <RadioButton fx:id="ratioMonth" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByMonth" prefHeight="52.0" prefWidth="155.0" text="Month">
-                                                               <HBox.margin>
-                                                                  <Insets left="20.0" />
-                                                               </HBox.margin>
-                                                            </RadioButton>
-                                                         </children>
-                                                      </HBox>
-                                                      <HBox prefHeight="39.0" prefWidth="203.0">
-                                                         <children>
-                                                            <RadioButton fx:id="ratioYear" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByYear" prefHeight="52.0" prefWidth="155.0" text="Year">
-                                                               <HBox.margin>
-                                                                  <Insets left="20.0" />
-                                                               </HBox.margin>
-                                                            </RadioButton>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </VBox>
-                           </top>
-                        </BorderPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="Inventory_Anchor" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <AnchorPane fx:id="MainForm" prefHeight="1080.0" prefWidth="1500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="tvProduct" onMouseClicked="#inventory_proSlected" prefHeight="582.0">
-                                 <columns>
-                                    <TableColumn fx:id="tcProId" prefWidth="142.0" text="ProId" />
-                                    <TableColumn fx:id="tcProName" prefWidth="200.0" text="ProName" />
-                                    <TableColumn fx:id="tcCateName" prefWidth="200.0" text="CateName" />
-                                    <TableColumn fx:id="tcStock" prefWidth="200.0" text="Stock" />
-                                    <TableColumn fx:id="tcProPrice" prefWidth="200.0" text="ProPrice" />
-                                    <TableColumn fx:id="tcStatus" prefWidth="250.0" text="Status" />
-                                    <TableColumn fx:id="tcDate" prefWidth="250.0" text="Date" />
-                                 </columns>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="107.0" layoutY="644.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="401.0" stylesheets="@MainForm.css">
-                           <children>
-                              <TextField fx:id="txtProId" layoutX="2.0" prefHeight="50.0" prefWidth="250.0" promptText="userId" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
-                              <TextField fx:id="txtProName" layoutX="2.0" layoutY="104.0" prefHeight="50.0" prefWidth="250.0" promptText="proName" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
-                              <TextField fx:id="txtProPrice" layoutX="2.0" layoutY="209.0" prefHeight="50.0" prefWidth="250.0" promptText="price" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
-                              <Button layoutX="2.0" layoutY="326.0" mnemonicParsing="false" onAction="#inven_Add" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Add" textFill="WHITE" />
-                              <ComboBox fx:id="boxName" layoutX="437.0" prefHeight="50.0" prefWidth="250.0" promptText="CateName" />
-                              <ComboBox fx:id="boxStatus" layoutX="437.0" layoutY="114.0" prefHeight="50.0" prefWidth="250.0" promptText="Status" />
-                              <TextField fx:id="txtStock" layoutX="437.0" layoutY="210.0" prefHeight="50.0" prefWidth="250.0" promptText="stock" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
-                              <Button layoutX="340.0" layoutY="331.0" mnemonicParsing="false" onAction="#Inven_Delete" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Delete" textFill="WHITE" />
-                              <Button layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#inven_Update" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Update" textFill="WHITE" />
-                              <TextField fx:id="invent_txtSearch" layoutX="812.0" layoutY="326.0" prefHeight="50.0" prefWidth="300.0" promptText="Search By Name" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
-                              <Button layoutX="1164.0" layoutY="326.0" mnemonicParsing="false" onAction="#inven_Search" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Search" textFill="WHITE" />
-                              <Text fx:id="textNotice1" fill="#d34444" layoutX="252.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notice:">
-                                 <font>
-                                    <Font name="System Bold Italic" size="12.0" />
-                                 </font>
-                              </Text>
-                              <Button layoutX="522.0" layoutY="331.0" mnemonicParsing="false" onAction="#inven_ClearFields" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text=" Clear All" textFill="WHITE" />
-                              <AnchorPane layoutX="902.0" layoutY="-5.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;">
-                                 <children>
-                                    <ImageView fx:id="ImageView" fitHeight="199.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </AnchorPane>
-                              <Button layoutX="962.0" layoutY="223.0" mnemonicParsing="false" onAction="#HanleImportImage" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Import" textFill="WHITE" />
-                              <Text fx:id="textNotice" layoutX="307.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="AnchorPane" fx:id="Menu_Anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0">
-               <children>
-                  <AnchorPane layoutX="23.0" layoutY="20.0" prefHeight="1061.0" prefWidth="937.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
-                     <children>
-                        <TabPane fx:id="MenuTab_View" layoutX="10.0" layoutY="5.0" prefHeight="914.0" prefWidth="916.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="5.0">
-                           <tabs>
-                              <Tab text="DRINK">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="886.0" prefWidth="940.0">
-                                       <children>
-                                          <ScrollPane layoutX="3.0" layoutY="2.0" prefHeight="894.0" prefWidth="935.0">
-                                             <content>
-                                                <GridPane fx:id="menu_gridPaneDrink" prefHeight="25.0" prefWidth="115.0">
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                </GridPane>
-                                             </content>
-                                          </ScrollPane>
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </Tab>
-                              <Tab text="FOOD">
-                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <ScrollPane prefHeight="894.0" prefWidth="935.0">
-                                             <content>
-                                                <GridPane fx:id="menu_gridPaneFood" prefHeight="25.0" prefWidth="115.0">
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                </GridPane>
-                                             </content>
-                                          </ScrollPane>
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </Tab>
-                           </tabs>
-                        </TabPane>
-                        <TextField fx:id="menu_TextNote" layoutX="549.0" layoutY="934.0" prefHeight="45.0" prefWidth="315.0" promptText="Note">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </TextField>
-                        <AnchorPane layoutX="876.0" layoutY="932.0" prefHeight="49.0" prefWidth="47.0">
-                           <children>
-                              <FontAwesomeIcon glyphName="PENCIL" layoutX="6.0" layoutY="37.0" size="3em" wrappingWidth="34.85714340209961" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                     <styleClass>
-                        <String fx:value="shadow" />
-                        <String fx:value="radius" />
-                     </styleClass>
-                  </AnchorPane>
-                  <AnchorPane layoutX="1005.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1057.0" prefWidth="487.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
-                     <styleClass>
-                        <String fx:value="shadow" />
-                        <String fx:value="radius" />
-                     </styleClass>
-                     <children>
-                        <TableView fx:id="menu_TbView" layoutX="12.0" layoutY="8.0" onMouseClicked="#menu_productSelected" prefHeight="504.0" prefWidth="454.0">
-                           <columns>
-                              <TableColumn fx:id="menu_Col_ProName" prefWidth="140.0" text="ProName" />
-                              <TableColumn fx:id="menu_Col_Quantity" prefWidth="101.3333740234375" text="Quantity" />
-                              <TableColumn fx:id="menu_Col_Price" prefWidth="97.0" text="Price" />
-                           </columns>
-                        </TableView>
-                        <Label layoutX="190.0" layoutY="519.0" text="Total:" AnchorPane.rightAnchor="253.33333333333331">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="menu_Total" layoutX="264.0" layoutY="519.0" prefHeight="27.0" prefWidth="166.0" AnchorPane.leftAnchor="264.0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="201.0" layoutY="546.0" prefHeight="27.0" prefWidth="38.0" text="Tax:" AnchorPane.rightAnchor="248.33333333333331">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="menu_Tax" layoutX="264.0" layoutY="546.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="110.0" layoutY="573.0" prefHeight="27.0" prefWidth="129.0" text="Service Charge:" AnchorPane.rightAnchor="247.99999999999997">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="menu_Service" layoutX="264.0" layoutY="573.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="139.0" layoutY="600.0" prefHeight="30.0" prefWidth="91.0" text="Subtotal:" AnchorPane.rightAnchor="257.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="menu_Subtotal" layoutX="264.0" layoutY="600.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="154.0" layoutY="678.0" prefHeight="27.0" prefWidth="76.0" text="Change:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="menu_Change" layoutX="259.0" layoutY="678.0" onDragDetected="#menu_DisplayChange" prefHeight="27.0" prefWidth="200.0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="154.0" layoutY="635.0" prefHeight="27.0" prefWidth="76.0" text="Amount">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="menu_txtAmount" layoutX="259.0" layoutY="623.0" prefHeight="48.0" prefWidth="203.0">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
-                        </TextField>
-                        <Button fx:id="menu_btnPAY" layoutX="88.0" layoutY="736.0" mnemonicParsing="false" onAction="#menu_Pay" prefHeight="52.0" prefWidth="345.0" text="PAY">
-                           <font>
-                              <Font name="System Bold" size="22.0" />
-                           </font>
+<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
+    <left>
+        <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
+            <children>
+                <AnchorPane prefHeight="1080.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Button fx:id="inventory_btn" layoutX="62.0" layoutY="575.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="INVENTORY" textFill="WHITE">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <graphic>
+                                <FontAwesomeIcon glyphName="BOOK" size="2.5em" wrappingWidth="45.85714340209961" />
+                            </graphic>
                         </Button>
-                        <Button fx:id="menu_btnREMOVE" layoutX="174.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_RemoveItem" prefHeight="52.0" prefWidth="137.0" text="REMOVE">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
+                        <Button fx:id="customer_btn" layoutX="62.0" layoutY="768.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="CUSTOMERS" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIcon glyphName="USERS" size="2.5em" />
+                            </graphic>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
                         </Button>
-                        <Button fx:id="menu_btnRECEIPT" layoutX="333.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_Receipt" prefHeight="52.0" prefWidth="135.0" text="RECEIPT">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
+                        <Button fx:id="staff_btn" layoutX="62.0" layoutY="859.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="STAFF" textAlignment="JUSTIFY" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIcon glyphName="USER_PLUS" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
+                            </graphic>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
                         </Button>
-                        <Label layoutX="38.0" layoutY="932.0" prefHeight="28.0" prefWidth="111.0" text=" CustomerName :">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font></Label>
-                        <Text fx:id="txt_displayCusName" layoutX="133.0" layoutY="965.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <TextField fx:id="menu_txtPhoneSearching" layoutX="38.0" layoutY="968.0" prefHeight="45.0" prefWidth="315.0" promptText="Customer Phone">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </TextField>
-                        <AnchorPane layoutX="363.0" layoutY="966.0" prefHeight="49.0" prefWidth="47.0">
-                           <children>
-                              <Button layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#menu_SearchCus_id">
-                                 <graphic>
-                                    <FontAwesomeIcon glyphName="SEARCH" size="2em" wrappingWidth="34.85714340209961" />
-                                 </graphic>
-                              </Button>
-                           </children>
+                        <Button fx:id="menu_btn" layoutX="62.0" layoutY="672.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="MENU" textAlignment="CENTER" textFill="WHITE">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <graphic>
+                                <FontAwesomeIcon glyphName="COFFEE" size="2.5em" wrappingWidth="45.85714340209961" />
+                            </graphic>
+                        </Button>
+                        <Button layoutX="27.0" layoutY="973.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="66.0" prefWidth="173.0" style="-fx-border-color: none; -fx-background-color: none;" text="Sign Out" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIcon glyphName="SIGN_OUT" size="3em" />
+                            </graphic>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <AnchorPane layoutX="3.0" layoutY="4.0" prefHeight="305.0" prefWidth="398.0">
+                            <children>
+                                <ImageView fitHeight="401.0" fitWidth="400.0" pickOnBounds="true">
+                                    <image>
+                                        <Image url="@../image/BLACKLOGO.png" />
+                                    </image>
+                                    <effect>
+                                        <ColorAdjust brightness="-1.0" />
+                                    </effect>
+                                </ImageView>
+                            </children>
                         </AnchorPane>
-                        <Button fx:id="menu_btnStore" layoutX="19.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_StoreBill" prefHeight="52.0" prefWidth="137.0" text="STORE">
-                           <font>
-                              <Font size="22.0" />
-                           </font>
+                        <Button fx:id="dashboard_btn" layoutX="62.0" layoutY="473.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="DASHBOARD" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIcon glyphName="LINE_CHART" size="2.5em" wrappingWidth="52.92856979370117" />
+                            </graphic>
+                            <font>
+                                <Font size="18.0" />
+                            </font>
                         </Button>
-                        <Label layoutX="38.0" layoutY="898.0" prefHeight="34.0" prefWidth="111.0" text="Table No :">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
+                        <Label layoutX="114.0" layoutY="405.0" text="Welcome," textFill="#edfdf7">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
                         </Label>
-                        <TextField fx:id="txt_menuTableNo" layoutX="150.0" layoutY="906.0" />
-                     </children>
-                     <padding>
-                        <Insets right="5.0" />
-                     </padding>
-                  </AnchorPane>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="Customer_Anchor" prefHeight="1080.0" prefWidth="1500.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <AnchorPane prefHeight="1080.0" prefWidth="1500.0" stylesheets="@MainForm.css">
-                     <children>
-                        <TableView fx:id="customerTable" layoutY="94.0" prefHeight="601.0" prefWidth="1500.0">
-                           <columns>
-                              <TableColumn fx:id="cusIdColumn" prefWidth="176.0" text="Customer ID" />
-                              <TableColumn fx:id="nameColumn" prefWidth="279.0" text="Name" />
-                              <TableColumn fx:id="phoneColumn" prefWidth="301.0" text="Phone" />
-                              <TableColumn fx:id="emailColumn" prefWidth="431.0" text="Email" />
-                              <TableColumn fx:id="discountColumn" prefWidth="167.0" text="Discount" />
-                              <TableColumn fx:id="deletedColumn" prefWidth="145.0" text="Deleted" />
-                           </columns>
-                        </TableView>
-                        <TextField fx:id="nameField" layoutX="110.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Name" styleClass="textfield" />
-                        <TextField fx:id="phoneField" layoutX="450.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Phone" styleClass="textfield" />
-                        <TextField fx:id="emailField" layoutX="836.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Email" styleClass="textfield" />
-                        <TextField fx:id="discountField" layoutX="110.0" layoutY="840.0" prefHeight="50.0" prefWidth="300.0" promptText="Discount" styleClass="textfield" />
-                        <TextField fx:id="deletedField" layoutX="459.0" layoutY="840.0" prefHeight="50.0" prefWidth="300.0" promptText="Deleted" styleClass="textfield" />
-                        <TextField fx:id="searchField" layoutX="459.0" layoutY="22.0" prefHeight="50.0" prefWidth="300.0" promptText="Search by Phone" styleClass="textfield" />
-                        <Button fx:id="addButton" layoutX="211.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Add" />
-                        <Button fx:id="updateButton" layoutX="475.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Update" />
-                        <Button fx:id="deleteButton" layoutX="722.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Delete" />
-                        <Button fx:id="searchButton" layoutX="797.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleSearchByPhone" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Search" />
-                     </children>
-                  </AnchorPane>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="staff_Anchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0" stylesheets="@MainForm.css" visible="false">
-               <children>
-                  <AnchorPane layoutX="97.0" layoutY="634.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="401.0">
-                     <children>
-                        <TextField fx:id="txt_ReUserId" layoutX="2.0" prefHeight="50.0" prefWidth="250.0" promptText="userId" styleClass="textfield" stylesheets="@MainForm.css" />
-                        <TextField fx:id="txt_ReUserName" layoutX="2.0" layoutY="104.0" prefHeight="50.0" prefWidth="250.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
-                        <TextField fx:id="txt_RePass" layoutX="2.0" layoutY="209.0" prefHeight="50.0" prefWidth="250.0" promptText="password" styleClass="textfield" stylesheets="@MainForm.css" />
-                        <Button layoutX="2.0" layoutY="326.0" mnemonicParsing="false" onAction="#Staff_SignUp" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Sign Up" textFill="WHITE" />
-                        <ComboBox fx:id="userPosition" layoutX="437.0" prefHeight="50.0" prefWidth="250.0" promptText="Please choose position" />
-                        <ComboBox fx:id="userQuestion" layoutX="437.0" layoutY="114.0" prefHeight="50.0" prefWidth="250.0" promptText="Please choose question" />
-                        <TextField fx:id="txt_ReAnswer" layoutX="437.0" layoutY="210.0" prefHeight="50.0" prefWidth="250.0" promptText="answer" styleClass="textfield" stylesheets="@MainForm.css" />
-                        <Button layoutX="340.0" layoutY="331.0" mnemonicParsing="false" onAction="#Staff_Delete" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Delete" textFill="WHITE" />
-                        <Button layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#Staff_Update" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Update" textFill="WHITE" />
-                        <Button layoutX="1213.0" layoutY="6.0" mnemonicParsing="false" onAction="#Staff_Search" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Search" textFill="WHITE" />
-                        <Text fx:id="Staff_textNotice" fill="#d34444" layoutX="331.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="305.33331298828125">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font>
+                        <Text fx:id="txt_DisPlayName" fill="WHITE" layoutX="212.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="132.99999684095383">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
                         </Text>
-                        <Button layoutX="522.0" layoutY="331.0" mnemonicParsing="false" onAction="#Staff_ClearAllFields" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text=" Clear All" textFill="WHITE" />
-                        <TextField fx:id="txt_SeachStaff" layoutX="906.0" layoutY="6.0" prefHeight="50.0" prefWidth="250.0" promptText="SearchByName" styleClass="textfield" stylesheets="@MainForm.css" />
-                        <Label layoutX="278.0" layoutY="284.0" text="Notice:" textFill="#ef1010" />
-                     </children>
-                  </AnchorPane>
-                  <TableView fx:id="tvUserInfo" layoutX="3.0" layoutY="14.0" onMouseClicked="#userSelected" prefHeight="582.0">
-                     <columns>
-                        <TableColumn fx:id="tc_userId" prefWidth="142.0" text="UserId" />
-                        <TableColumn fx:id="tc_userName" prefWidth="200.0" text="UserName" />
-                        <TableColumn fx:id="tc_userPassWord" prefWidth="200.0" text="userPassWord" />
-                        <TableColumn fx:id="tc_userPosition" prefWidth="200.0" text="userPosition" />
-                        <TableColumn fx:id="tc_question" prefWidth="250.0" text="Question" />
-                        <TableColumn fx:id="tc_answer" prefWidth="250.0" text="Answer" />
-                        <TableColumn fx:id="tc_userDate" prefWidth="254.0" text="UserDate" />
-                     </columns>
-                  </TableView>
-               </children>
-            </AnchorPane>
-         </children></AnchorPane>
-   </center>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0">
+            <children>
+                <AnchorPane id="AnchorPane" fx:id="DashBoard_Anchor" prefHeight="1080.0" prefWidth="1500.0" visible="false">
+                    <children>
+                        <AnchorPane id="AnchorPane" prefHeight="1080.0" prefWidth="1500.0">
+                            <children>
+                                <BorderPane prefHeight="1080.0" prefWidth="1500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <top>
+                                        <VBox prefHeight="1080.0" prefWidth="1500.0" BorderPane.alignment="CENTER">
+                                            <children>
+                                                <HBox prefHeight="100.0" prefWidth="1500.0">
+                                                    <children>
+                                                        <Label prefHeight="92.0" prefWidth="215.0" text="View" textFill="#0a0a0a">
+                                                            <font>
+                                                                <Font size="38.0" />
+                                                            </font>
+                                                            <graphic>
+                                                                <ImageView fitHeight="60.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" />
+                                                            </graphic>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                                <HBox prefHeight="2.0" prefWidth="1500.0" style="-fx-background-color: black; -fx-border-radius: 30px;" />
+                                                <VBox prefHeight="979.0" prefWidth="1500.0">
+                                                    <children>
+                                                        <HBox prefHeight="119.0" prefWidth="1499.0">
+                                                            <children>
+                                                                <VBox prefHeight="91.0" prefWidth="100.0" />
+                                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                                                    <children>
+                                                                        <VBox prefHeight="150.0" prefWidth="147.0">
+                                                                            <children>
+                                                                                <Label fx:id="totalSale" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                                                                    <font>
+                                                                                        <Font size="40.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="product">
+                                                                                    <font>
+                                                                                        <Font size="20.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                            </children>
+                                                                        </VBox>
+                                                                        <HBox prefHeight="119.0" prefWidth="114.0">
+                                                                            <children>
+                                                                                <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="10.0" top="20.0" />
+                                                                                    </HBox.margin>
+                                                                                    <image>
+                                                                                        <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/coffee.png" />
+                                                                                    </image>
+                                                                                </ImageView>
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </HBox>
+                                                                <Pane prefHeight="119.0" prefWidth="60.0" />
+                                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                                                    <children>
+                                                                        <VBox prefHeight="150.0" prefWidth="147.0">
+                                                                            <children>
+                                                                                <Label fx:id="totalCustomer" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                                                                    <font>
+                                                                                        <Font name="Calibri" size="40.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="category">
+                                                                                    <font>
+                                                                                        <Font size="20.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                            </children>
+                                                                        </VBox>
+                                                                        <HBox prefHeight="119.0" prefWidth="114.0">
+                                                                            <children>
+                                                                                <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="10.0" top="20.0" />
+                                                                                    </HBox.margin>
+                                                                                    <image>
+                                                                                        <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/customer.png" />
+                                                                                    </image>
+                                                                                </ImageView>
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </HBox>
+                                                                <Pane prefHeight="119.0" prefWidth="60.0" />
+                                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                                                    <children>
+                                                                        <VBox prefHeight="150.0" prefWidth="147.0">
+                                                                            <children>
+                                                                                <Label fx:id="totalRevenue" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                                                                    <font>
+                                                                                        <Font name="Calibri" size="40.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="user">
+                                                                                    <font>
+                                                                                        <Font size="20.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                            </children>
+                                                                        </VBox>
+                                                                        <HBox prefHeight="119.0" prefWidth="114.0">
+                                                                            <children>
+                                                                                <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="10.0" top="20.0" />
+                                                                                    </HBox.margin>
+                                                                                    <image>
+                                                                                        <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/money.png" />
+                                                                                    </image>
+                                                                                </ImageView>
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </HBox>
+                                                            </children>
+                                                            <opaqueInsets>
+                                                                <Insets />
+                                                            </opaqueInsets>
+                                                            <VBox.margin>
+                                                                <Insets bottom="50.0" top="50.0" />
+                                                            </VBox.margin>
+                                                        </HBox>
+                                                        <HBox prefHeight="792.0" prefWidth="1500.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);">
+                                                            <children>
+                                                                <VBox prefHeight="776.0" prefWidth="40.0" />
+                                                                <VBox prefHeight="776.0" prefWidth="650.0">
+                                                                    <children>
+                                                                        <ScrollPane prefHeight="756.0" prefWidth="666.0">
+                                                                            <content>
+                                                                                <HBox prefHeight="636.0" prefWidth="650.0">
+                                                                                    <children>
+                                                                                        <AreaChart fx:id="areaChart1" prefHeight="663.0" prefWidth="635.0" style="-fx-background-color: #e9e9e9;">
+                                                                                            <xAxis>
+                                                                                                <CategoryAxis side="BOTTOM" fx:id="xAxis1" />
+                                                                                            </xAxis>
+                                                                                            <yAxis>
+                                                                                                <NumberAxis side="LEFT" />
+                                                                                            </yAxis>
+                                                                                        </AreaChart>
+                                                                                    </children>
+                                                                                </HBox>
+                                                                            </content>
+                                                                        </ScrollPane>
+                                                                        <VBox prefHeight="131.0" prefWidth="639.0">
+                                                                            <children>
+                                                                                <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" text="Total product Price Statistics" textFill="#e11313">
+                                                                                    <font>
+                                                                                        <Font size="15.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                            </children>
+                                                                        </VBox>
+                                                                    </children>
+                                                                </VBox>
+                                                                <VBox prefHeight="776.0" prefWidth="40.0" />
+                                                                <VBox prefHeight="776.0" prefWidth="650.0">
+                                                                    <children>
+                                                                        <ScrollPane prefHeight="756.0" prefWidth="666.0">
+                                                                            <content>
+                                                                                <HBox prefHeight="636.0" prefWidth="650.0">
+                                                                                    <children>
+                                                                                        <AreaChart fx:id="areaChart2" prefHeight="633.0" prefWidth="637.0" style="-fx-background-color: #e9e9e9;">
+                                                                                            <xAxis>
+                                                                                                <CategoryAxis side="BOTTOM" fx:id="xAxis2" />
+                                                                                            </xAxis>
+                                                                                            <yAxis>
+                                                                                                <NumberAxis side="LEFT" />
+                                                                                            </yAxis>
+                                                                                        </AreaChart>
+                                                                                    </children>
+                                                                                </HBox>
+                                                                            </content>
+                                                                        </ScrollPane>
+                                                                        <VBox prefHeight="131.0" prefWidth="650.0">
+                                                                            <children>
+                                                                                <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" textFill="#e11313" />
+                                                                            </children>
+                                                                        </VBox>
+                                                                    </children>
+                                                                </VBox>
+                                                                <VBox prefHeight="776.0" prefWidth="173.0">
+                                                                    <children>
+                                                                        <HBox prefHeight="39.0" prefWidth="203.0">
+                                                                            <children>
+                                                                                <RadioButton fx:id="ratioDay" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByDay" prefHeight="52.0" prefWidth="155.0" text="Day">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="20.0" />
+                                                                                    </HBox.margin>
+                                                                                </RadioButton>
+                                                                            </children>
+                                                                            <VBox.margin>
+                                                                                <Insets top="50.0" />
+                                                                            </VBox.margin>
+                                                                        </HBox>
+                                                                        <HBox prefHeight="39.0" prefWidth="203.0">
+                                                                            <children>
+                                                                                <RadioButton fx:id="ratioMonth" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByMonth" prefHeight="52.0" prefWidth="155.0" text="Month">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="20.0" />
+                                                                                    </HBox.margin>
+                                                                                </RadioButton>
+                                                                            </children>
+                                                                        </HBox>
+                                                                        <HBox prefHeight="39.0" prefWidth="203.0">
+                                                                            <children>
+                                                                                <RadioButton fx:id="ratioYear" contentDisplay="CENTER" mnemonicParsing="false" onAction="#HandleSortByYear" prefHeight="52.0" prefWidth="155.0" text="Year">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="20.0" />
+                                                                                    </HBox.margin>
+                                                                                </RadioButton>
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </VBox>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+                                    </top>
+                                </BorderPane>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="Inventory_Anchor" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <AnchorPane fx:id="MainForm" prefHeight="1080.0" prefWidth="1500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <TableView fx:id="tvProduct" onMouseClicked="#inventory_proSlected" prefHeight="582.0">
+                                            <columns>
+                                                <TableColumn fx:id="tcProId" prefWidth="142.0" text="ProId" />
+                                                <TableColumn fx:id="tcProName" prefWidth="200.0" text="ProName" />
+                                                <TableColumn fx:id="tcCateName" prefWidth="200.0" text="CateName" />
+                                                <TableColumn fx:id="tcStock" prefWidth="200.0" text="Stock" />
+                                                <TableColumn fx:id="tcProPrice" prefWidth="200.0" text="ProPrice" />
+                                                <TableColumn fx:id="tcStatus" prefWidth="250.0" text="Status" />
+                                                <TableColumn fx:id="tcDate" prefWidth="250.0" text="Date" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane layoutX="107.0" layoutY="644.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="401.0" stylesheets="@MainForm.css">
+                                    <children>
+                                        <TextField fx:id="txtProId" layoutX="2.0" prefHeight="50.0" prefWidth="250.0" promptText="userId" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
+                                        <TextField fx:id="txtProName" layoutX="2.0" layoutY="104.0" prefHeight="50.0" prefWidth="250.0" promptText="proName" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
+                                        <TextField fx:id="txtProPrice" layoutX="2.0" layoutY="209.0" prefHeight="50.0" prefWidth="250.0" promptText="price" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
+                                        <Button layoutX="2.0" layoutY="326.0" mnemonicParsing="false" onAction="#inven_Add" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Add" textFill="WHITE" />
+                                        <ComboBox fx:id="boxName" layoutX="437.0" prefHeight="50.0" prefWidth="250.0" promptText="CateName" />
+                                        <ComboBox fx:id="boxStatus" layoutX="437.0" layoutY="114.0" prefHeight="50.0" prefWidth="250.0" promptText="Status" />
+                                        <TextField fx:id="txtStock" layoutX="437.0" layoutY="210.0" prefHeight="50.0" prefWidth="250.0" promptText="stock" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
+                                        <Button layoutX="340.0" layoutY="331.0" mnemonicParsing="false" onAction="#Inven_Delete" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Delete" textFill="WHITE" />
+                                        <Button layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#inven_Update" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Update" textFill="WHITE" />
+                                        <TextField fx:id="invent_txtSearch" layoutX="812.0" layoutY="326.0" prefHeight="50.0" prefWidth="300.0" promptText="Search By Name" styleClass="textfield" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" />
+                                        <Button layoutX="1164.0" layoutY="326.0" mnemonicParsing="false" onAction="#inven_Search" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Search" textFill="WHITE" />
+                                        <Text fx:id="textNotice1" fill="#d34444" layoutX="252.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notice:">
+                                            <font>
+                                                <Font name="System Bold Italic" size="12.0" />
+                                            </font>
+                                        </Text>
+                                        <Button layoutX="522.0" layoutY="331.0" mnemonicParsing="false" onAction="#inven_ClearFields" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text=" Clear All" textFill="WHITE" />
+                                        <AnchorPane layoutX="902.0" layoutY="-5.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;">
+                                            <children>
+                                                <ImageView fx:id="ImageView" fitHeight="199.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                            </children>
+                                        </AnchorPane>
+                                        <Button layoutX="962.0" layoutY="223.0" mnemonicParsing="false" onAction="#HanleImportImage" prefHeight="50.0" prefWidth="100.0" stylesheets="@../../../NetBeansProjects/ManagementProject/src/managementproject/MainForm.css" text="Import" textFill="WHITE" />
+                                        <Text fx:id="textNotice" layoutX="307.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane id="AnchorPane" fx:id="Menu_Anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0">
+                    <children>
+                        <AnchorPane layoutX="23.0" layoutY="20.0" prefHeight="1061.0" prefWidth="937.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                            <children>
+                                <TabPane fx:id="MenuTab_View" layoutX="10.0" layoutY="5.0" prefHeight="914.0" prefWidth="916.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="5.0">
+                                    <tabs>
+                                        <Tab text="DRINK">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="886.0" prefWidth="940.0">
+                                                    <children>
+                                                        <ScrollPane layoutX="3.0" layoutY="2.0" prefHeight="894.0" prefWidth="935.0">
+                                                            <content>
+                                                                <GridPane fx:id="menu_gridPaneDrink" prefHeight="25.0" prefWidth="115.0">
+                                                                    <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                    </columnConstraints>
+                                                                </GridPane>
+                                                            </content>
+                                                        </ScrollPane>
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </Tab>
+                                        <Tab text="FOOD">
+                                            <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                    <children>
+                                                        <ScrollPane prefHeight="894.0" prefWidth="935.0">
+                                                            <content>
+                                                                <GridPane fx:id="menu_gridPaneFood" prefHeight="25.0" prefWidth="115.0">
+                                                                    <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                    </columnConstraints>
+                                                                </GridPane>
+                                                            </content>
+                                                        </ScrollPane>
+                                                    </children>
+                                                </AnchorPane>
+                                            </content>
+                                        </Tab>
+                                    </tabs>
+                                </TabPane>
+                                <TextField fx:id="menu_TextNote" layoutX="549.0" layoutY="934.0" prefHeight="45.0" prefWidth="315.0" promptText="Note">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </TextField>
+                                <AnchorPane layoutX="876.0" layoutY="932.0" prefHeight="49.0" prefWidth="47.0">
+                                    <children>
+                                        <FontAwesomeIcon glyphName="PENCIL" layoutX="6.0" layoutY="37.0" size="3em" wrappingWidth="34.85714340209961" />
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                            <styleClass>
+                                <String fx:value="shadow" />
+                                <String fx:value="radius" />
+                            </styleClass>
+                        </AnchorPane>
+                        <AnchorPane layoutX="1005.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1057.0" prefWidth="487.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                            <styleClass>
+                                <String fx:value="shadow" />
+                                <String fx:value="radius" />
+                            </styleClass>
+                            <children>
+                                <TableView fx:id="menu_TbView" layoutX="12.0" layoutY="8.0" onMouseClicked="#menu_productSelected" prefHeight="504.0" prefWidth="454.0">
+                                    <columns>
+                                        <TableColumn fx:id="menu_Col_ProName" prefWidth="140.0" text="ProName" />
+                                        <TableColumn fx:id="menu_Col_Quantity" prefWidth="101.3333740234375" text="Quantity" />
+                                        <TableColumn fx:id="menu_Col_Price" prefWidth="97.0" text="Price" />
+                                    </columns>
+                                </TableView>
+                                <Label layoutX="190.0" layoutY="519.0" text="Total:" AnchorPane.rightAnchor="253.33333333333331">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="menu_Total" layoutX="264.0" layoutY="519.0" prefHeight="27.0" prefWidth="166.0" AnchorPane.leftAnchor="264.0">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="201.0" layoutY="546.0" prefHeight="27.0" prefWidth="38.0" text="Tax:" AnchorPane.rightAnchor="248.33333333333331">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="menu_Tax" layoutX="264.0" layoutY="546.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="110.0" layoutY="573.0" prefHeight="27.0" prefWidth="129.0" text="Service Charge:" AnchorPane.rightAnchor="247.99999999999997">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="menu_Service" layoutX="264.0" layoutY="573.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="139.0" layoutY="600.0" prefHeight="30.0" prefWidth="91.0" text="Subtotal:" AnchorPane.rightAnchor="257.0">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="menu_Subtotal" layoutX="264.0" layoutY="600.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="264.0">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="154.0" layoutY="678.0" prefHeight="27.0" prefWidth="76.0" text="Change:">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="menu_Change" layoutX="259.0" layoutY="678.0" onDragDetected="#menu_DisplayChange" prefHeight="27.0" prefWidth="200.0">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="154.0" layoutY="635.0" prefHeight="27.0" prefWidth="76.0" text="Amount">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="menu_txtAmount" layoutX="259.0" layoutY="623.0" prefHeight="48.0" prefWidth="203.0">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </TextField>
+                                <Button fx:id="menu_btnPAY" layoutX="88.0" layoutY="736.0" mnemonicParsing="false" onAction="#menu_Pay" prefHeight="52.0" prefWidth="345.0" text="PAY">
+                                    <font>
+                                        <Font name="System Bold" size="22.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="menu_btnREMOVE" layoutX="174.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_RemoveItem" prefHeight="52.0" prefWidth="137.0" text="REMOVE">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="menu_btnRECEIPT" layoutX="333.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_Receipt" prefHeight="52.0" prefWidth="135.0" text="RECEIPT">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Button>
+                                <Label layoutX="38.0" layoutY="932.0" prefHeight="28.0" prefWidth="111.0" text=" CustomerName :">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                                <Text fx:id="txt_displayCusName" layoutX="133.0" layoutY="965.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                <TextField fx:id="menu_txtPhoneSearching" layoutX="38.0" layoutY="968.0" prefHeight="45.0" prefWidth="315.0" promptText="Customer Phone">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </TextField>
+                                <AnchorPane layoutX="363.0" layoutY="966.0" prefHeight="49.0" prefWidth="47.0">
+                                    <children>
+                                        <Button layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#menu_SearchCus_id">
+                                            <graphic>
+                                                <FontAwesomeIcon glyphName="SEARCH" size="2em" wrappingWidth="34.85714340209961" />
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </AnchorPane>
+                                <Button fx:id="menu_btnStore" layoutX="19.0" layoutY="818.0" mnemonicParsing="false" onAction="#menu_StoreBill" prefHeight="52.0" prefWidth="137.0" text="STORE">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Button>
+                                <Label layoutX="38.0" layoutY="898.0" prefHeight="34.0" prefWidth="111.0" text="Table No :">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txt_menuTableNo" layoutX="150.0" layoutY="906.0" />
+                            </children>
+                            <padding>
+                                <Insets right="5.0" />
+                            </padding>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="Customer_Anchor" prefHeight="1080.0" prefWidth="1500.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <AnchorPane prefHeight="1080.0" prefWidth="1500.0" stylesheets="@MainForm.css">
+                            <children>
+                                <TableView fx:id="customerTable" layoutY="94.0" prefHeight="601.0" prefWidth="1500.0">
+                                    <columns>
+                                        <TableColumn fx:id="cusIdColumn" prefWidth="176.0" text="Customer ID" />
+                                        <TableColumn fx:id="nameColumn" prefWidth="279.0" text="Name" />
+                                        <TableColumn fx:id="phoneColumn" prefWidth="301.0" text="Phone" />
+                                        <TableColumn fx:id="emailColumn" prefWidth="431.0" text="Email" />
+                                        <TableColumn fx:id="discountColumn" prefWidth="167.0" text="Discount" />
+                                        <TableColumn fx:id="deletedColumn" prefWidth="145.0" text="Deleted" />
+                                    </columns>
+                                </TableView>
+                                <TextField fx:id="nameField" layoutX="110.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Name" styleClass="textfield" />
+                                <Text fx:id="nameFieldMsg" layoutX="130.0" layoutY="820.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1.0" />
+                                <TextField fx:id="phoneField" layoutX="450.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Phone" styleClass="textfield" />
+                                <Text fx:id="phoneFieldMsg" layoutX="470.0" layoutY="820.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                <TextField fx:id="emailField" layoutX="836.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Email" styleClass="textfield" />
+                                <Text fx:id="emailFieldMsg" layoutX="850.0" layoutY="810.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                <TextField fx:id="discountField" layoutX="110.0" layoutY="840.0" prefHeight="50.0" prefWidth="300.0" promptText="Discount" styleClass="textfield" />
+                                <TextField fx:id="deletedField" layoutX="459.0" layoutY="840.0" prefHeight="50.0" prefWidth="300.0" promptText="Deleted" styleClass="textfield" />
+                                <TextField fx:id="searchField" layoutX="459.0" layoutY="22.0" prefHeight="50.0" prefWidth="300.0" promptText="Search by Phone" styleClass="textfield" />
+                                <Button fx:id="addButton" layoutX="211.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Add" />
+                                <Button fx:id="updateButton" layoutX="470.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Update" />
+                                <Button fx:id="deleteButton" layoutX="700.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Delete" />
+                                <Button fx:id="searchButton" layoutX="797.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleSearchByPhone" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Search" />
+                                <Text fill="#e10f0f" layoutX="382.0" layoutY="814.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Note:">
+                                    <font>
+                                        <Font name="System Bold Italic" size="12.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="textNotice2" layoutX="441.0" layoutY="813.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="242.0" />
+                                <Button fx:id="clearallButton" layoutX="931.0" layoutY="928.0" mnemonicParsing="false" onAction="#handleClearAllCustomer" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Clear All" /> 
+                            </children>     
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="staff_Anchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0" stylesheets="@MainForm.css" visible="false">
+                    <children>
+                        <AnchorPane layoutX="97.0" layoutY="634.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="401.0">
+                            <children>
+                                <TextField fx:id="txt_ReUserId" layoutX="2.0" prefHeight="50.0" prefWidth="250.0" promptText="userId" styleClass="textfield" stylesheets="@MainForm.css" />
+                                <TextField fx:id="txt_ReUserName" layoutX="2.0" layoutY="104.0" prefHeight="50.0" prefWidth="250.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
+                                <TextField fx:id="txt_RePass" layoutX="2.0" layoutY="209.0" prefHeight="50.0" prefWidth="250.0" promptText="password" styleClass="textfield" stylesheets="@MainForm.css" />
+                                <Button layoutX="2.0" layoutY="326.0" mnemonicParsing="false" onAction="#Staff_SignUp" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Sign Up" textFill="WHITE" />
+                                <ComboBox fx:id="userPosition" layoutX="437.0" prefHeight="50.0" prefWidth="250.0" promptText="Please choose position" />
+                                <ComboBox fx:id="userQuestion" layoutX="437.0" layoutY="114.0" prefHeight="50.0" prefWidth="250.0" promptText="Please choose question" />
+                                <TextField fx:id="txt_ReAnswer" layoutX="437.0" layoutY="210.0" prefHeight="50.0" prefWidth="250.0" promptText="answer" styleClass="textfield" stylesheets="@MainForm.css" />
+                                <Button layoutX="340.0" layoutY="331.0" mnemonicParsing="false" onAction="#Staff_Delete" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Delete" textFill="WHITE" />
+                                <Button layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#Staff_Update" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Update" textFill="WHITE" />
+                                <Button layoutX="1213.0" layoutY="6.0" mnemonicParsing="false" onAction="#Staff_Search" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text="Search" textFill="WHITE" />
+                                <Text fx:id="Staff_textNotice" fill="#d34444" layoutX="331.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="305.33331298828125">
+                                    <font>
+                                        <Font name="System Bold Italic" size="12.0" />
+                                    </font>
+                                </Text>
+                                <Button layoutX="522.0" layoutY="331.0" mnemonicParsing="false" onAction="#Staff_ClearAllFields" prefHeight="50.0" prefWidth="100.0" stylesheets="@MainForm.css" text=" Clear All" textFill="WHITE" />
+                                <TextField fx:id="txt_SeachStaff" layoutX="906.0" layoutY="6.0" prefHeight="50.0" prefWidth="250.0" promptText="SearchByName" styleClass="textfield" stylesheets="@MainForm.css" />
+                                <Label layoutX="278.0" layoutY="284.0" text="Notice:" textFill="#ef1010" />
+                            </children>
+                        </AnchorPane>
+                        <TableView fx:id="tvUserInfo" layoutX="3.0" layoutY="14.0" onMouseClicked="#userSelected" prefHeight="582.0">
+                            <columns>
+                                <TableColumn fx:id="tc_userId" prefWidth="142.0" text="UserId" />
+                                <TableColumn fx:id="tc_userName" prefWidth="200.0" text="UserName" />
+                                <TableColumn fx:id="tc_userPassWord" prefWidth="200.0" text="userPassWord" />
+                                <TableColumn fx:id="tc_userPosition" prefWidth="200.0" text="userPosition" />
+                                <TableColumn fx:id="tc_question" prefWidth="250.0" text="Question" />
+                                <TableColumn fx:id="tc_answer" prefWidth="250.0" text="Answer" />
+                                <TableColumn fx:id="tc_userDate" prefWidth="254.0" text="UserDate" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </center>
 </BorderPane>

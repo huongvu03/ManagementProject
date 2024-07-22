@@ -191,38 +191,66 @@ public class MenuController implements Initializable {
     private AnchorPane Customer_Anchor;
     @FXML
     private TableView<Customer> customerTable;
+
     @FXML
     private TableColumn<Customer, String> cusIdColumn;
+
     @FXML
     private TableColumn<Customer, String> nameColumn;
+
     @FXML
     private TableColumn<Customer, String> phoneColumn;
+
     @FXML
     private TableColumn<Customer, String> emailColumn;
+
     @FXML
     private TableColumn<Customer, Integer> discountColumn;
+
     @FXML
     private TableColumn<Customer, Integer> deletedColumn;
+
     @FXML
     private TextField nameField;
+
     @FXML
     private TextField phoneField;
+
     @FXML
     private TextField emailField;
+
     @FXML
     private TextField discountField;
+
     @FXML
     private TextField deletedField;
+
     @FXML
     private TextField searchField;
+
     @FXML
     private Button addButton;
+
     @FXML
     private Button updateButton;
+
     @FXML
     private Button deleteButton;
+
     @FXML
-    private Button searchButton;
+    private Button clearallButton;
+
+    @FXML
+    private Text textNotice2;
+
+    @FXML
+    private Text nameFieldMsg;
+
+    @FXML
+    private Text phoneFieldMsg;
+
+    @FXML
+    private Text emailFieldMsg;
     //staff_Anchor
     @FXML
     private AnchorPane staff_Anchor;
@@ -647,7 +675,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void HanleImportImage(ActionEvent event) {
-     FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
@@ -665,7 +693,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void inventory_proSlected(MouseEvent event) {
-       //        proSelected = tvProduct.getSelectionModel().getSelectedItem();
+        //        proSelected = tvProduct.getSelectionModel().getSelectedItem();
 //        // nếu có product được chọn
 //        if (proSelected != null) {
 //            // lấy index của pro được click
@@ -722,7 +750,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void inven_Add(ActionEvent event) {
-       //        Product newProduct = new Product();
+        //        Product newProduct = new Product();
 //        if (validateInput()) {
 //            String path = null;
 //            newProduct.setProId(txtProId.getText());
@@ -783,7 +811,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void Inven_Delete(ActionEvent event) {
-       //        if (proSelected != null) {
+        //        if (proSelected != null) {
 //            dao.DeleteDB(proSelected.getProId());
 //            productList.remove(indexSelected);
 //            clearFields();
@@ -805,7 +833,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void inven_Update(ActionEvent event) {
-       //      if (proSelected != null && validateInput()) {
+        //      if (proSelected != null && validateInput()) {
 ////            String path = null;
 //            proSelected.setProName(txtProName.getText());
 //            proSelected.setStock(Integer.parseInt(txtStock.getText()));
@@ -947,7 +975,7 @@ public class MenuController implements Initializable {
 
     public BillDAO billDAO = new BillDAO();
     public ObservableList<Bill> orderList = FXCollections.observableArrayList();
-    private int currentBillId=1;
+    private int currentBillId = 3;
 
     public void menuShowOrderData() {
         if (currentBillId != 0) { // Ensure you have a valid billId
@@ -1156,8 +1184,7 @@ public class MenuController implements Initializable {
     }
 
 //CUSTOMER
-    private void loadData() {
-        // Load data from database using CustomerDAO
+private void loadData() {
         List<Customer> customers = CustomerDAO.getList();
         customerTable.getItems().setAll(customers);
     }
@@ -1172,35 +1199,32 @@ public class MenuController implements Initializable {
             deletedField.setText(String.valueOf(selectedCustomer.getDeleted()));
         }
     }
-
-    private void clearCustomerFields() {
-        nameField.clear();
-        phoneField.clear();
-        emailField.clear();
-        discountField.clear();
-        deletedField.clear();
-    }
+     
 
     @FXML
     private void handleAddCustomer(ActionEvent event) {
-        String name = nameField.getText();
-        String phone = phoneField.getText();
-        String email = emailField.getText();
-        int discount = Integer.parseInt(discountField.getText());
-        int deleted = Integer.parseInt(deletedField.getText());
+        if (validateCustomerInput(event)) {
+            String name = nameField.getText();
+            String phone = phoneField.getText();
+            String email = emailField.getText();
+            int discount = Integer.parseInt(discountField.getText());
+            int deleted = Integer.parseInt(deletedField.getText());
 
-        Customer newCustomer = new Customer(null, name, phone, email, discount, deleted);
-        int inserted = CustomerDAO.insert(newCustomer);
-        if (inserted > 0) {
-            customerTable.getItems().add(newCustomer);
-            clearCustomerFields();
+            Customer newCustomer = new Customer(null, name, phone, email, discount, deleted);
+            int inserted = CustomerDAO.insert(newCustomer);
+
+            if (inserted > 0) {
+                customerTable.getItems().add(newCustomer);
+                clearAllFields();
+                textNotice2.setText("Customer added successfully");
+            }
         }
     }
 
     @FXML
     private void handleUpdateCustomer(ActionEvent event) {
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
-        if (selectedCustomer != null) {
+        if (selectedCustomer != null && validateCustomerInput(event)) {
             String name = nameField.getText();
             String phone = phoneField.getText();
             String email = emailField.getText();
@@ -1215,7 +1239,8 @@ public class MenuController implements Initializable {
                 selectedCustomer.setDiscount(discount);
                 selectedCustomer.setDeleted(deleted);
                 customerTable.refresh();
-                clearFields();
+                clearAllFields();
+                textNotice2.setText("Customer updated successfully");
             }
         }
     }
@@ -1227,14 +1252,15 @@ public class MenuController implements Initializable {
             int deleted = CustomerDAO.delete(selectedCustomer.getCus_id());
             if (deleted > 0) {
                 customerTable.getItems().remove(selectedCustomer);
-                clearFields();
+                clearAllFields();
+textNotice2.setText("Customer deleted successfully");
             }
         }
     }
 
     @FXML
     private void handleSearchByPhone(ActionEvent event) {
-        String phone = searchField.getText();
+        String phone = searchField.getText().trim();
         List<Customer> searchResults = CustomerDAO.searchByPhone(phone);
 
         if (searchResults.isEmpty()) {
@@ -1243,7 +1269,40 @@ public class MenuController implements Initializable {
             customerTable.getItems().setAll(searchResults);
         }
     }
+    private void clearAllFields() {
+    nameField.clear();
+    phoneField.clear();
+    emailField.clear();
+    discountField.clear();
+    deletedField.clear();
+}
 
+    @FXML
+    private void handleClearAllCustomer(ActionEvent event) {
+        clearAllFields();
+       
+    }
+    
+
+    private boolean validateCustomerInput(ActionEvent event) {
+        boolean isValid = true;
+        errorMessage validate = new errorMessage();
+
+      if (nameField.getText().trim().isEmpty()) { 
+        textNotice2.setText("Name " + validate.getErrorMsg1());
+        isValid = false;
+    } else if (!phoneField.getText().matches("\\d{1,10}")) {
+     textNotice2.setText("Phone " + validate.getErrorMsg2());
+        isValid = false;
+    } else if (!emailField.getText().isEmpty() && !emailField.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) { 
+        textNotice2.setText("Email " + validate.getErrorMsg3());
+        isValid = false;
+    } else {
+        textNotice2.setText(null); 
+    }
+
+    return isValid;
+}
     //STAFF
     static ObservableList<String> positionList;
     static ObservableList<String> questionList;
@@ -1373,7 +1432,7 @@ public class MenuController implements Initializable {
         if (userSelected != null) {
             String rId = userSelected.getUserId();
             if (!txt_ReUserId.getText().equals(rId)) {
-                Staff_textNotice.setText("ProId cant changed");
+                Staff_textNotice.setText("UserId cant changed");
                 txt_ReUserId.setText(rId);
                 return;
             }
