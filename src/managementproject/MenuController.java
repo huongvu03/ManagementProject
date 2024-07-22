@@ -51,6 +51,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -310,6 +311,94 @@ public class MenuController implements Initializable {
     private Button menu_btnStore;
     @FXML
     private TextField txt_menuTableNo;
+    
+    //bill fxml
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button bill_btn;
+    @FXML
+    private AnchorPane Bill_Anchor;
+    @FXML
+    private TableView<?> billTable1;
+    @FXML
+    private TableColumn<?, ?> bill_billId;
+    @FXML
+    private TableColumn<?, ?> bill_tableNo;
+    @FXML
+    private TableColumn<?, ?> bill_cus_id;
+    @FXML
+    private TableColumn<?, ?> bill_userName;
+    @FXML
+    private TableColumn<?, ?> bill_proId;
+    @FXML
+    private AnchorPane bill_view1;
+    @FXML
+    private TableView<?> bill_TbView1;
+    @FXML
+    private TableColumn<?, ?> bill_Col_ProName1;
+    @FXML
+    private TableColumn<?, ?> bill_Col_Quantity1;
+    @FXML
+    private TableColumn<?, ?> bill_Col_Price1;
+    @FXML
+    private Label bill_Discount1;
+    @FXML
+    private Label bill_Tax1;
+    @FXML
+    private Label bill_Service1;
+    @FXML
+    private Label bill_Subtotal1;
+    @FXML
+    private Label bill_cusName1;
+    @FXML
+    private Text txt_displayCusName1;
+    @FXML
+    private Label bill_Total1;
+    @FXML
+    private AnchorPane bill_view2;
+    @FXML
+    private TableView<?> bill_TbView2;
+    @FXML
+    private TableColumn<?, ?> bill_Col_ProName2;
+    @FXML
+    private TableColumn<?, ?> bill_Col_Quantity2;
+    @FXML
+    private TableColumn<?, ?> bill_Col_Price2;
+    @FXML
+    private Text txt_displayCusName11;
+    @FXML
+    private Label bill_Discount2;
+    @FXML
+    private Label bill_Tax2;
+    @FXML
+    private Label bill_Service2;
+    @FXML
+    private Label bill_Subtotal2;
+    @FXML
+    private Label bill_cusName2;
+    @FXML
+    private Label bill_Total2;
+    @FXML
+    private TextField searchField1;
+    @FXML
+    private Button bill_mergeBillButton;
+    @FXML
+    private Button bill_splitBillButton;
+    @FXML
+    private Button bill_saveButton;
+    @FXML
+    private Button searchButton1;
+    @FXML
+    private Button bill_payButton;
+    @FXML
+    private DatePicker bill_from;
+    @FXML
+    private DatePicker bill_to;
+    @FXML
+    private Button bill_searchDate;
+    @FXML
+    private Button bill_cancelButton1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -330,7 +419,7 @@ public class MenuController implements Initializable {
         // inventory
         productList = FXCollections.observableArrayList(dao.listDB());
         categoryList = FXCollections.observableArrayList("food", "drink");
-        statusList = FXCollections.observableArrayList("Available", "OutOfStock");
+        statusList = FXCollections.observableArrayList("Available","UnAvailable", "OutOfStock");
 
         filteredList = new FilteredList<>(productList, p -> true);
         sortedList = new SortedList<>(filteredList);
@@ -388,6 +477,7 @@ public class MenuController implements Initializable {
             Menu_Anchor.setVisible(false);
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
+            Bill_Anchor.setVisible(false);
 
         } else if (event.getSource() == inventory_btn) {
             DashBoard_Anchor.setVisible(false);
@@ -395,6 +485,7 @@ public class MenuController implements Initializable {
             Menu_Anchor.setVisible(false);
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
+            Bill_Anchor.setVisible(false);
             ShowProducts();
 
         } else if (event.getSource() == menu_btn) {
@@ -403,6 +494,7 @@ public class MenuController implements Initializable {
             Menu_Anchor.setVisible(true);
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
+            Bill_Anchor.setVisible(false);
             menuDisplayCard();
             menuShowOrderData();
             menuDisplayTotal();
@@ -414,6 +506,7 @@ public class MenuController implements Initializable {
             Menu_Anchor.setVisible(false);
             Customer_Anchor.setVisible(true);
             staff_Anchor.setVisible(false);
+            Bill_Anchor.setVisible(false);
 
 //            customersShowData();
         } else if (event.getSource() == staff_btn) {
@@ -422,8 +515,18 @@ public class MenuController implements Initializable {
             Menu_Anchor.setVisible(false);
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(true);
+            Bill_Anchor.setVisible(false);
 
 //            customersShowData();
+        }else if (event.getSource() == bill_btn) {
+            DashBoard_Anchor.setVisible(false);
+            Inventory_Anchor.setVisible(false);
+            Menu_Anchor.setVisible(false);
+            Customer_Anchor.setVisible(false);
+            staff_Anchor.setVisible(false);
+            Bill_Anchor.setVisible(true);
+
+//            billShowData();
         }
     }
 
@@ -644,34 +747,93 @@ public class MenuController implements Initializable {
     }
 
     // validate input , nếu isValid trả về false nghĩa là báo lỗi, ko chạy tiếp, true thì tiếp tục
-    private boolean validateInput() {
-        boolean isValid = true;
-        errorMessage validate = new errorMessage();
+//    private boolean validateInput() {
+//        boolean isValid = true;
+//        errorMessage validate = new errorMessage();
+//
+//        if (txtProId.getText().trim().isEmpty()) {
+//            textNotice.setText("ProId " + validate.getErrorMsg1());
+//            isValid = false;
+//        } else if (txtProName.getText().trim().isEmpty()) {
+//            textNotice.setText("ProName " + validate.getErrorMsg1());
+//            isValid = false;
+//        } else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
+//            textNotice.setText("ProPrice " + validate.getErrorMsg2());
+//            isValid = false;
+//        } else if (!txtStock.getText().matches("\\d+")) {
+//            textNotice.setText("ProStock " + validate.getErrorMsg2());
+//            isValid = false;
+//        } else if (boxName.getSelectionModel().isEmpty()) {
+//            textNotice.setText("CateName " + validate.getErrorMsg1());
+//            isValid = false;
+//        } else if (boxStatus.getSelectionModel().isEmpty()) {
+//            textNotice.setText("Status " + validate.getErrorMsg1());
+//            isValid = false;
+//        } else {
+//            textNotice.setText(null);
+//        }
+//
+//        return isValid;
+//    }
+//test validate ----------------------------------------------------
+ private boolean validateInput() {
+    boolean isValid = true;
+    errorMessage validate = new errorMessage();
 
-        if (txtProId.getText().trim().isEmpty()) {
-            textNotice.setText("ProId " + validate.getErrorMsg1());
-            isValid = false;
-        } else if (txtProName.getText().trim().isEmpty()) {
-            textNotice.setText("ProName " + validate.getErrorMsg1());
-            isValid = false;
-        } else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
-            textNotice.setText("ProPrice " + validate.getErrorMsg2());
-            isValid = false;
-        } else if (!txtStock.getText().matches("\\d+")) {
-            textNotice.setText("ProStock " + validate.getErrorMsg2());
-            isValid = false;
-        } else if (boxName.getSelectionModel().isEmpty()) {
-            textNotice.setText("CateName " + validate.getErrorMsg1());
-            isValid = false;
-        } else if (boxStatus.getSelectionModel().isEmpty()) {
-            textNotice.setText("Status " + validate.getErrorMsg1());
-            isValid = false;
-        } else {
-            textNotice.setText(null);
-        }
+    // Clear previous error message
+    textNotice.setText(null);
 
-        return isValid;
+    // Validate ProId
+    if (txtProId.getText().trim().isEmpty()) {
+        textNotice.setText("ProId " + validate.getErrorMsg1());
+        isValid = false;
     }
+    // Validate ProName
+    else if (txtProName.getText().trim().isEmpty()) {
+        textNotice.setText("ProName " + validate.getErrorMsg1());
+        isValid = false;
+    }
+    // Validate ProPrice
+    else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
+        textNotice.setText("ProPrice " + validate.getErrorMsg2());
+        isValid = false;
+    }
+    // Validate Stock
+    else if (!txtStock.getText().matches("\\d+")) {
+        textNotice.setText("ProStock must be number >= 0 " + validate.getErrorMsg2());
+        isValid = false;
+    }
+    else {
+        int stock = Integer.parseInt(txtStock.getText());
+        // Check for negative stock
+        if (stock <= 0) {
+            // Ensure status is OutOfStock if stock is negative
+            if (boxStatus.getSelectionModel().isEmpty() || !boxStatus.getValue().equals("OutOfStock")) {
+                textNotice.setText("If Stock <= 0, Status must be OutOfStock.");
+                isValid = false;
+            }
+        } else {
+            // Check if status is set to OutOfStock if stock is not negative
+            if (boxStatus.getSelectionModel().isEmpty() || boxStatus.getValue().equals("OutOfStock")) {
+                textNotice.setText("If Stock > 0 , Status must be Available or UnAvailable");
+                isValid = false;
+            }
+        }
+    }
+    // Validate CategoryName
+    if (boxName == null || boxName.getSelectionModel().isEmpty()) {
+        textNotice.setText("CateName " + validate.getErrorMsg1());
+        isValid = false;
+    }
+    // Validate Status
+    else if (boxStatus == null || boxStatus.getSelectionModel().isEmpty()) {
+        textNotice.setText("Status " + validate.getErrorMsg1());
+        isValid = false;
+    }
+
+    return isValid;
+}
+
 
     @FXML
     private void HanleImportImage(ActionEvent event) {
@@ -683,8 +845,6 @@ public class MenuController implements Initializable {
         File file = fileChooser.showOpenDialog(MainForm.getScene().getWindow());
         if (file != null) {
             data.path = file.getAbsolutePath();
-            //image = new Image(file.toURI().toString(), 168, 158, false, true);
-            //image = new Image(file.toURI().toString(), 250, 161, false, true);
             image = new Image(file.toURI().toString(), 200, 200, false, true);
 
             ImageView.setImage(image);
@@ -693,37 +853,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void inventory_proSlected(MouseEvent event) {
-        //        proSelected = tvProduct.getSelectionModel().getSelectedItem();
-//        // nếu có product được chọn
-//        if (proSelected != null) {
-//            // lấy index của pro được click
-//            indexSelected = tvProduct.getSelectionModel().getSelectedIndex();
-//
-//            //gán giá trị của textfield tương ứng với product được selected
-//            txtProId.setText(proSelected.getProId());
-//            txtProName.setText(proSelected.getProName());
-//            txtStock.setText(String.valueOf(proSelected.getStock()));
-//            txtProPrice.setText(String.valueOf(proSelected.getProPrice()));
-//            boxName.setValue(getCategoryName(proSelected.getCateId()));
-//            boxStatus.setValue(proSelected.getStatus());
-//
-//            if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
-//                //File file = new File(proSelected.getProImage());
-//
-//                //image = new Image(proSelected.getProImage(), 168, 158, false, true);
-//                String path = proSelected.getProImage();
-//                image = new Image("file:" + path, 250, 161, false, true);
-//                //ImageView.setImage(image);
-//                ImageView.setImage(image);
-//                System.out.println("có tìm thấy hình");
-//            } else {
-//                ImageView.setImage(null);
-//                System.out.println("không tìm thấy hình");
-//            }
-//
-//        }
 
-        //test
         proSelected = tvProduct.getSelectionModel().getSelectedItem();
         if (proSelected != null) {
             indexSelected = tvProduct.getSelectionModel().getSelectedIndex();
@@ -748,9 +878,10 @@ public class MenuController implements Initializable {
         }
     }
 
-    @FXML
-    private void inven_Add(ActionEvent event) {
-        //        Product newProduct = new Product();
+//    @FXML
+//    private void inven_Add(ActionEvent event) {
+//
+//        Product newProduct = new Product();
 //        if (validateInput()) {
 //            String path = null;
 //            newProduct.setProId(txtProId.getText());
@@ -774,53 +905,46 @@ public class MenuController implements Initializable {
 //                clearFields();
 //                textNotice.setText("Product added successfully.");
 //            } else {
-//
-//                textNotice.setText("trung id");
-//
+//                textNotice.setText("Duplicate ID");
 //            }
-//        } 
-        //test
-        Product newProduct = new Product();
-        if (validateInput()) {
-            String path = null;
-            newProduct.setProId(txtProId.getText());
-            newProduct.setProName(txtProName.getText());
-            newProduct.setStock(Integer.parseInt(txtStock.getText()));
-            newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
-            newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-            newProduct.setStatus(boxStatus.getValue());
+//        }
+//    }
+    //test add ----------------------------------------------------
+    @FXML
+private void inven_Add(ActionEvent event) {
+    Product newProduct = new Product();
+    if (validateInput()) {
+        int stock = Integer.parseInt(txtStock.getText());
+        String status = (stock < 0) ? "OutOfStock" : boxStatus.getValue();
 
-            if (data.path == null) {
-                newProduct.setProImage(null);
-            } else {
-                path = data.path.replace("\\", "\\\\");
-                newProduct.setProImage(path);
-            }
-            newProduct.setProDate(new Date());
+        newProduct.setProId(txtProId.getText());
+        newProduct.setProName(txtProName.getText());
+        newProduct.setStock(stock);
+        newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
+        newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+        newProduct.setStatus(status);
 
-            if (dao.AddDB(newProduct) != null) {
-                productList.add(newProduct);
-                data.path = null;
-                clearFields();
-                textNotice.setText("Product added successfully.");
-            } else {
-                textNotice.setText("Duplicate ID");
-            }
+        if (data.path == null) {
+            newProduct.setProImage(null);
+        } else {
+            String path = data.path.replace("\\", "\\\\");
+            newProduct.setProImage(path);
+        }
+        newProduct.setProDate(new Date());
+
+        if (dao.AddDB(newProduct) != null) {
+            productList.add(newProduct);
+            data.path = null;
+            clearFields();
+            textNotice.setText("Product added successfully.");
+        } else {
+            textNotice.setText("Duplicate ID");
         }
     }
+}
 
     @FXML
     private void Inven_Delete(ActionEvent event) {
-        //        if (proSelected != null) {
-//            dao.DeleteDB(proSelected.getProId());
-//            productList.remove(indexSelected);
-//            clearFields();
-//            textNotice.setText("Product deleted successfully.");
-//        } else {
-//            textNotice.setText("No product selected for deletion.");
-//        }
-
-        //test
         if (proSelected != null) {
             dao.DeleteDB(proSelected.getProId());
             productList.remove(indexSelected);
@@ -831,59 +955,63 @@ public class MenuController implements Initializable {
         }
     }
 
-    @FXML
-    private void inven_Update(ActionEvent event) {
-        //      if (proSelected != null && validateInput()) {
-////            String path = null;
+//    @FXML
+//    private void inven_Update(ActionEvent event) {
+//
+//        if (proSelected != null && validateInput()) {
 //            proSelected.setProName(txtProName.getText());
 //            proSelected.setStock(Integer.parseInt(txtStock.getText()));
 //            proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
 //            proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
 //            proSelected.setStatus(boxStatus.getValue());
-////            proSelected.setProImage(image != null ? image.getUrl() : null);
-//            if (data.path == null) {
-//                proSelected.setProImage(null);
-//            } else {
-//               String path = data.path.replace("\\", "\\\\");
+//
+//            // Only update the image path if a new image was imported
+//            if (data.path != null) {
+//                String path = data.path.replace("\\", "\\\\");
 //                proSelected.setProImage(path);
 //            }
-//            
+//
 //            proSelected.setProDate(new Date());
 //
 //            dao.UpdateDB(proSelected);
-//            proSelected.setProImage(null);
 //            tvProduct.refresh();
 //            clearFields();
 //            textNotice.setText("Product updated successfully.");
-//        } else {
 //
+//            // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
+//            data.path = null;
 //        }
+//    }
+    // test updateeeeeeeeee ----------------------------------------------
+    @FXML
+private void inven_Update(ActionEvent event) {
+    if (proSelected != null && validateInput()) {
+        int stock = Integer.parseInt(txtStock.getText());
+        String status = (stock < 0) ? "OutOfStock" : boxStatus.getValue();
 
-        //test
-        if (proSelected != null && validateInput()) {
-            proSelected.setProName(txtProName.getText());
-            proSelected.setStock(Integer.parseInt(txtStock.getText()));
-            proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
-            proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-            proSelected.setStatus(boxStatus.getValue());
+        proSelected.setProName(txtProName.getText());
+        proSelected.setStock(stock);
+        proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
+        proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+        proSelected.setStatus(status);
 
-            // Only update the image path if a new image was imported
-            if (data.path != null) {
-                String path = data.path.replace("\\", "\\\\");
-                proSelected.setProImage(path);
-            }
-
-            proSelected.setProDate(new Date());
-
-            dao.UpdateDB(proSelected);
-            tvProduct.refresh();
-            clearFields();
-            textNotice.setText("Product updated successfully.");
-
-            // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
-            data.path = null;
+        // Only update the image path if a new image was imported
+        if (data.path != null) {
+            String path = data.path.replace("\\", "\\\\");
+            proSelected.setProImage(path);
         }
+
+        proSelected.setProDate(new Date());
+
+        dao.UpdateDB(proSelected);
+        tvProduct.refresh();
+        clearFields();
+        textNotice.setText("Product updated successfully.");
+
+        // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
+        data.path = null;
     }
+}
 
     @FXML
     private void inven_Search(ActionEvent event) {

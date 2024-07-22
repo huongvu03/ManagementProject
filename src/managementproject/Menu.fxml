@@ -8,6 +8,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
@@ -29,87 +30,95 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
-    <left>
-        <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
-            <children>
-                <AnchorPane prefHeight="1080.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <Button fx:id="inventory_btn" layoutX="62.0" layoutY="575.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="INVENTORY" textFill="WHITE">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon glyphName="BOOK" size="2.5em" wrappingWidth="45.85714340209961" />
-                            </graphic>
-                        </Button>
-                        <Button fx:id="customer_btn" layoutX="62.0" layoutY="768.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="CUSTOMERS" textFill="WHITE">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="USERS" size="2.5em" />
-                            </graphic>
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="staff_btn" layoutX="62.0" layoutY="859.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="STAFF" textAlignment="JUSTIFY" textFill="WHITE">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="USER_PLUS" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
-                            </graphic>
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="menu_btn" layoutX="62.0" layoutY="672.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="MENU" textAlignment="CENTER" textFill="WHITE">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIcon glyphName="COFFEE" size="2.5em" wrappingWidth="45.85714340209961" />
-                            </graphic>
-                        </Button>
-                        <Button layoutX="27.0" layoutY="973.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="66.0" prefWidth="173.0" style="-fx-border-color: none; -fx-background-color: none;" text="Sign Out" textFill="WHITE">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="SIGN_OUT" size="3em" />
-                            </graphic>
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Button>
-                        <AnchorPane layoutX="3.0" layoutY="4.0" prefHeight="305.0" prefWidth="398.0">
-                            <children>
-                                <ImageView fitHeight="401.0" fitWidth="400.0" pickOnBounds="true">
-                                    <image>
-                                        <Image url="@../image/BLACKLOGO.png" />
-                                    </image>
-                                    <effect>
-                                        <ColorAdjust brightness="-1.0" />
-                                    </effect>
-                                </ImageView>
-                            </children>
-                        </AnchorPane>
-                        <Button fx:id="dashboard_btn" layoutX="62.0" layoutY="473.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="DASHBOARD" textFill="WHITE">
-                            <graphic>
-                                <FontAwesomeIcon glyphName="LINE_CHART" size="2.5em" wrappingWidth="52.92856979370117" />
-                            </graphic>
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Button>
-                        <Label layoutX="114.0" layoutY="405.0" text="Welcome," textFill="#edfdf7">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Label>
-                        <Text fx:id="txt_DisPlayName" fill="WHITE" layoutX="212.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="132.99999684095383">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Text>
-                    </children>
-                </AnchorPane>
-            </children>
-        </AnchorPane>
-    </left>
+<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
+   <left>
+      <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
+         <children>
+            <AnchorPane prefHeight="1080.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="inventory_btn" layoutX="62.0" layoutY="540.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="INVENTORY" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon glyphName="BOOK" size="2.5em" wrappingWidth="45.85714340209961" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="customer_btn" layoutX="62.0" layoutY="742.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="CUSTOMERS" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="USERS" size="2.5em" />
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="staff_btn" layoutX="62.0" layoutY="810.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="STAFF" textAlignment="JUSTIFY" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="USER_PLUS" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="menu_btn" layoutX="62.0" layoutY="607.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="MENU" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIcon glyphName="COFFEE" size="2.5em" wrappingWidth="45.85714340209961" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="bill_btn" layoutX="62.0" layoutY="674.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="BILL" textAlignment="JUSTIFY" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="USER_PLUS" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="27.0" layoutY="973.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="66.0" prefWidth="173.0" style="-fx-border-color: none; -fx-background-color: none;" text="Sign Out" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="SIGN_OUT" size="3em" />
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <AnchorPane layoutX="3.0" layoutY="4.0" prefHeight="305.0" prefWidth="398.0">
+                     <children>
+                        <ImageView fitHeight="401.0" fitWidth="400.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../image/BLACKLOGO.png" />
+                           </image>
+                           <effect>
+                              <ColorAdjust brightness="-1.0" />
+                           </effect>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+                  <Button fx:id="dashboard_btn" layoutX="62.0" layoutY="473.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="DASHBOARD" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="LINE_CHART" size="2.5em" wrappingWidth="52.92856979370117" />
+                     </graphic>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="114.0" layoutY="405.0" text="Welcome," textFill="#edfdf7">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Text fx:id="txt_DisPlayName" fill="WHITE" layoutX="212.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="132.99999684095383">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </left>
     <center>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0">
             <children>
@@ -578,6 +587,231 @@
                         </AnchorPane>
                     </children>
                 </AnchorPane>
+            <AnchorPane fx:id="Bill_Anchor" layoutX="10.0" layoutY="10.0" prefHeight="1080.0" prefWidth="1500.0" visible="false">
+               <children>
+                  <AnchorPane layoutX="-9.0" layoutY="5.0" prefHeight="1080.0" prefWidth="1500.0" stylesheets="@MainForm.css">
+                     <children>
+                        <TableView fx:id="billTable1" layoutY="94.0" prefHeight="218.0" prefWidth="1500.0">
+                           <columns>
+                              <TableColumn fx:id="bill_billId" prefWidth="79.0" text="billId" />
+                              <TableColumn fx:id="bill_tableNo" prefWidth="62.5" text="tableNo" />
+                              <TableColumn fx:id="bill_cus_id" prefWidth="99.0" text="cus_id" />
+                              <TableColumn fx:id="bill_userName" prefWidth="92.0" text="userName" />
+                              <TableColumn fx:id="bill_proId" prefWidth="74.39996337890625" text="proId" />
+                              <TableColumn prefWidth="82.4000244140625" text="proName" />
+                              <TableColumn prefWidth="78.40008544921875" text="cateId" />
+                              <TableColumn prefWidth="59.19989013671875" text="quantity" />
+                              <TableColumn prefWidth="70.4000244140625" text="proPrice" />
+                              <TableColumn prefWidth="95.199951171875" text="status" />
+                              <TableColumn prefWidth="88.7999267578125" text="proImage" />
+                              <TableColumn prefWidth="81.5999755859375" text="billTotal" />
+                              <TableColumn prefWidth="81.60009765625" text="billTax" />
+                              <TableColumn prefWidth="84.0" text="billService" />
+                              <TableColumn prefWidth="83.2000732421875" text="billSubTotal" />
+                              <TableColumn prefWidth="133.60009765625" text="billDate" />
+                              <TableColumn prefWidth="120.7999267578125" text="billStatus" />
+                           </columns>
+                        </TableView>
+                        <AnchorPane fx:id="bill_view1" layoutX="24.0" layoutY="334.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="715.0" prefWidth="476.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                           <styleClass>
+                              <String fx:value="shadow" />
+                              <String fx:value="radius" />
+                           </styleClass>
+                           <children>
+                              <TableView fx:id="bill_TbView1" layoutX="8.0" layoutY="14.0" prefHeight="377.0" prefWidth="458.0">
+                                 <columns>
+                                    <TableColumn fx:id="bill_Col_ProName1" prefWidth="140.0" text="ProName" />
+                                    <TableColumn fx:id="bill_Col_Quantity1" prefWidth="101.3333740234375" text="Quantity" />
+                                    <TableColumn fx:id="bill_Col_Price1" prefWidth="97.0" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="423.0" prefHeight="27.0" prefWidth="150.0" text="Discount:" AnchorPane.rightAnchor="315.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Discount1" layoutX="215.0" layoutY="423.0" prefHeight="27.0" prefWidth="166.0" text="0" AnchorPane.leftAnchor="215.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="450.0" prefHeight="27.0" prefWidth="150.0" text="Tax:" AnchorPane.rightAnchor="315.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Tax1" layoutX="215.0" layoutY="450.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="215.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="477.0" prefHeight="27.0" prefWidth="150.0" text="Service Charge:" AnchorPane.rightAnchor="315.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Service1" layoutX="215.0" layoutY="477.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="215.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="504.0" prefHeight="30.0" prefWidth="150.0" text="Subtotal:" AnchorPane.rightAnchor="315.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Subtotal1" layoutX="215.0" layoutY="504.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="215.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="9.0" layoutY="547.0" prefHeight="28.0" prefWidth="150.0" text="Customer Name:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_cusName1" layoutX="213.0" layoutY="547.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="9.0" layoutY="391.0" prefHeight="32.0" prefWidth="150.0" text="Total:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Total1" layoutX="213.0" layoutY="393.0" prefHeight="27.0" prefWidth="166.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </AnchorPane>
+                        <AnchorPane fx:id="bill_view2" layoutX="765.0" layoutY="334.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="715.0" prefWidth="476.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                           <styleClass>
+                              <String fx:value="shadow" />
+                              <String fx:value="radius" />
+                           </styleClass>
+                           <children>
+                              <TableView fx:id="bill_TbView2" layoutX="8.0" layoutY="14.0" prefHeight="377.0" prefWidth="458.0">
+                                 <columns>
+                                    <TableColumn fx:id="bill_Col_ProName2" prefWidth="140.0" text="ProName" />
+                                    <TableColumn fx:id="bill_Col_Quantity2" prefWidth="101.3333740234375" text="Quantity" />
+                                    <TableColumn fx:id="bill_Col_Price2" prefWidth="97.0" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="423.0" prefHeight="27.0" prefWidth="150.0" text="Discount:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Discount2" layoutX="214.0" layoutY="423.0" prefHeight="27.0" prefWidth="166.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="450.0" prefHeight="27.0" prefWidth="150.0" text="Tax:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Tax2" layoutX="214.0" layoutY="450.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="477.0" prefHeight="27.0" prefWidth="150.0" text="Service Charge:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Service2" layoutX="214.0" layoutY="477.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="504.0" prefHeight="30.0" prefWidth="150.0" text="Subtotal:">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Subtotal2" layoutX="214.0" layoutY="504.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="8.0" layoutY="547.0" prefHeight="28.0" prefWidth="150.0" text="Customer Name:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_cusName2" layoutX="212.0" layoutY="547.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="8.0" layoutY="391.0" prefHeight="32.0" prefWidth="150.0" text="Total:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Total2" layoutX="212.0" layoutY="393.0" prefHeight="27.0" prefWidth="166.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </AnchorPane>
+                        <TextField fx:id="searchField1" layoutX="719.0" layoutY="23.0" prefHeight="50.0" prefWidth="300.0" promptText="Search table" styleClass="textfield" />
+                        <Button fx:id="bill_mergeBillButton" layoutX="561.0" layoutY="555.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Merge Bill">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <Button fx:id="bill_splitBillButton" layoutX="561.0" layoutY="475.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Split Bill">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <Button fx:id="bill_saveButton" layoutX="561.0" layoutY="639.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Save">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <Button fx:id="searchButton1" layoutX="1115.0" layoutY="23.0" mnemonicParsing="false" onAction="#handleSearchByPhone" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Search" />
+                        <Button fx:id="bill_payButton" layoutX="561.0" layoutY="723.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Pay">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <DatePicker fx:id="bill_from" layoutX="69.0" layoutY="35.0" prefHeight="28.0" prefWidth="190.0" />
+                        <DatePicker fx:id="bill_to" layoutX="300.0" layoutY="35.0" prefHeight="28.0" prefWidth="182.0" />
+                        <Label layoutX="28.0" layoutY="39.0" text="From:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="272.0" layoutY="39.0" text="To:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="bill_searchDate" layoutX="516.0" layoutY="32.0" mnemonicParsing="false" text="Confirm">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="bill_cancelButton1" layoutX="561.0" layoutY="804.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Cancel">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
                 <AnchorPane fx:id="Customer_Anchor" prefHeight="1080.0" prefWidth="1500.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
                         <AnchorPane prefHeight="1080.0" prefWidth="1500.0" stylesheets="@MainForm.css">
@@ -655,5 +889,5 @@
                 </AnchorPane>
             </children>
         </AnchorPane>
-    </center>
+    </center>                                                
 </BorderPane>

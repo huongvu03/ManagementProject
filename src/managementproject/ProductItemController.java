@@ -77,7 +77,7 @@ public class ProductItemController implements Initializable {
         proItem_Price.setText(String.valueOf(pro.getProPrice()));
         String path = pro.getProImage();
         if (path != null) {
-            image = new Image(path, 250, 161, false, true);
+            image = new Image("file:"+path, 250, 161, false, true);
             proItem_Image.setImage(image);
         } else {
             proItem_Image.setImage(null);
