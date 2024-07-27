@@ -1220,7 +1220,12 @@ public class MenuController implements Initializable {
                 }
                 int guestNo = 0;
                 try {
-                    guestNo = Integer.parseInt(txt_menuNoGuest.getText());
+                    if (txt_menuNoGuest.getText().isEmpty()) {
+                        guestNo = 0;
+                    } else {
+                        guestNo = Integer.parseInt(txt_menuNoGuest.getText());
+
+                    }
                 } catch (NumberFormatException e) {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error:");
@@ -1341,7 +1346,7 @@ public class MenuController implements Initializable {
     private void menu_clear(ActionEvent event) {
         menu_inputPhone.clear();
         menu_TextNote.clear();
-        data.customerId= "New ";
+        data.customerId = "New ";
 //        getCustomerId();
     }
 
