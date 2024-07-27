@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,37 +13,63 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="LogIn" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.LogPageController">
+<StackPane fx:id="LogIn" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.LogPageController">
    <children>
       <AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="border-pane" stylesheets="@MainForm.css" />
       <AnchorPane fx:id="LogInPage" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <AnchorPane fx:id="tvLogInForm" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css">
+            <AnchorPane fx:id="tvLogInForm" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#LogIn_showPass" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css">
                <children>
-                  <Text fill="WHITE" layoutX="930.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN " textAlignment="CENTER" wrappingWidth="86.63671875">
+                  <Text fill="WHITE" layoutX="979.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN " textAlignment="CENTER" wrappingWidth="86.63671875">
                      <font>
                         <Font size="24.0" />
                      </font>
                     
                                                                         </Text>
-                  <TextField fx:id="txtUserName" layoutX="866.0" layoutY="459.0" prefHeight="40.0" prefWidth="186.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <TextField fx:id="txtPassWord" layoutX="866.0" layoutY="550.0" prefHeight="40.0" prefWidth="186.0" promptText="password" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <Hyperlink fx:id="txtForgotPass" layoutX="867.0" layoutY="628.0" onAction="#switchForgotPass" text="Forgot password ?" textFill="WHITE" />
-                  <Button layoutX="868.0" layoutY="682.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="40.0" prefWidth="186.0" stylesheets="@MainForm.css" text="Log in" textFill="WHITE">
+                  <TextField fx:id="txtUserName" layoutX="866.0" layoutY="459.0" prefHeight="50.0" prefWidth="250.0" promptText="username" styleClass="textfield" stylesheets="@MainForm.css">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="20.0" />
+                     </font></TextField>
+                  <Hyperlink fx:id="txtForgotPass" layoutX="873.0" layoutY="750.0" onAction="#switchForgotPass" text="Forgot password ?" textFill="#c90808">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Hyperlink>
+                  <Button layoutX="868.0" layoutY="682.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="50.0" prefWidth="250.0" stylesheets="@MainForm.css" text="Log in" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
                      </font>
                   </Button>
-                  <FontAwesomeIcon fill="#f5f1f1" glyphName="USER" layoutX="872.0" layoutY="409.0" size="5em" />
+                  <FontAwesomeIcon fill="#f5f1f1" glyphName="USER" layoutX="921.0" layoutY="367.0" size="5em" />
                   <ImageView fitHeight="420.0" fitWidth="851.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../image/WHITELOGO.png" />
                      </image>
                   </ImageView>
+                  <TextField fx:id="txt_TextFieldPass" layoutX="866.0" layoutY="568.0" prefHeight="50.0" prefWidth="250.0" visible="false">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField fx:id="txtPassWord" layoutX="866.0" layoutY="568.0" prefHeight="50.0" prefWidth="250.0" promptText="password">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </PasswordField>
+                  <Button layoutX="1132.0" layoutY="571.0" mnemonicParsing="false" onAction="#LogIn_showPass" prefHeight="50.0" prefWidth="53.0" style="-fx-background-color: none;" text="Button">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="EYE" size="1.5em" text="" wrappingWidth="24.6666259765625" />
+                     </graphic>
+                  </Button>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="tvForgotPass" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css" visible="false">
                <children>
+                  <ImageView fitHeight="420.0" fitWidth="851.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/WHITELOGO.png" />
+                     </image>
+                  </ImageView>
+                  <FontAwesomeIcon fill="WHITE" glyphName="QUESTION_CIRCLE" layoutX="934.0" layoutY="261.0" size="5em" />
                   <Text fill="WHITE" layoutX="826.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot PassWord" textAlignment="CENTER" wrappingWidth="286.63671875">
                      <font>
                         <Font name="System Bold Italic" size="26.0" />
@@ -56,13 +83,19 @@
                   </Button>
                   <ComboBox fx:id="combo_ForgotList" layoutX="846.0" layoutY="515.0" onAction="#switchForgotPass" prefHeight="50.0" prefWidth="250.0" promptText="Please choose question" />
                   <TextField fx:id="txt_FGAnswer" layoutX="846.0" layoutY="613.0" prefHeight="50.0" prefWidth="250.0" promptText="answer" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <Button layoutX="33.0" layoutY="494.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;" stylesheets="@MainForm.css" textFill="WHITE">
+                  <Button layoutX="149.0" layoutY="774.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;" stylesheets="@MainForm.css" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="#faf5f5" glyphName="HOME" size="8em" wrappingWidth="103.0" />
+                     </graphic>
                   </Button>
-                  <FontAwesomeIcon fill="WHITE" glyphName="QUESTION_CIRCLE" layoutX="934.0" layoutY="261.0" size="5em" />
-                  <FontAwesomeIcon fill="#faf5f5" glyphName="HOME" layoutX="161.0" layoutY="926.0" size="8em" wrappingWidth="103.0" />
+                  <Text fill="WHITE" layoutX="150.0" layoutY="903.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back to LogIn">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="tvResetPassForm" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@MainForm.css" visible="false">
@@ -72,15 +105,42 @@
                         <Font name="System Bold" size="28.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="txt_ResetUserName" layoutX="853.0" layoutY="476.0" prefHeight="50.0" prefWidth="250.0" promptText="UserName" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <TextField fx:id="txt_NewPass" layoutX="855.0" layoutY="571.0" prefHeight="50.0" prefWidth="250.0" promptText="New Pass" styleClass="textfield" stylesheets="@MainForm.css" />
+                  <TextField fx:id="txt_ResetUserName" layoutX="853.0" layoutY="476.0" prefHeight="50.0" prefWidth="250.0" promptText="UserName" styleClass="textfield" stylesheets="@MainForm.css">
+                     <font>
+                        <Font size="20.0" />
+                     </font></TextField>
+                  <TextField fx:id="txt_NewPass" layoutX="855.0" layoutY="571.0" prefHeight="50.0" prefWidth="250.0" promptText="New Pass" styleClass="textfield" stylesheets="@MainForm.css">
+                     <font>
+                        <Font size="20.0" />
+                     </font></TextField>
                   <Button layoutX="855.0" layoutY="785.0" mnemonicParsing="false" onAction="#UpdatePass" prefHeight="40.0" prefWidth="245.0" stylesheets="@MainForm.css" text="Update PassWord" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="txt_ConfirmNewPass" layoutX="853.0" layoutY="671.0" prefHeight="50.0" prefWidth="250.0" promptText="Confirm Pass" styleClass="textfield" stylesheets="@MainForm.css">
+                     <font>
+                        <Font size="20.0" />
+                     </font></TextField>
+                  <FontAwesomeIcon fill="WHITE" glyphName="KEY" layoutX="930.0" layoutY="345.0" size="5em" />
+                  <ImageView fitHeight="420.0" fitWidth="851.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/WHITELOGO.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="149.0" layoutY="825.0" mnemonicParsing="false" onAction="#LogIn" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;" stylesheets="@MainForm.css" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <graphic>
+                        <FontAwesomeIcon fill="#faf5f5" glyphName="HOME" size="8em" wrappingWidth="103.0" />
+                     </graphic>
                   </Button>
-                  <TextField fx:id="txt_ConfirmNewPass" layoutX="853.0" layoutY="671.0" prefHeight="50.0" prefWidth="250.0" promptText="Confirm Pass" styleClass="textfield" stylesheets="@MainForm.css" />
-                  <FontAwesomeIcon fill="WHITE" glyphName="KEY" layoutX="930.0" layoutY="345.0" size="5em" />
+                  <Text fill="WHITE" layoutX="150.0" layoutY="954.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Back to LogIn">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
          </children>

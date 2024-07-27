@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -65,6 +66,8 @@ public class LogPageController implements Initializable {
     public ObservableList<String> questionList;
     @FXML
     private StackPane LogIn;
+    @FXML
+    private TextField txt_TextFieldPass;
  
  
 
@@ -136,7 +139,13 @@ public class LogPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //TO DO
+  // Khởi tạo controller
+        txtPassWord.setVisible(true);
+        txt_TextFieldPass.setVisible(false);
+        txt_TextFieldPass.setText(txtPassWord.getText());
+
+//        // Ẩn PasswordField mặc định
+//        txtPassWord.setVisible(false);
     }
 
     @FXML
@@ -208,4 +217,25 @@ public class LogPageController implements Initializable {
         combo_ForgotList.getItems();
 
     }
+    
+     private boolean passwordShow = false;
+
+    @FXML
+    private void LogIn_showPass(ActionEvent event) {
+         if (passwordShow) {
+            // Nếu mật khẩu đang hiển thị, ẩn nó và hiển thị PasswordField
+            txtPassWord.setText(txt_TextFieldPass.getText());
+            txtPassWord.setVisible(true);
+            txt_TextFieldPass.setVisible(false);
+            passwordShow = false;
+        } else {
+            // Nếu mật khẩu đang ẩn, hiển thị nó và ẩn PasswordField
+            txt_TextFieldPass.setText(txtPassWord.getText());
+            txtPassWord.setVisible(false);
+            txt_TextFieldPass.setVisible(true);
+            passwordShow = true;
+        }
+    }
+    
 }
+

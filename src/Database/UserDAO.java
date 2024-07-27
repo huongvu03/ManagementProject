@@ -96,7 +96,7 @@ public class UserDAO {
             cn = connect.GetConnectDB();//mo ket noi
             pStm = cn.prepareStatement(sql);
             pStm.setString(1, id); //gan du lieu        
-            pStm.execute();//chay cau lenh sql    
+            pStm.executeUpdate();//chay cau lenh sql    
 
         } catch (Exception e) {
             e.getMessage();
@@ -118,7 +118,7 @@ public class UserDAO {
             pStm.setString(1, u.getUserPassWord());
             pStm.setString(2, u.getUserName());
 
-            pStm.execute();
+             pStm.executeUpdate();
         } catch (Exception e) {
             e.getMessage();
         } finally {
@@ -132,13 +132,12 @@ public class UserDAO {
     }
 
     public void AdminEditDB(UserInfo u) {
-        String sql = "update UserInfo  set  userName=?, userPassWord=?,userPosition=?, question=?"
-                + "answer=?,userDate=? where userId=? ";
+        String sql = "update UserInfo  set  userName=?, userPassWord=?, userPosition=?, question=?, answer=?, userDate=? where userId=? ";
         try {
             cn = connect.GetConnectDB();
             pStm = cn.prepareStatement(sql);
-            pStm.setString(1, u.getUserPassWord());
-            pStm.setString(2, u.getUserName());
+            pStm.setString(1, u.getUserName());
+            pStm.setString(2, u.getUserPassWord());
             pStm.setString(3, u.getUserPosition());
             pStm.setString(4, u.getQuestion());
             pStm.setString(5, u.getAnswer());
@@ -146,15 +145,18 @@ public class UserDAO {
             pStm.setDate(6, sqlDate);
             pStm.setString(7, u.getUserId());
 
-            pStm.execute();
+         int row= pStm.executeUpdate();
+         if(row>0){
+             System.out.println("Update User Thanh Cong");
+         }
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
         } finally {
             try {
                 cn.close();
                 pStm.close();
             } catch (Exception e) {
-                e.getMessage();
+               e.printStackTrace();
             }
         }
     }

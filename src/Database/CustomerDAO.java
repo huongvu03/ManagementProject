@@ -44,9 +44,10 @@ public class CustomerDAO {
 
         return ds;
     }
+    public static List<Customer> ds = new ArrayList<>();
 
     public static List<Customer> getListAll() {
-        List<Customer> ds = new ArrayList<>();
+
         String sql = "SELECT * FROM tbCustomer";
 
         try (Connection cn = new ConnectDB().GetConnectDB(); PreparedStatement st = cn.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
@@ -180,5 +181,6 @@ public class CustomerDAO {
 
         return str_result;
     }
- 
+
+  
 }

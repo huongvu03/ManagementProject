@@ -3,23 +3,26 @@ package Models;
 import java.util.Date;
 
 public class Bill {
+
     private Integer billId;
-     private String tableNo ;   
-     private String cus_id;
+    private String tableNo;
+    private String cus_id;
     private String userName;
-       private String proId;
+    private String proId;
     private String proName;
     private int cateId;
-        private int quantity;
-      private double proPrice;      
+    private int quantity;
+    private double proPrice;
     private String status;
     private String proImage;
     private Double billTotal;
     private Double billTax;
     private Double billService;
+    private Double billDiscount;
     private Double billSubTotal;
     private Date billDate;
     private String billStatus;
+    private int guestNo;
 
     public Bill() {
     }
@@ -29,26 +32,36 @@ public class Bill {
         return "Bill{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id + ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + '}';
     }
 
-       public Bill(Integer billId, String tableNo, String cus_id, String userName,
-               String proId, String proName, int cateId, int quantity, double proPrice, String status, String proImage,
-               Double billTotal, Double billTax, Double billService, Double billSubTotal, Date billDate, String billStatus) {
+    public Bill(Integer billId, String tableNo, int guestNo , String cus_id, String userName,
+            Double billTotal, Double billTax, Double billService, Double billDiscount, Double billSubTotal, Date billDate, String billStatus) {
         this.billId = billId;
         this.tableNo = tableNo;
+        this.guestNo=guestNo;
         this.cus_id = cus_id;
         this.userName = userName;
-        this.proId = proId;
-        this.proName = proName;
-        this.cateId = cateId;
-        this.quantity = quantity;
-        this.proPrice = proPrice;
-        this.status = status;
-        this.proImage = proImage;
         this.billTotal = billTotal;
         this.billTax = billTax;
         this.billService = billService;
+        this.billDiscount = billDiscount;
         this.billSubTotal = billSubTotal;
         this.billDate = billDate;
         this.billStatus = billStatus;
+    }
+
+    public int getGuestNo() {
+        return guestNo;
+    }
+
+    public void setGuestNo(int guestNo) {
+        this.guestNo = guestNo;
+    }
+
+    public Double getBillDiscount() {
+        return billDiscount;
+    }
+
+    public void setBillDiscount(Double billDiscount) {
+        this.billDiscount = billDiscount;
     }
 
     public Integer getBillId() {
@@ -187,8 +200,4 @@ public class Bill {
         this.billStatus = billStatus;
     }
 
- 
-   
-
-   
 }

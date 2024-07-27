@@ -1,0 +1,24 @@
+/*.table-row-cell {
+    -fx-background-color: #FFFFFF;  Default background color (white) 
+}*/
+/* Alternate row colors */
+.table-row-cell:nth-child(even) {
+    -fx-background-color: #ADD8E6; /* Light blue for even rows */
+}
+
+.table-row-cell:nth-child(odd) {
+    -fx-background-color: #0000FF; /* Blue for odd rows */
+    -fx-text-fill: #FFFFFF; /* White text for better contrast */
+}
+
+/* Optional: Hover effect */
+.table-row-cell:hover {
+    -fx-background-color: #e2e0dc; /* Light sky blue for hovered rows */
+}
+.table-view .column-header {
+    -fx-background-color: #e2e0dc; /* Dark blue background */
+    -fx-text-fill: #FFFFFF; /* White text color */
+    -fx-font-weight: bold; /* Optional: Make text bold */
+    -fx-font-size: 14px; /* Optional: Change font size */
+    -fx-padding: 10px; /* Optional: Add padding */
+}

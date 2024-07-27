@@ -69,7 +69,7 @@ public class ProductDAO {
 
     public ArrayList<Product> menuListDB() {
         menulist.clear();
-        String sql = "SELECT * from Product where CateId='2' ";
+        String sql = "SELECT * from Product where CateId=2";
         try {
             cn = connect.GetConnectDB();
             stm = cn.createStatement();
@@ -218,36 +218,20 @@ public class ProductDAO {
 
     public Integer CheckStock(String proId) {
         int stock = 0;
-        String checksql = "SELECT * FROM Product WHERE proId =?";
+        String checksql = "SELECT status,stock FROM Product WHERE proId =?";
         try {
             cn = connect.GetConnectDB();
             pStm = cn.prepareStatement(checksql);
             pStm.setString(1, proId);
             rs = pStm.executeQuery();
 
-            while (rs.next()) {
-                Product pro = new Product();
-                pro.setStatus(rs.getString("status"));
-                pro.setStock(rs.getInt("stock"));
+            if (rs.next()) {
+                String status = rs.getString("status");
+                stock = rs.getInt("stock");
 
-                String status = pro.getStatus();
-                stock = pro.getStock();
-                if (status.equals("OutOfStock")) {
-                    stock = 0;
+                if (!status.equals("Available") || stock == 0) {
+                    stock = 0; 
                 }
-                if(status.equals("OutOfStock") && stock != 0){
-                      alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error:");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Please check Status ");
-                    alert.showAndWait();
-                    return stock;
-                }
-                if (status.equals("Available") && stock == 0) {
-                    stock = 0;
-                }
-                return stock;
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -266,7 +250,7 @@ public class ProductDAO {
     public void UpdateStock(String proId, int newStock) {
         try {
             cn = connect.GetConnectDB();
-            String sql = "UPDATE Product SET stock =?,status=? WHERE proId = ?";
+            String sql = "UPDATE Product SET stock =?, status=? WHERE proId = ?";
             pStm = cn.prepareStatement(sql);
             pStm.setInt(1, newStock);
             if (newStock == 0) {

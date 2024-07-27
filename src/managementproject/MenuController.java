@@ -3,13 +3,16 @@ package managementproject;
 import Database.BillDAO;
 import Database.ConnectDB;
 import Database.CustomerDAO;
+import Database.OrderDAO;
 import Database.ProductDAO;
 import Database.UserDAO;
 import Models.Bill;
 import Models.Customer;
+import Models.Order;
 import Models.Product;
 import Models.UserInfo;
 import Validation.errorMessage;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import java.beans.Statement;
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +68,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -151,6 +155,7 @@ public class MenuController implements Initializable {
     private Button searchButton;
     @FXML
     private ImageView ImageView;
+
     //Menu_Anchor
     @FXML
     private AnchorPane Menu_Anchor;
@@ -159,13 +164,15 @@ public class MenuController implements Initializable {
     @FXML
     private GridPane menu_gridPaneFood;
     @FXML
-    private TableView<Bill> menu_TbView;
+    private TableView<Order> menu_TbView;
     @FXML
-    private TableColumn<Bill, String> menu_Col_ProName;
+    private TableColumn<Order, String> menu_Col_ProName;
     @FXML
-    private TableColumn<Bill, Integer> menu_Col_Quantity;
+    private TableColumn<Order, Integer> menu_Col_Quantity;
     @FXML
-    private TableColumn<Bill, Double> menu_Col_Price;
+    private TableColumn<Order, Double> menu_Col_Price;
+    @FXML
+    private TableColumn<Order, String> menu_ColNote;
     @FXML
     private Label menu_Total;
     @FXML
@@ -182,80 +189,58 @@ public class MenuController implements Initializable {
     private Text textNotice;
     @FXML
     private Text textNotice1;
-    //Menu-bill
     @FXML
     private TextField menu_TextNote;
     @FXML
-    private Button menu_btnPAY;
+    private FontAwesomeIcon menu_btnPAY;
     @FXML
-    private Button menu_btnREMOVE;
+    private FontAwesomeIcon menu_btnRECEIPT;
     @FXML
-    private Button menu_btnRECEIPT;
-    @FXML
-    private Text txt_displayCusName;
+    private Label menu_Discount;
+
     //Customer_Anchor
     @FXML
     private AnchorPane Customer_Anchor;
     @FXML
     private TableView<Customer> customerTable;
-
     @FXML
     private TableColumn<Customer, String> cusIdColumn;
-
     @FXML
     private TableColumn<Customer, String> nameColumn;
-
     @FXML
     private TableColumn<Customer, String> phoneColumn;
-
     @FXML
     private TableColumn<Customer, String> emailColumn;
-
     @FXML
     private TableColumn<Customer, Integer> discountColumn;
-
     @FXML
     private TableColumn<Customer, Integer> deletedColumn;
-
     @FXML
     private TextField nameField;
-
     @FXML
     private TextField phoneField;
-
     @FXML
     private TextField emailField;
-
     @FXML
     private TextField discountField;
-
     @FXML
     private TextField deletedField;
-
     @FXML
     private TextField searchField;
-
     @FXML
     private Button addButton;
-
     @FXML
     private Button updateButton;
-
     @FXML
     private Button deleteButton;
-
     @FXML
     private Button clearallButton;
-
     @FXML
     private Text textNotice2;
-
     @FXML
     private Text nameFieldMsg;
-
     @FXML
     private Text phoneFieldMsg;
-
     @FXML
     private Text emailFieldMsg;
     //staff_Anchor
@@ -311,13 +296,9 @@ public class MenuController implements Initializable {
 
     public Alert alert;
     private ProductDAO dao = new ProductDAO();
-    @FXML
-    private TextField menu_txtPhoneSearching;
-    @FXML
-    private Button menu_btnStore;
+    private TextField menu_phoneInput;
     @FXML
     private TextField txt_menuTableNo;
-    
 
     //bill fxml
 //    @FXML
@@ -327,17 +308,17 @@ public class MenuController implements Initializable {
     @FXML
     private AnchorPane Bill_Anchor;
     @FXML
-    private TableView<?> billTable1;
+    private TableView<Bill> billTable1;
     @FXML
-    private TableColumn<?, ?> bill_billId;
+    private TableColumn<Bill, Integer> bill_billId;
     @FXML
-    private TableColumn<?, ?> bill_tableNo;
+    private TableColumn<Bill, String> bill_tableNo;
     @FXML
-    private TableColumn<?, ?> bill_cus_id;
+    private TableColumn<Bill, String> bill_cus_id;
     @FXML
-    private TableColumn<?, ?> bill_userName;
+    private TableColumn<Bill, String> bill_userName;
     @FXML
-    private TableColumn<?, ?> bill_proId;
+    private TableColumn<Bill, String> bill_proId;
     @FXML
     private AnchorPane bill_view1;
     @FXML
@@ -359,8 +340,6 @@ public class MenuController implements Initializable {
     @FXML
     private Label bill_cusName1;
     @FXML
-    private Text txt_displayCusName1;
-    @FXML
     private Label bill_Total1;
     @FXML
     private AnchorPane bill_view2;
@@ -372,8 +351,6 @@ public class MenuController implements Initializable {
     private TableColumn<?, ?> bill_Col_Quantity2;
     @FXML
     private TableColumn<?, ?> bill_Col_Price2;
-    @FXML
-    private Text txt_displayCusName11;
     @FXML
     private Label bill_Discount2;
     @FXML
@@ -406,7 +383,12 @@ public class MenuController implements Initializable {
     private Button bill_searchDate;
     @FXML
     private Button bill_cancelButton1;
-
+    @FXML
+    private TextField menu_InputDiscount;
+    @FXML
+    private TextField menu_inputPhone;
+    @FXML
+    private TextField txt_menuNoGuest;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -430,11 +412,10 @@ public class MenuController implements Initializable {
 
         statusList = FXCollections.observableArrayList("Available", "UnAvailable", "OutOfStock");
 
-
         filteredList = new FilteredList<>(productList, p -> true);
         sortedList = new SortedList<>(filteredList);
         sortedList.setComparator((p1, p2) -> p1.getProId().compareTo(p2.getProId()));
-        
+
         boxName.setItems(categoryList);
         boxStatus.setItems(statusList);
         boxCateSort.setItems(categoryList);
@@ -443,14 +424,23 @@ public class MenuController implements Initializable {
         //check
 //        System.out.println("Category List: " + categoryList);
 //        System.out.println("Status List: " + statusList);
+
         //Menu
         menu_Col_ProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         menu_Col_Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         menu_Col_Price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+        menu_ColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
+
         menuShowOrderData();
         menuDisplayCard();
-        menuShowOrderData();
         menuDisplayTotal();
+        // Đăng ký listener cho trường nhập liệu amount
+        menu_txtAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            menu_DisplayChange();
+        });
+        menu_InputDiscount.textProperty().addListener((observable, oldValue, newValue) -> {
+            menuDiscount();
+        });
 
         //Customer
         // Initialize TableView columns
@@ -514,7 +504,6 @@ public class MenuController implements Initializable {
             menuDisplayCard();
             menuShowOrderData();
             menuDisplayTotal();
-            menu_DisplayChange();
 
         } else if (event.getSource() == customer_btn) {
             DashBoard_Anchor.setVisible(false);
@@ -534,7 +523,7 @@ public class MenuController implements Initializable {
             Bill_Anchor.setVisible(false);
 
 //            customersShowData();
-        }else if (event.getSource() == bill_btn) {
+        } else if (event.getSource() == bill_btn) {
             DashBoard_Anchor.setVisible(false);
             Inventory_Anchor.setVisible(false);
             Menu_Anchor.setVisible(false);
@@ -752,22 +741,21 @@ public class MenuController implements Initializable {
 //    }
 //    }
     private String getCategoryName(int cateId) {
-    String categoryName;
-    switch (cateId) {
-        case 1:
-            categoryName = "food";
-            break;
-        case 2:
-            categoryName = "drink";
-            break;
-        default:
-            categoryName = "Unknown";
-            break;
+        String categoryName;
+        switch (cateId) {
+            case 1:
+                categoryName = "food";
+                break;
+            case 2:
+                categoryName = "drink";
+                break;
+            default:
+                categoryName = "Unknown";
+                break;
+        }
+        //System.out.println("Category ID: " + cateId + " corresponds to Category Name: " + categoryName);
+        return categoryName;
     }
-    //System.out.println("Category ID: " + cateId + " corresponds to Category Name: " + categoryName);
-    return categoryName;
-}
-
 
     private void clearFields() {
         txtProId.clear();
@@ -780,67 +768,58 @@ public class MenuController implements Initializable {
         ImageView.setImage(null);
     }
 
+    private boolean validateInput() {
+        boolean isValid = true;
+        errorMessage validate = new errorMessage();
 
+        // Clear previous error message
+        textNotice.setText(null);
 
- private boolean validateInput() {
-    boolean isValid = true;
-    errorMessage validate = new errorMessage();
-
-    // Clear previous error message
-    textNotice.setText(null);
-
-
-    // Validate ProId
-    if (txtProId.getText().trim().isEmpty()) {
-        textNotice.setText("ProId " + validate.getErrorMsg1());
-        isValid = false;
-    }
-    // Validate ProName
-    else if (txtProName.getText().trim().isEmpty()) {
-        textNotice.setText("ProName " + validate.getErrorMsg1());
-        isValid = false;
-    }
-    // Validate ProPrice
-    else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
-        textNotice.setText("ProPrice " + validate.getErrorMsg2());
-        isValid = false;
-    }
-    // Validate Stock
-    else if (!txtStock.getText().matches("\\d+")) {
-        textNotice.setText("ProStock must be number >= 0 " + validate.getErrorMsg2());
-        isValid = false;
-    }
-    else {
-        int stock = Integer.parseInt(txtStock.getText());
-        // Check for negative stock
-        if (stock <= 0) {
-            // Ensure status is OutOfStock if stock is negative
-            if (boxStatus.getSelectionModel().isEmpty() || !boxStatus.getValue().equals("OutOfStock")) {
-                textNotice.setText("If Stock <= 0, Status must be OutOfStock.");
-                isValid = false;
-            }
+        // Validate ProId
+        if (txtProId.getText().trim().isEmpty()) {
+            textNotice.setText("ProId " + validate.getErrorMsg1());
+            isValid = false;
+        } // Validate ProName
+        else if (txtProName.getText().trim().isEmpty()) {
+            textNotice.setText("ProName " + validate.getErrorMsg1());
+            isValid = false;
+        } // Validate ProPrice
+        else if (!txtProPrice.getText().matches("\\d+(\\.\\d{1,2})?")) { // Allows for decimal prices
+            textNotice.setText("ProPrice " + validate.getErrorMsg2());
+            isValid = false;
+        } // Validate Stock
+        else if (!txtStock.getText().matches("\\d+")) {
+            textNotice.setText("ProStock must be number >= 0 " + validate.getErrorMsg2());
+            isValid = false;
         } else {
-            // Check if status is set to OutOfStock if stock is not negative
-            if (boxStatus.getSelectionModel().isEmpty() || boxStatus.getValue().equals("OutOfStock")) {
-                textNotice.setText("If Stock > 0 , Status must be Available or UnAvailable");
-                isValid = false;
+            int stock = Integer.parseInt(txtStock.getText());
+            // Check for negative stock
+            if (stock <= 0) {
+                // Ensure status is OutOfStock if stock is negative
+                if (boxStatus.getSelectionModel().isEmpty() || !boxStatus.getValue().equals("OutOfStock")) {
+                    textNotice.setText("If Stock <= 0, Status must be OutOfStock.");
+                    isValid = false;
+                }
+            } else {
+                // Check if status is set to OutOfStock if stock is not negative
+                if (boxStatus.getSelectionModel().isEmpty() || boxStatus.getValue().equals("OutOfStock")) {
+                    textNotice.setText("If Stock > 0 , Status must be Available or UnAvailable");
+                    isValid = false;
+                }
             }
         }
-    }
-    // Validate CategoryName
-    if (boxName == null || boxName.getSelectionModel().isEmpty()) {
-        textNotice.setText("CateName " + validate.getErrorMsg1());
-        isValid = false;
-    }
-    // Validate Status
-    else if (boxStatus == null || boxStatus.getSelectionModel().isEmpty()) {
-        textNotice.setText("Status " + validate.getErrorMsg1());
-        isValid = false;
-    }
+        // Validate CategoryName
+        if (boxName == null || boxName.getSelectionModel().isEmpty()) {
+            textNotice.setText("CateName " + validate.getErrorMsg1());
+            isValid = false;
+        } // Validate Status
+        else if (boxStatus == null || boxStatus.getSelectionModel().isEmpty()) {
+            textNotice.setText("Status " + validate.getErrorMsg1());
+            isValid = false;
+        }
 
-    return isValid;
-}
-
+        return isValid;
+    }
 
     @FXML
     private void HanleImportImage(ActionEvent event) {
@@ -885,39 +864,38 @@ public class MenuController implements Initializable {
         }
     }
 
-
     @FXML
-private void inven_Add(ActionEvent event) {
-    Product newProduct = new Product();
-    if (validateInput()) {
-        int stock = Integer.parseInt(txtStock.getText());
-        String status = (stock < 0) ? "OutOfStock" : boxStatus.getValue();
+    private void inven_Add(ActionEvent event) {
+        Product newProduct = new Product();
+        if (validateInput()) {
+            int stock = Integer.parseInt(txtStock.getText());
+            String status = (stock < 0) ? "OutOfStock" : boxStatus.getValue();
 
-        newProduct.setProId(txtProId.getText());
-        newProduct.setProName(txtProName.getText());
-        newProduct.setStock(stock);
-        newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
-        newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-        newProduct.setStatus(status);
+            newProduct.setProId(txtProId.getText());
+            newProduct.setProName(txtProName.getText());
+            newProduct.setStock(stock);
+            newProduct.setProPrice(Double.parseDouble(txtProPrice.getText()));
+            newProduct.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+            newProduct.setStatus(status);
 
-        if (data.path == null) {
-            newProduct.setProImage(null);
-        } else {
-            String path = data.path.replace("\\", "\\\\");
-            newProduct.setProImage(path);
-        }
-        newProduct.setProDate(new Date());
+            if (data.path == null) {
+                newProduct.setProImage(null);
+            } else {
+                String path = data.path.replace("\\", "\\\\");
+                newProduct.setProImage(path);
+            }
+            newProduct.setProDate(new Date());
 
-        if (dao.AddDB(newProduct) != null) {
-            productList.add(newProduct);
-            data.path = null;
-            clearFields();
-            textNotice.setText("Product added successfully.");
-        } else {
-            textNotice.setText("Duplicate ID");
+            if (dao.AddDB(newProduct) != null) {
+                productList.add(newProduct);
+                data.path = null;
+                clearFields();
+                textNotice.setText("Product added successfully.");
+            } else {
+                textNotice.setText("Duplicate ID");
+            }
         }
     }
-}
 
     @FXML
     private void Inven_Delete(ActionEvent event) {
@@ -931,36 +909,35 @@ private void inven_Add(ActionEvent event) {
         }
     }
 
-
     @FXML
-private void inven_Update(ActionEvent event) {
-    if (proSelected != null && validateInput()) {
-        int stock = Integer.parseInt(txtStock.getText());
-        String status = (stock < 0) ? "OutOfStock" : boxStatus.getValue();
+    private void inven_Update(ActionEvent event) {
+        if (proSelected != null && validateInput()) {
+            int stock = Integer.parseInt(txtStock.getText());
+            String status = (stock < 0) ? "OutOfStock" : boxStatus.getValue();
 
-        proSelected.setProName(txtProName.getText());
-        proSelected.setStock(stock);
-        proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
-        proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
-        proSelected.setStatus(status);
+            proSelected.setProName(txtProName.getText());
+            proSelected.setStock(stock);
+            proSelected.setProPrice(Double.parseDouble(txtProPrice.getText()));
+            proSelected.setCateId(boxName.getSelectionModel().getSelectedIndex() + 1);
+            proSelected.setStatus(status);
 
-        // Only update the image path if a new image was imported
-        if (data.path != null) {
-            String path = data.path.replace("\\", "\\\\");
-            proSelected.setProImage(path);
+            // Only update the image path if a new image was imported
+            if (data.path != null) {
+                String path = data.path.replace("\\", "\\\\");
+                proSelected.setProImage(path);
+            }
+
+            proSelected.setProDate(new Date());
+
+            dao.UpdateDB(proSelected);
+            tvProduct.refresh();
+            clearFields();
+            textNotice.setText("Product updated successfully.");
+
+            // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
+            data.path = null;
         }
-
-        proSelected.setProDate(new Date());
-
-        dao.UpdateDB(proSelected);
-        tvProduct.refresh();
-        clearFields();
-        textNotice.setText("Product updated successfully.");
-
-        // Reset data.path to null after update to prevent incorrect path usage in subsequent operations
-        data.path = null;
     }
-}
 
     @FXML
     private void inven_Search(ActionEvent event) {
@@ -968,39 +945,36 @@ private void inven_Update(ActionEvent event) {
         filteredList.setPredicate(p -> p.getProName().toLowerCase().contains(searchValue));
         textNotice.setText("Search successfully.");
     }
-    
 
     @FXML
-private void inven_Sort(ActionEvent event) {
-    String selectedCategory = boxCateSort.getValue();
-    String selectedStatus = boxStatusSort.getValue();
+    private void inven_Sort(ActionEvent event) {
+        String selectedCategory = boxCateSort.getValue();
+        String selectedStatus = boxStatusSort.getValue();
 
 //    System.out.println("Selected Category: " + selectedCategory);
 //    System.out.println("Selected Status: " + selectedStatus);
+        filteredList.setPredicate(product -> {
+            String categoryName = getCategoryName(product.getCateId());
 
-    filteredList.setPredicate(product -> {
-        String categoryName = getCategoryName(product.getCateId());
-
-        boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
-        boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
+            boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
+            boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
 
 //        System.out.println("Product: " + product.getProName() + " matchesCategory: " + matchesCategory + " matchesStatus: " + matchesStatus);
+            return matchesCategory && matchesStatus;
+        });
 
-        return matchesCategory && matchesStatus;
-    });
-
-    // Apply sortedList to TableView
-    tvProduct.setItems(sortedList);
-    textNotice.setText("Products sorted successfully.");
-}
+        // Apply sortedList to TableView
+        tvProduct.setItems(sortedList);
+        textNotice.setText("Products sorted successfully.");
+    }
 
     @FXML
     private void inven_ClearSort(ActionEvent event) {
-    boxCateSort.getSelectionModel().clearSelection();
-    boxStatusSort.getSelectionModel().clearSelection();
-    invent_txtSearch.clear();
-    filteredList.setPredicate(p -> true); // Reset to show all products
-    textNotice.setText("Sorting and Search cleared.");
+        boxCateSort.getSelectionModel().clearSelection();
+        boxStatusSort.getSelectionModel().clearSelection();
+        invent_txtSearch.clear();
+        filteredList.setPredicate(p -> true); // Reset to show all products
+        textNotice.setText("Sorting and Search cleared.");
     }
 
     @FXML
@@ -1084,36 +1058,65 @@ private void inven_Sort(ActionEvent event) {
 
     }
 
+    public OrderDAO orderDAO = new OrderDAO();
+    public ObservableList<Order> menuOrderList = FXCollections.observableArrayList();
     public BillDAO billDAO = new BillDAO();
-    public ObservableList<Bill> orderList = FXCollections.observableArrayList();
-    private int currentBillId = 3;
 
     public void menuShowOrderData() {
-        if (currentBillId != 0) { // Ensure you have a valid billId
-            orderList.clear();
-            orderList.addAll(billDAO.getOrderDB(currentBillId));
-            menu_TbView.setItems(orderList);
+        menuOrderList.clear();
+        menuOrderList.addAll(orderDAO.showOrderDB());
+        if (!menuOrderList.isEmpty()) {
+            menu_TbView.setItems(menuOrderList);
         } else {
-            System.out.println("Invalid billId. Cannot fetch orders.");
+            menu_TbView.getItems().clear();
         }
     }
 
     public String getCustomerId() {
-        String cusPhoneSearching = menu_txtPhoneSearching.getText();
-        if (!cusPhoneSearching.isEmpty() && !CustomerDAO.searchByPhone(cusPhoneSearching).isEmpty()) {
-            for (Customer c : CustomerDAO.searchByPhone(cusPhoneSearching)) {
-                data.customerId = c.getCus_id();
-                txt_displayCusName.setText(c.getName());
-                return data.customerId;
+        String cusPhoneSearching = menu_inputPhone.getText();
+        List<Customer> cusList = CustomerDAO.searchByPhone(cusPhoneSearching);
+        if (!cusList.isEmpty()) {
+            Customer c = cusList.get(0);
+            menu_inputPhone.setText("Name: " + c.getName() + "/Discount:" + c.getDiscount());
+            data.customerId = c.getCus_id();
+        } else {
+            data.customerId = "New ";
+            menu_inputPhone.setText("No Result");
+        }
+        System.out.println("Customer ID tu getcusid: " + data.customerId);
+        return data.customerId;
+    }
+
+    //ProductItem use
+    private String note;
+
+    public String getNote() {
+        note = menu_TextNote.getText();
+        return note;
+    }
+
+    public void clearNote() {
+        if (menu_TextNote != null) {
+            menu_TextNote.clear();
+        }
+    }
+
+    private double discountvalue = 0;
+
+    public void menuDiscount() {
+        String discountText = menu_InputDiscount.getText();
+        if (discountText != null && !discountText.isEmpty()) {
+            try {
+                discountvalue = Double.parseDouble(discountText);
+            } catch (NumberFormatException e) {
+                discountvalue = 0;
             }
         } else {
-//            data.customerId = "New Customer" + count++;
-//            txt_displayCusName.setText("null" + data.customerId);
-            txt_displayCusName.setText("null");
+            discountvalue = 0;
         }
-        System.out.println("Ham getCusId" + data.customerId);
-        return data.customerId;
-
+        // Cập nhật tổng số tiền và hiển thị
+        menuGetSubtotal();
+        menuDisplayTotal();
     }
 
     private double subtotal = 0;
@@ -1122,43 +1125,56 @@ private void inven_Sort(ActionEvent event) {
     private double total = 0;
     private double billtax = 0;
     private double billservice = 0;
+    private double discount = 0;
 
     public void menuGetSubtotal() {
-        ObservableList<Bill> menuSubList = FXCollections.observableArrayList();
-        menuSubList.setAll(billDAO.getbillSubTotalDB(currentBillId));
+        List<Order> menuSubList = orderDAO.getbillTotalDB();
         if (!menuSubList.isEmpty()) {
-            Bill c = menuSubList.get(0);
+            Order c = menuSubList.get(0);
             total = c.getBillTotal();
-            billtax = c.getBillTax();
-            billservice = c.getBillService();
-            subtotal = c.getBillSubTotal();
+            billtax = total * data.tax;
+            billservice = billtax * data.service;
+            if (discountvalue != 0) {
+                discount = (total + billtax + billservice) * (discountvalue / 100);
+            } else {
+                discount = 0;
+            }
+            subtotal = (total + billtax + billservice) - discount;
         } else {
             total = 0.0;
             billtax = 0.0;
             billservice = 0.0;
             subtotal = 0.0;
+            discount = 0.0;
         }
     }
 
     public void menuDisplayTotal() {
         menuGetSubtotal();
-        menu_Total.setText(total + " VND ");
-        menu_Tax.setText(billtax + " VND ");
-        menu_Service.setText(billservice + " VND ");
-        menu_Subtotal.setText(subtotal + " VND ");
+        menu_Total.setText("$ " + String.format("%,.2f", total));
+        menu_Tax.setText("$ " + String.format("%,.2f", billtax));
+        menu_Service.setText("$ " + String.format("%,.2f", billservice));
+        menu_Discount.setText("$ " + "-" + String.format("%,.2f", discount));
         if (subtotal != 0) {
-            menu_Subtotal.setText(subtotal + "VND ");
+            menu_Subtotal.setText("$ " + String.format("%,.2f", subtotal));
         } else {
             menu_Subtotal.setText("");
         }
     }
 
     @FXML
-    private void menu_SearchCus_id(ActionEvent event) {
-        getCustomerId();
+    private void menu_SearchCus_id(MouseEvent event) {
+        if (!menu_inputPhone.getText().isEmpty()) {
+            getCustomerId();
+        } else {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error:");
+            alert.setHeaderText(null);
+            alert.setContentText("Please insert phone number");
+            alert.showAndWait();
+        }
     }
 
-    @FXML
     private void menu_DisplayChange() {
         try {
             String amountStr = menu_txtAmount.getText().trim();
@@ -1167,17 +1183,10 @@ private void inven_Sort(ActionEvent event) {
             }
             amountStr = amountStr.replaceAll("[^\\d.]", "");
             amount = Double.parseDouble(amountStr);
-            if (amount > 0) {
-                if (amount < subtotal) {
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error:");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Amount must greater than subtotal");
-                    alert.showAndWait();
-                } else {
-                    change = amount - subtotal;
-                    menu_Change.setText(String.format("%,.3f", change) + "VND ");
-                }
+            if (amount >= subtotal) {
+                change = amount - subtotal;
+            } else {
+                change = 0;
             }
         } catch (NumberFormatException e) {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -1186,10 +1195,13 @@ private void inven_Sort(ActionEvent event) {
             alert.setContentText("Invalid amount entered. Please enter a valid number.");
             alert.showAndWait();
         }
+        menu_Change.setText(String.format("%,.2f", change) + "VND ");
+
     }
+    public CustomerDAO customerDAO = new CustomerDAO();
 
     @FXML
-    private void menu_Pay(ActionEvent event) {
+    private void menu_Pay(MouseEvent event) throws SQLException {
         if (subtotal == 0 || menu_txtAmount.getText().isEmpty()) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error:");
@@ -1197,26 +1209,150 @@ private void inven_Sort(ActionEvent event) {
             alert.setContentText("Subtotal or Amount cant be blank");
             alert.showAndWait();
         } else {
-            getCustomerId();
+            Connection cn = null;
+            try {
+                cn = new ConnectDB().GetConnectDB();
+                cn.setAutoCommit(false); // Begin transaction
+                menuGetSubtotal();
+                String tableNo = "null";
+                if (txt_menuTableNo.getText() != null) {
+                    tableNo = txt_menuTableNo.getText();
+                }
+                int guestNo = 0;
+                try {
+                    guestNo = Integer.parseInt(txt_menuNoGuest.getText());
+                } catch (NumberFormatException e) {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error:");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Please enter a valid number for the number of guests.");
+                    alert.showAndWait();
+                }
+                Bill bill = new Bill();
+                bill.setTableNo(tableNo);
+                bill.setGuestNo(guestNo);
+                bill.setCus_id(data.customerId);
+                bill.setUserName(data.username);
+                bill.setBillTotal(total);
+                bill.setBillTax(billtax);
+                bill.setBillService(billservice);
+                bill.setBillDiscount(discount);
+                bill.setBillSubTotal(subtotal);
+                java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+                bill.setBillDate(sqlDate);
+                bill.setBillStatus("PAID");
+                int billId = billDAO.insertBillAndGetId(bill, cn);
+                List<Order> orderList = orderDAO.showOrderDB();
+                billDAO.insertOrderDetails(billId, orderList, cn);
+                orderDAO.archiveAndDeleteOrders(cn);
+                // Commit the transaction
+                cn.commit();
+                menuShowOrderData();
+                menuRestart();
+            } catch (SQLException ex) {
+                if (cn != null) {
+                    try {
+                        cn.rollback();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                ex.printStackTrace();
+            } finally {
+                if (cn != null) {
+                    try {
+                        cn.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+
+    }
+
+    @FXML
+    private void menu_StoreBill(MouseEvent event) throws SQLException {
+        Connection cn = null;
+        try {
+            cn = new ConnectDB().GetConnectDB();
+            cn.setAutoCommit(false); // Begin transaction
             menuGetSubtotal();
             String tableNo = "null";
             if (txt_menuTableNo.getText() != null) {
                 tableNo = txt_menuTableNo.getText();
             }
-            Bill bill = new Bill();
-            for (Bill c : billDAO.getOrderDB(currentBillId)) {
-                bill.setBillId(c.getBillId());
-                bill.setTableNo(tableNo);
-                bill.setBillStatus("Pay");
+            int guestNo = 0;
+            try {
+                if (txt_menuNoGuest.getText().isEmpty()) {
+                    guestNo = 0;
+                } else {
+                    guestNo = Integer.parseInt(txt_menuNoGuest.getText());
+
+                }
+            } catch (NumberFormatException e) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error:");
+                alert.setHeaderText(null);
+                alert.setContentText("Please enter a valid number");
+                alert.showAndWait();
             }
+            Bill bill = new Bill();
+            bill.setTableNo(tableNo);
+            bill.setGuestNo(guestNo);
+            bill.setCus_id(data.customerId);
+            bill.setUserName(data.username);
+            bill.setBillTotal(total);
+            bill.setBillTax(billtax);
+            bill.setBillService(billservice);
+            bill.setBillDiscount(discount);
+            bill.setBillSubTotal(subtotal);
             java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
             bill.setBillDate(sqlDate);
-
-            billDAO.UpdateDB(bill);
+            bill.setBillStatus("UNPAID");
+            // Insert bill and get the generated bill ID
+            int billId = billDAO.insertBillAndGetId(bill, cn);
+            List<Order> orderList = orderDAO.showOrderDB();
+            billDAO.insertOrderDetails(billId, orderList, cn);
+            orderDAO.archiveAndDeleteOrders(cn);
+            cn.commit();
             menuShowOrderData();
             menuRestart();
-
+        } catch (SQLException ex) {
+            if (cn != null) {
+                try {
+                    cn.rollback();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            if (cn != null) {
+                try {
+                    cn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
+    }
+
+    @FXML
+    private void menu_clear(ActionEvent event) {
+        menu_inputPhone.clear();
+        menu_TextNote.clear();
+        data.customerId= "New ";
+//        getCustomerId();
+    }
+
+    @FXML
+    private void menu_ClearBillInput(ActionEvent event) {
+        txt_menuTableNo.clear();
+        menu_InputDiscount.clear();
+        txt_menuNoGuest.clear();
+        discountvalue = 0;
+        menuGetSubtotal();
+        menuDisplayTotal();
     }
 
     public void menuRestart() {
@@ -1226,21 +1362,26 @@ private void inven_Sort(ActionEvent event) {
         subtotal = 0;
         amount = 0;
         change = 0;
+        discount = 0;
         menu_Total.setText("0.0");
         menu_Tax.setText(" 0.0");
         menu_Service.setText("0.0");
+        menu_Discount.setText("0.0");
         menu_Subtotal.setText(" 0.0");
         menu_txtAmount.setText("");
         menu_Change.setText("0.0");
-        menu_TbView.getItems().clear();
+        txt_menuNoGuest.clear();
+        txt_menuTableNo.clear();
+        menu_inputPhone.clear();
+        menu_InputDiscount.clear();
     }
+
     private String getProId;
 
     @FXML
     private void menu_productSelected(MouseEvent event) {
-        Bill proId = menu_TbView.getSelectionModel().getSelectedItem();
+        Order proId = menu_TbView.getSelectionModel().getSelectedItem();
         int num = menu_TbView.getSelectionModel().getSelectedIndex();
-
         if ((num - 1) < -1) {
             return;
         }
@@ -1248,7 +1389,7 @@ private void inven_Sort(ActionEvent event) {
     }
 
     @FXML
-    private void menu_RemoveItem(ActionEvent event) {
+    private void menu_RemoveItem(MouseEvent event) {
         if (getProId == null) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Message");
@@ -1261,41 +1402,19 @@ private void inven_Sort(ActionEvent event) {
             alert.setHeaderText(null);
             alert.setContentText("Are you sure you want to delete ?");
             Optional<ButtonType> option = alert.showAndWait();
-
             if (option.get().equals(ButtonType.OK)) {
-                billDAO.DeleteDB(getProId);
+                orderDAO.DeleteProIdDB(getProId);
                 menuShowOrderData();
             }
         }
     }
 
     @FXML
-    private void menu_Receipt(ActionEvent event) {
-    }
-
-    @FXML
-    private void menu_StoreBill(ActionEvent event) {
-        getCustomerId();
-        menuGetSubtotal();
-        String tableNo = "null";
-        if (txt_menuTableNo.getText() != null) {
-            tableNo = txt_menuTableNo.getText();
-        }
-        Bill bill = new Bill();
-        for (Bill c : billDAO.getOrderDB(currentBillId)) {
-            bill.setBillId(c.getBillId());
-            bill.setTableNo(tableNo);
-            bill.setBillStatus("UnPay");
-        }
-        java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-        bill.setBillDate(sqlDate);
-        billDAO.UpdateDB(bill);
-        menuShowOrderData();
-        menuRestart();
+    private void menu_Receipt(MouseEvent event) {
     }
 
 //CUSTOMER
-private void loadData() {
+    private void loadData() {
         List<Customer> customers = CustomerDAO.getList();
         customerTable.getItems().setAll(customers);
     }
@@ -1310,7 +1429,6 @@ private void loadData() {
             deletedField.setText(String.valueOf(selectedCustomer.getDeleted()));
         }
     }
-     
 
     @FXML
     private void handleAddCustomer(ActionEvent event) {
@@ -1364,7 +1482,7 @@ private void loadData() {
             if (deleted > 0) {
                 customerTable.getItems().remove(selectedCustomer);
                 clearAllFields();
-textNotice2.setText("Customer deleted successfully");
+                textNotice2.setText("Customer deleted successfully");
             }
         }
     }
@@ -1380,40 +1498,40 @@ textNotice2.setText("Customer deleted successfully");
             customerTable.getItems().setAll(searchResults);
         }
     }
+
     private void clearAllFields() {
-    nameField.clear();
-    phoneField.clear();
-    emailField.clear();
-    discountField.clear();
-    deletedField.clear();
-}
+        nameField.clear();
+        phoneField.clear();
+        emailField.clear();
+        discountField.clear();
+        deletedField.clear();
+    }
 
     @FXML
     private void handleClearAllCustomer(ActionEvent event) {
         clearAllFields();
-       
+
     }
-    
 
     private boolean validateCustomerInput(ActionEvent event) {
         boolean isValid = true;
         errorMessage validate = new errorMessage();
 
-      if (nameField.getText().trim().isEmpty()) { 
-        textNotice2.setText("Name " + validate.getErrorMsg1());
-        isValid = false;
-    } else if (!phoneField.getText().matches("\\d{1,10}")) {
-     textNotice2.setText("Phone " + validate.getErrorMsg2());
-        isValid = false;
-    } else if (!emailField.getText().isEmpty() && !emailField.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) { 
-        textNotice2.setText("Email " + validate.getErrorMsg3());
-        isValid = false;
-    } else {
-        textNotice2.setText(null); 
-    }
+        if (nameField.getText().trim().isEmpty()) {
+            textNotice2.setText("Name " + validate.getErrorMsg1());
+            isValid = false;
+        } else if (!phoneField.getText().matches("\\d{1,10}")) {
+            textNotice2.setText("Phone " + validate.getErrorMsg2());
+            isValid = false;
+        } else if (!emailField.getText().isEmpty() && !emailField.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            textNotice2.setText("Email " + validate.getErrorMsg3());
+            isValid = false;
+        } else {
+            textNotice2.setText(null);
+        }
 
-    return isValid;
-}
+        return isValid;
+    }
     //STAFF
     static ObservableList<String> positionList;
     static ObservableList<String> questionList;
@@ -1421,8 +1539,8 @@ textNotice2.setText("Customer deleted successfully");
     public UserDAO udao = new UserDAO();
     public ObservableList<UserInfo> uList = FXCollections.observableArrayList();
     FilteredList<UserInfo> userfilteredList = new FilteredList<>(uList, p -> true);
-    UserInfo userSelected;
-    int userindexSelected;
+    UserInfo userSelected = null;
+    int userindexSelected = -1;
 
     private void positionList() {
         positionList = FXCollections.observableArrayList("Staff", "Supervisor", "Admin");
@@ -1461,8 +1579,6 @@ textNotice2.setText("Customer deleted successfully");
             txt_ReAnswer.setText(String.valueOf(userSelected.getAnswer()));
             userPosition.setValue(userSelected.getUserPosition());
             userQuestion.setValue(userSelected.getQuestion());
-
-        } else {
 
         }
     }
@@ -1517,7 +1633,7 @@ textNotice2.setText("Customer deleted successfully");
                 udao.deleteDB(id);
                 uList.remove(userindexSelected);
                 userSelected = null;
-                userindexSelected = 0;
+                userindexSelected = -1;
             } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Notice:");
@@ -1572,7 +1688,7 @@ textNotice2.setText("Customer deleted successfully");
             alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setContentText("Update successful");
             alert.showAndWait();
-            Clear();
+            StaffClear();
         } else {
             alert.setContentText("Please choose updated product");
             alert.showAndWait();
@@ -1598,9 +1714,10 @@ textNotice2.setText("Customer deleted successfully");
         txt_ReUserName.clear();
         txt_RePass.clear();
         txt_ReAnswer.clear();
-        userPosition.getValue();
-        userQuestion.getValue();
+        userPosition.setValue("Please choose position");
+        userQuestion.setValue("Please choose question");
         Staff_textNotice.setText("");
+
     }
 
 }
