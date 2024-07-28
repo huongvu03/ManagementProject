@@ -306,64 +306,6 @@ public class MenuController implements Initializable {
     @FXML
     private Button bill_btn;
     @FXML
-    private AnchorPane Bill_Anchor;
-    @FXML
-    private TableView<Bill> billTable1;
-    @FXML
-    private TableColumn<Bill, Integer> bill_billId;
-    @FXML
-    private TableColumn<Bill, String> bill_tableNo;
-    @FXML
-    private TableColumn<Bill, String> bill_cus_id;
-    @FXML
-    private TableColumn<Bill, String> bill_userName;
-    @FXML
-    private TableColumn<Bill, String> bill_proId;
-    @FXML
-    private AnchorPane bill_view1;
-    @FXML
-    private TableView<?> bill_TbView1;
-    @FXML
-    private TableColumn<?, ?> bill_Col_ProName1;
-    @FXML
-    private TableColumn<?, ?> bill_Col_Quantity1;
-    @FXML
-    private TableColumn<?, ?> bill_Col_Price1;
-    @FXML
-    private Label bill_Discount1;
-    @FXML
-    private Label bill_Tax1;
-    @FXML
-    private Label bill_Service1;
-    @FXML
-    private Label bill_Subtotal1;
-    @FXML
-    private Label bill_cusName1;
-    @FXML
-    private Label bill_Total1;
-    @FXML
-    private AnchorPane bill_view2;
-    @FXML
-    private TableView<?> bill_TbView2;
-    @FXML
-    private TableColumn<?, ?> bill_Col_ProName2;
-    @FXML
-    private TableColumn<?, ?> bill_Col_Quantity2;
-    @FXML
-    private TableColumn<?, ?> bill_Col_Price2;
-    @FXML
-    private Label bill_Discount2;
-    @FXML
-    private Label bill_Tax2;
-    @FXML
-    private Label bill_Service2;
-    @FXML
-    private Label bill_Subtotal2;
-    @FXML
-    private Label bill_cusName2;
-    @FXML
-    private Label bill_Total2;
-    @FXML
     private TextField searchField1;
     @FXML
     private Button bill_mergeBillButton;
@@ -389,6 +331,91 @@ public class MenuController implements Initializable {
     private TextField menu_inputPhone;
     @FXML
     private TextField txt_menuNoGuest;
+    
+    
+    
+    
+    //tb main
+    @FXML
+    private AnchorPane Bill_Anchor;
+    @FXML
+    private TableView<?> bill_tbView_main;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billId;
+    @FXML
+    private TableColumn<?, ?> tc_bill_tableNo;
+    @FXML
+    private TableColumn<?, ?> tc_bill_cusId;
+    @FXML
+    private TableColumn<?, ?> tc_bill_cusName;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billTotal;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billTax;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billService;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billSub;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billDate;
+    @FXML
+    private TableColumn<?, ?> tc_bill_billStatus;
+    
+    
+    
+    
+    
+    //tb1
+    @FXML
+    private AnchorPane bill_view1;
+    @FXML
+    private TableView<?> bill_tbView_1;
+    @FXML
+    private TableColumn<?, ?> tb1_tc_bill_proName;
+    @FXML
+    private TableColumn<?, ?> tb1_tc_bill_quantity;
+    @FXML
+    private TableColumn<?, ?> tb1_tc_bill_price;
+    @FXML
+    private Label bill_Discount1;
+    @FXML
+    private Label bill_Tax1;
+    @FXML
+    private Label bill_Service1;
+    @FXML
+    private Label bill_Subtotal1;
+    @FXML
+    private Label bill_cusName1;
+    @FXML
+    private Label bill_Total1;
+    
+    
+    
+    
+    
+    //tb2
+    @FXML
+    private AnchorPane bill_view2;
+    @FXML
+    private TableView<?> bill_tbView_2;
+    @FXML
+    private TableColumn<?, ?> tb2_tc_bill_proName;
+    @FXML
+    private TableColumn<?, ?> tb2_tc_bill_quantity;
+    @FXML
+    private TableColumn<?, ?> tb2_tc_bill_price;
+    @FXML
+    private Label bill_Discount2;
+    @FXML
+    private Label bill_Tax2;
+    @FXML
+    private Label bill_Service2;
+    @FXML
+    private Label bill_Subtotal2;
+    @FXML
+    private Label bill_cusName2;
+    @FXML
+    private Label bill_Total2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -729,17 +756,6 @@ public class MenuController implements Initializable {
 
         tvProduct.setItems(sortedList);
     }
-
-//    private String getCategoryName(int cateId) {
-//           switch (cateId) {
-//        case 1:
-//            return "food";
-//        case 2:
-//            return "drink";
-//        default:
-//            return "Unknown";
-//    }
-//    }
     private String getCategoryName(int cateId) {
         String categoryName;
         switch (cateId) {
@@ -753,7 +769,7 @@ public class MenuController implements Initializable {
                 categoryName = "Unknown";
                 break;
         }
-        //System.out.println("Category ID: " + cateId + " corresponds to Category Name: " + categoryName);
+
         return categoryName;
     }
 
@@ -852,7 +868,6 @@ public class MenuController implements Initializable {
 
             if (proSelected.getProImage() != null && !proSelected.getProImage().isEmpty()) {
                 String path = proSelected.getProImage();
-                //image = new Image("file:" + path, 250, 161, false, true);
                 image = new Image("file:" + path, 200, 200, false, true);
 
                 ImageView.setImage(image);
@@ -951,15 +966,14 @@ public class MenuController implements Initializable {
         String selectedCategory = boxCateSort.getValue();
         String selectedStatus = boxStatusSort.getValue();
 
-//    System.out.println("Selected Category: " + selectedCategory);
-//    System.out.println("Selected Status: " + selectedStatus);
+
         filteredList.setPredicate(product -> {
             String categoryName = getCategoryName(product.getCateId());
 
             boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
             boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
 
-//        System.out.println("Product: " + product.getProName() + " matchesCategory: " + matchesCategory + " matchesStatus: " + matchesStatus);
+
             return matchesCategory && matchesStatus;
         });
 
