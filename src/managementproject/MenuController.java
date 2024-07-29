@@ -6,11 +6,7 @@ import Database.CustomerDAO;
 import Database.OrderDAO;
 import Database.ProductDAO;
 import Database.UserDAO;
-import Models.Bill;
-import Models.Customer;
-import Models.Order;
-import Models.Product;
-import Models.UserInfo;
+import Models.*;
 import Validation.errorMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import java.beans.Statement;
@@ -22,6 +18,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +60,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -74,6 +73,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -339,29 +339,29 @@ public class MenuController implements Initializable {
     @FXML
     private AnchorPane Bill_Anchor;
     @FXML
-    private TableView<?> bill_tbView_main;
+    private TableView<Bill> bill_tbView_main;
     @FXML
-    private TableColumn<?, ?> tc_bill_billId;
+    private TableColumn<Bill, Integer> tc_bill_billId;
     @FXML
-    private TableColumn<?, ?> tc_bill_tableNo;
+    private TableColumn<Bill, String> tc_bill_tableNo;
     @FXML
-    private TableColumn<?, ?> tc_bill_cusId;
+    private TableColumn<Bill, String> tc_bill_cusId;
     @FXML
-    private TableColumn<?, ?> tc_bill_cusName;
+    private TableColumn<Bill, String> tc_bill_cusName;
     @FXML
-    private TableColumn<?, ?> tc_bill_billTotal;
+    private TableColumn<Bill, Double> tc_bill_billTotal;
     @FXML
-    private TableColumn<?, ?> tc_bill_billTax;
+    private TableColumn<Bill, Double> tc_bill_billTax;
     @FXML
-    private TableColumn<?, ?> tc_bill_billService;
+    private TableColumn<Bill, Double> tc_bill_billService;
     @FXML
-    private TableColumn<?, ?> tc_bill_billSub;
+    private TableColumn<Bill, Double> tc_bill_billSub;
     @FXML
-    private TableColumn<?, ?> tc_bill_billDate;
+    private TableColumn<Bill, LocalDate> tc_bill_billDate;
     @FXML
-    private TableColumn<?, ?> tc_bill_billStatus;
+    private TableColumn<Bill, String> tc_bill_billStatus;
     
-    
+    private BillDAO billDao = new BillDAO();
     
     
     
@@ -369,13 +369,13 @@ public class MenuController implements Initializable {
     @FXML
     private AnchorPane bill_view1;
     @FXML
-    private TableView<?> bill_tbView_1;
+    private TableView<Bill_Table1> bill_tbView_1;
     @FXML
-    private TableColumn<?, ?> tb1_tc_bill_proName;
+    private TableColumn<Bill_Table1, String> tb1_tc_bill_proName;
     @FXML
-    private TableColumn<?, ?> tb1_tc_bill_quantity;
+    private TableColumn<Bill_Table1, Integer> tb1_tc_bill_quantity;
     @FXML
-    private TableColumn<?, ?> tb1_tc_bill_price;
+    private TableColumn<Bill_Table1, Float> tb1_tc_bill_price;
     @FXML
     private Label bill_Discount1;
     @FXML
@@ -397,13 +397,13 @@ public class MenuController implements Initializable {
     @FXML
     private AnchorPane bill_view2;
     @FXML
-    private TableView<?> bill_tbView_2;
+    private TableView<Bill_Table2> bill_tbView_2;
     @FXML
-    private TableColumn<?, ?> tb2_tc_bill_proName;
+    private TableColumn<Bill_Table2, String> tb2_tc_bill_proName;
     @FXML
-    private TableColumn<?, ?> tb2_tc_bill_quantity;
+    private TableColumn<Bill_Table2, Integer> tb2_tc_bill_quantity;
     @FXML
-    private TableColumn<?, ?> tb2_tc_bill_price;
+    private TableColumn<Bill_Table2, Float> tb2_tc_bill_price;
     @FXML
     private Label bill_Discount2;
     @FXML
@@ -493,6 +493,23 @@ public class MenuController implements Initializable {
         positionList();
         questionList();
         showUser();
+        
+        billList = FXCollections.observableArrayList(billDao.listDB());
+
+        filteredBillList = new FilteredList<>(billList, p -> true);
+        sortedBillList = new SortedList<>(filteredBillList);
+
+        // Initialize DatePickers
+        bill_from.setValue(LocalDate.now());
+        bill_to.setValue(LocalDate.now());
+        //filterBillList();
+        // Add listeners to DatePickers to filter the list when the date is changed
+//        bill_from.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
+//        bill_to.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
+
+        // Set up TableView
+        billShowData();
+        
     }
 
 // NAVBAR CONTROL
@@ -557,8 +574,28 @@ public class MenuController implements Initializable {
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
             Bill_Anchor.setVisible(true);
+            
+            
+            bill_saveButton.setDisable(true);
+            bill_cancelButton1.setDisable(true);
+            
+            //billShowData();
+            if(billList.isEmpty()||billList==null){
+                System.out.println("bill trong 2");
+            }
+            for(Bill b:billList)
+            {
+                System.out.println(b.toString());
+            }
+            if(sortedBillList.isEmpty()||sortedBillList==null){
+                System.out.println("sortedBillList trong 2");
+            }
+            System.out.println("moiw 1");
+            for(Bill b:sortedBillList)
+            {
+                System.out.println(b.toString());
+            }
 
-//            billShowData();
         }
     }
 
@@ -1737,6 +1774,188 @@ public class MenuController implements Initializable {
         userQuestion.setValue("Please choose question");
         Staff_textNotice.setText("");
 
+    }
+    
+    //Bill page
+    
+//    private BillDAO billDao = new BillDAO();
+    private ObservableList<Bill> billList;
+    private FilteredList<Bill> filteredBillList;
+    private SortedList<Bill> sortedBillList;
+    private ObservableList<Bill_Table1>  billtable1;
+    //private ObservableList<Bill_Table2>  billtable2;
+    private Bill billSelected;
+    private Bill_Table1 bill_table1_Selected;
+    private int indexbillSelected;
+    private int indexbill_table1Selected;
+    private ArrayList<Bill_Table1> tlist1 = new ArrayList<Bill_Table1>();
+    private ArrayList<Bill_Table2> tlist2 = new ArrayList<Bill_Table2>();
+    
+    
+    public void billShowData(){
+
+        tc_bill_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
+        tc_bill_tableNo.setCellValueFactory(new PropertyValueFactory<>("tableNo"));
+        tc_bill_cusId.setCellValueFactory(new PropertyValueFactory<>("cus_id"));
+        tc_bill_cusName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        tc_bill_billTotal.setCellValueFactory(new PropertyValueFactory<>("billTotal"));
+        tc_bill_billTax.setCellValueFactory(new PropertyValueFactory<>("billTax"));
+        tc_bill_billService.setCellValueFactory(new PropertyValueFactory<>("billService"));
+        tc_bill_billSub.setCellValueFactory(new PropertyValueFactory<>("billSubTotal"));
+        tc_bill_billDate.setCellValueFactory(new PropertyValueFactory<>("billDate"));
+        tc_bill_billStatus.setCellValueFactory(new PropertyValueFactory<>("billStatus"));
+
+        bill_tbView_main.setItems(sortedBillList);
+    }
+
+    
+    @FXML
+    private void Bill_HandleSplitButton(ActionEvent event) {
+        bill_saveButton.setDisable(false);
+        bill_cancelButton1.setDisable(false);
+        Bill_Table2 tb2 = new Bill_Table2();
+        tb2.setProId(bill_table1_Selected.getProId());
+        tb2.setProName(bill_table1_Selected.getProName());
+        tb2.setCateId(bill_table1_Selected.getCateId());
+        tb2.setQuantity(bill_table1_Selected.getQuantity());
+        
+        tb2.setProPrice(bill_table1_Selected.getProPrice());
+        tb2.setBillDiscount(bill_table1_Selected.getBillDiscount());
+        tb2.setBillTax(bill_table1_Selected.getBillTax());
+        tb2.setBillService(bill_table1_Selected.getBillService());
+        tb2.setBillSubTotal(bill_table1_Selected.getBillSubTotal());
+        
+        tb2.setCus_id(bill_table1_Selected.getCus_id());
+        tb2.setCus_name(bill_table1_Selected.getCus_name());
+        tlist2.add(tb2);
+        billtable1.remove(indexbill_table1Selected);
+        
+        for(Bill_Table2 tb: tlist2){
+        System.out.println(tb.toString());
+        }
+        for(Bill_Table1 tb: billtable1){
+        System.out.println(tb.toString());
+        }
+        showtable2();
+
+    }
+    
+    @FXML
+    private void Bill_HandleSelected_main(MouseEvent event) {
+        billSelected = bill_tbView_main.getSelectionModel().getSelectedItem();
+        indexbillSelected = bill_tbView_main.getSelectionModel().getSelectedIndex();
+        showtable1();
+        bill_Total1.setText("$ "+billSelected.getBillTotal());
+        bill_Discount1.setText(billSelected.getCustomer().getDiscount()+" %");
+        //bill_Discount1.setText(String.valueOf(billSelected.getCustomer().getDiscount()));
+        bill_Tax1.setText("$ "+billSelected.getBillTax());
+        bill_Service1.setText("$ "+billSelected.getBillService());
+        bill_Subtotal1.setText("$ "+billSelected.getBillSubTotal());
+        bill_cusName1.setText(billSelected.getCustomer().getName()+" "+billSelected.getCustomer().getPhone());
+    }
+    private void showtable1(){
+        billtable1 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
+        tb1_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
+        tb1_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tb1_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+
+        // Set the data to the table
+
+        bill_tbView_1.setItems(billtable1);
+    }
+    private void showtable2(){
+        //billtable2 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
+        tb2_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
+        tb2_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+
+        // Set the data to the table
+
+        ObservableList<Bill_Table2> observableList2 = FXCollections.observableArrayList(tlist2);
+        bill_tbView_2.setItems(observableList2);
+    }
+
+    @FXML
+    private void Bill_HandleSelected_table1(MouseEvent event) {
+        bill_table1_Selected = bill_tbView_1.getSelectionModel().getSelectedItem();
+        indexbill_table1Selected = bill_tbView_1.getSelectionModel().getSelectedIndex();
+    }
+    private void filterBillList() {
+        LocalDate fromDate = bill_from.getValue();
+        LocalDate toDate = bill_to.getValue();
+
+        if (fromDate != null && toDate != null) {
+            filteredBillList.setPredicate(bill -> {
+                Date billDate = bill.getBillDate(); // Ensure this is a java.util.Date
+                LocalDate billLocalDate = convertToLocalDate(billDate);
+                System.out.println("billDate: " +billDate);
+                System.out.println("billLocalDate: " +billLocalDate);
+                System.out.println("fromDate: " +fromDate);
+                System.out.println("toDate: " +toDate);
+                
+                return (billLocalDate.isEqual(fromDate) || billLocalDate.isAfter(fromDate)) &&
+                       (billLocalDate.isEqual(toDate) || billLocalDate.isBefore(toDate));
+            });
+        } else {
+            filteredBillList.setPredicate(bill -> true); // Show all bills if dates are not set
+        }
+        
+    }
+
+    private LocalDate convertToLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    
+    public class QuantityCell extends TableCell<Bill_Table1, Integer> {
+
+        private final HBox hbox = new HBox();
+        private final TextField textField = new TextField();
+        private final Button incrementButton = new Button("+");
+        private final Button decrementButton = new Button("-");
+
+        public QuantityCell() {
+            hbox.getChildren().addAll(decrementButton, textField, incrementButton);
+            HBox.setHgrow(textField, Priority.ALWAYS);
+
+            incrementButton.setOnAction(event -> {
+                Bill_Table1 table = getTableView().getItems().get(getIndex());
+                int currentValue = getItem();
+                if (currentValue < table.getQuantity()) {
+                    currentValue++;
+                    updateItem(currentValue, false);
+                    //commitEdit(currentValue);
+                }
+            });
+
+            decrementButton.setOnAction(event -> {
+                int currentValue = getItem();
+                if (currentValue > 0) {
+                    currentValue--;
+                    updateItem(currentValue, false);
+                    //commitEdit(currentValue);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Integer item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (empty || item == null) {
+                setGraphic(null);
+            } else {
+                textField.setText(item.toString());
+                setGraphic(hbox);
+            }
+        }
+
+        @Override
+        public void commitEdit(Integer newValue) {
+            super.commitEdit(newValue);
+            Bill_Table1 table = getTableView().getItems().get(getIndex());
+            table.setQuantity(newValue);
+        }
     }
 
 }

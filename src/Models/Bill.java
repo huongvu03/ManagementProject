@@ -23,8 +23,28 @@ public class Bill {
     private Date billDate;
     private String billStatus;
     private int guestNo;
+    private Customer customer;
+    private Product product;
 
     public Bill() {
+        this.customer = new Customer();
+        this.product = new Product();
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -32,11 +52,11 @@ public class Bill {
         return "Bill{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id + ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + '}';
     }
 
-    public Bill(Integer billId, String tableNo, int guestNo , String cus_id, String userName,
+    public Bill(Integer billId, String tableNo, int guestNo, String cus_id, String userName,
             Double billTotal, Double billTax, Double billService, Double billDiscount, Double billSubTotal, Date billDate, String billStatus) {
         this.billId = billId;
         this.tableNo = tableNo;
-        this.guestNo=guestNo;
+        this.guestNo = guestNo;
         this.cus_id = cus_id;
         this.userName = userName;
         this.billTotal = billTotal;

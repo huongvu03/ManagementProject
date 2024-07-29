@@ -30,7 +30,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
+<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
    <left>
       <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
          <children>
@@ -643,7 +643,7 @@
                <children>
                   <AnchorPane layoutX="-9.0" layoutY="5.0" prefHeight="1064.0" prefWidth="1496.0" stylesheets="@MainForm.css">
                      <children>
-                        <TableView fx:id="bill_tbView_main" layoutY="94.0" prefHeight="250.0" prefWidth="1496.0">
+                        <TableView fx:id="bill_tbView_main" layoutY="94.0" onMouseClicked="#Bill_HandleSelected_main" prefHeight="250.0" prefWidth="1496.0">
                            <columns>
                               <TableColumn fx:id="tc_bill_billId" prefWidth="78.99996948242188" text="billId" />
                               <TableColumn fx:id="tc_bill_tableNo" prefWidth="112.0" text="tableNo" />
@@ -663,7 +663,7 @@
                               <String fx:value="radius" />
                            </styleClass>
                            <children>
-                              <TableView fx:id="bill_tbView_1" layoutX="8.0" layoutY="14.0" prefHeight="337.0" prefWidth="458.0">
+                              <TableView fx:id="bill_tbView_1" layoutX="8.0" layoutY="14.0" onMouseClicked="#Bill_HandleSelected_table1" prefHeight="337.0" prefWidth="458.0">
                                  <columns>
                                     <TableColumn fx:id="tb1_tc_bill_proName" prefWidth="201.0" text="ProName" />
                                     <TableColumn fx:id="tb1_tc_bill_quantity" prefWidth="84.0" text="Quantity" />
@@ -818,7 +818,7 @@
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <Button fx:id="bill_splitBillButton" layoutX="673.0" layoutY="491.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Split Bill">
+                        <Button fx:id="bill_splitBillButton" layoutX="673.0" layoutY="491.0" mnemonicParsing="false" onAction="#Bill_HandleSplitButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Split Bill">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
