@@ -170,32 +170,39 @@ public class ProductDAO {
         return null;
     }
 
-    public void UpdateDB(Product pro) {
-        try {
-            cn = connect.GetConnectDB();
-            String sql = "UPDATE Product SET proName = ?, cateId = ?, stock = ?, proPrice = ?, status = ?, proImage = ?, proDate = ? WHERE proId = ?";
-            pStm = cn.prepareStatement(sql);
-            pStm.setString(1, pro.getProName());
-            pStm.setInt(2, pro.getCateId());
-            pStm.setInt(3, pro.getStock());
-            pStm.setDouble(4, pro.getProPrice());
-            pStm.setString(5, pro.getStatus());
-            pStm.setString(6, pro.getProImage());
-            pStm.setDate(7, new java.sql.Date(pro.getProDate().getTime()));
-            pStm.setString(8, pro.getProId());
+    public boolean UpdateDB(Product pro) {
+    Connection cn = null;
+    PreparedStatement pStm = null;
+    boolean isUpdated = false;
 
-            pStm.executeUpdate();
+    try {
+        cn = connect.GetConnectDB();
+        String sql = "UPDATE Product SET proName = ?, cateId = ?, stock = ?, proPrice = ?, status = ?, proImage = ?, proDate = ? WHERE proId = ?";
+        pStm = cn.prepareStatement(sql);
+        pStm.setString(1, pro.getProName());
+        pStm.setInt(2, pro.getCateId());
+        pStm.setInt(3, pro.getStock());
+        pStm.setDouble(4, pro.getProPrice());
+        pStm.setString(5, pro.getStatus());
+        pStm.setString(6, pro.getProImage());
+        pStm.setDate(7, new java.sql.Date(pro.getProDate().getTime()));
+        pStm.setString(8, pro.getProId());
+
+        int rowsAffected = pStm.executeUpdate();
+        isUpdated = rowsAffected > 0; // Nếu có ít nhất một dòng được cập nhật
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (pStm != null) pStm.close();
+            if (cn != null) cn.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                cn.close();
-                pStm.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
+    
+    return isUpdated;
+}
 
     public void DeleteDB(String id) {
         try {

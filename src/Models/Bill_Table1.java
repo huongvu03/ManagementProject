@@ -2,6 +2,7 @@
 package Models;
 
 public class Bill_Table1 {
+    private int billId;
     private String proId;
     private String proName;
     private int cateId;
@@ -40,7 +41,16 @@ public class Bill_Table1 {
 
     @Override
     public String toString() {
-        return "Bill_Table1{" + "proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billDiscount=" + billDiscount + ", billSubTotal=" + billSubTotal + ", cus_id=" + cus_id + ", cus_name=" + cus_name + '}';
+        return "Bill_Table1{" + "billId=" + billId + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billDiscount=" + billDiscount + ", billSubTotal=" + billSubTotal + ", cus_id=" + cus_id + ", cus_name=" + cus_name + '}';
+    }
+
+
+    public int getBillId() {
+        return billId;
+    }
+
+    public void setBillId(int billId) {
+        this.billId = billId;
     }
 
     public String getProId() {

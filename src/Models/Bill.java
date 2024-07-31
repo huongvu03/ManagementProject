@@ -25,6 +25,7 @@ public class Bill {
     private int guestNo;
     private Customer customer;
     private Product product;
+    private Date archiveDate;
 
     public Bill() {
         this.customer = new Customer();
@@ -47,13 +48,21 @@ public class Bill {
         this.product = product;
     }
 
+    public Date getArchiveDate() {
+        return archiveDate;
+    }
+
+    public void setArchiveDate(Date archiveDate) {
+        this.archiveDate = archiveDate;
+    }
+
     @Override
     public String toString() {
-        return "Bill{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id + ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + '}';
+        return "Billmain{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id +", cus_name= "+customer.getName()+ ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + '}';
     }
 
     public Bill(Integer billId, String tableNo, int guestNo, String cus_id, String userName,
-            Double billTotal, Double billTax, Double billService, Double billDiscount, Double billSubTotal, Date billDate, String billStatus) {
+            Double billTotal, Double billTax, Double billService, Double billDiscount, Double billSubTotal, Date billDate, String billStatus,Customer customer) {
         this.billId = billId;
         this.tableNo = tableNo;
         this.guestNo = guestNo;
@@ -66,6 +75,7 @@ public class Bill {
         this.billSubTotal = billSubTotal;
         this.billDate = billDate;
         this.billStatus = billStatus;
+        this.customer = new Customer();
     }
 
     public int getGuestNo() {

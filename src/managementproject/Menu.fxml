@@ -407,7 +407,7 @@
                         </AnchorPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane fx:id="Menu_Anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0" stylesheets="@MainForm.css" visible="false">
+                <AnchorPane fx:id="Menu_Anchor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1500.0" stylesheets="@MainForm.css">
                     <children>
                         <AnchorPane layoutX="8.0" layoutY="10.0" prefHeight="1061.0" prefWidth="966.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
                             <children>
@@ -500,12 +500,12 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="89.0" layoutY="545.0" prefWidth="150.0" text="Tax :" textAlignment="RIGHT" AnchorPane.rightAnchor="269.0">
+                        <Label alignment="CENTER_RIGHT" layoutX="89.0" layoutY="545.0" prefWidth="150.0" text="Discount:" textAlignment="RIGHT" AnchorPane.rightAnchor="269.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Tax" layoutX="263.0" layoutY="545.0" prefHeight="27.0" prefWidth="193.0" AnchorPane.leftAnchor="261.0">
+                        <Label fx:id="menu_Discount" layoutX="263.0" layoutY="545.0" prefHeight="27.0" prefWidth="193.0" AnchorPane.leftAnchor="261.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -520,12 +520,12 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="160.0" layoutY="608.0" text="Discount :" AnchorPane.rightAnchor="268.6666666666667">
+                        <Label layoutX="160.0" layoutY="608.0" text="Tax:" AnchorPane.rightAnchor="268.6666666666667">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Discount" layoutX="253.0" layoutY="607.0" prefHeight="27.0" prefWidth="193.0" AnchorPane.leftAnchor="261.0">
+                        <Label fx:id="menu_Tax" layoutX="253.0" layoutY="607.0" prefHeight="27.0" prefWidth="193.0" AnchorPane.leftAnchor="261.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -639,7 +639,7 @@
                   </AnchorPane>
                     </children>
                 </AnchorPane>
-            <AnchorPane fx:id="Bill_Anchor" layoutX="10.0" layoutY="10.0" prefHeight="1085.0" prefWidth="1250.0">
+            <AnchorPane fx:id="Bill_Anchor" layoutX="10.0" layoutY="10.0" prefHeight="1085.0" prefWidth="1250.0" visible="false">
                <children>
                   <AnchorPane layoutX="-9.0" layoutY="5.0" prefHeight="1064.0" prefWidth="1496.0" stylesheets="@MainForm.css">
                      <children>
@@ -657,164 +657,110 @@
                               <TableColumn fx:id="tc_bill_billStatus" prefWidth="119.0" text="billStatus" />
                            </columns>
                         </TableView>
-                        <AnchorPane fx:id="bill_view1" layoutX="54.0" layoutY="399.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="607.0" prefWidth="476.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                        <AnchorPane fx:id="bill_view1" layoutX="54.0" layoutY="379.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="649.0" prefWidth="476.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
                            <styleClass>
                               <String fx:value="shadow" />
                               <String fx:value="radius" />
                            </styleClass>
                            <children>
-                              <TableView fx:id="bill_tbView_1" layoutX="8.0" layoutY="14.0" onMouseClicked="#Bill_HandleSelected_table1" prefHeight="337.0" prefWidth="458.0">
+                              <TableView fx:id="bill_tbView_1" layoutX="8.0" layoutY="14.0" onMouseClicked="#Bill_HandleSelected_table1" prefHeight="231.0" prefWidth="458.0">
                                  <columns>
-                                    <TableColumn fx:id="tb1_tc_bill_proName" prefWidth="201.0" text="ProName" />
-                                    <TableColumn fx:id="tb1_tc_bill_quantity" prefWidth="84.0" text="Quantity" />
-                                    <TableColumn fx:id="tb1_tc_bill_price" prefWidth="172.0" text="Price" />
+                                    <TableColumn fx:id="tb1_tc_bill_proName" prefWidth="171.99996948242188" text="ProName" />
+                                    <TableColumn fx:id="tb1_tc_bill_quantity" prefWidth="122.6666259765625" text="Quantity" />
+                                    <TableColumn fx:id="tb1_tc_bill_price" prefWidth="160.0" text="Price" />
                                  </columns>
                               </TableView>
-                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="423.0" prefHeight="27.0" prefWidth="150.0" text="Discount:" AnchorPane.rightAnchor="315.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="299.0" prefHeight="30.0" prefWidth="140.0" text="Discount:" AnchorPane.rightAnchor="293.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Discount1" layoutX="212.0" layoutY="302.0" prefHeight="27.0" prefWidth="166.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Discount1" layoutX="215.0" layoutY="423.0" prefHeight="27.0" prefWidth="166.0" text="0" AnchorPane.leftAnchor="215.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="329.0" prefHeight="30.0" prefWidth="140.0" text="Tax:" AnchorPane.rightAnchor="293.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Tax1" layoutX="212.0" layoutY="329.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="450.0" prefHeight="27.0" prefWidth="150.0" text="Tax:" AnchorPane.rightAnchor="315.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="358.0" prefHeight="30.0" prefWidth="140.0" text="Service Charge:" AnchorPane.rightAnchor="286.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Service1" layoutX="212.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Tax1" layoutX="215.0" layoutY="450.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="215.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="477.0" prefHeight="27.0" prefWidth="150.0" text="Service Charge:" AnchorPane.rightAnchor="315.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_Service1" layoutX="215.0" layoutY="477.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="215.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="11.0" layoutY="504.0" prefHeight="30.0" prefWidth="150.0" text="Subtotal:" AnchorPane.rightAnchor="315.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="45.0" layoutY="405.0" prefHeight="30.0" prefWidth="140.0" text="Subtotal:" AnchorPane.rightAnchor="291.0">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Subtotal1" layoutX="215.0" layoutY="504.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="215.0">
+                              <Label fx:id="bill_Subtotal1" layoutX="212.0" layoutY="405.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="9.0" layoutY="547.0" prefHeight="28.0" prefWidth="150.0" text="Customer Name:">
+                              <Label alignment="CENTER_RIGHT" layoutX="45.0" layoutY="449.0" prefHeight="30.0" prefWidth="140.0" text="Cus Name:">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_cusName1" layoutX="212.0" layoutY="450.0" prefHeight="27.0" prefWidth="200.0" text="0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_cusName1" layoutX="213.0" layoutY="547.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="37.0" layoutY="257.0" prefHeight="30.0" prefWidth="140.0" text="Total:">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Total1" layoutX="212.0" layoutY="258.0" prefHeight="27.0" prefWidth="166.0" text="0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="9.0" layoutY="391.0" prefHeight="32.0" prefWidth="150.0" text="Total:">
+                              <TextField fx:id="bill_inputPhone1" layoutX="208.0" layoutY="562.0" prefHeight="44.0" prefWidth="207.0" promptText="Cus. Phone">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
-                              </Label>
-                              <Label fx:id="bill_Total1" layoutX="213.0" layoutY="393.0" prefHeight="27.0" prefWidth="166.0" text="0">
+                              </TextField>
+                              <FontAwesomeIcon fx:id="bill_buttonSphone1" glyphName="SEARCH" layoutX="430.0" layoutY="592.0" onMouseClicked="#bill_handleSphone1" size="2em" text="" wrappingWidth="25.80948257446289" />
+                              <TextField fx:id="bill_TableNo1" layoutX="61.0" layoutY="501.0" prefHeight="45.0" prefWidth="123.0" promptText="TableNo">
                                  <font>
-                                    <Font size="18.0" />
+                                    <Font size="20.0" />
                                  </font>
-                              </Label>
+                              </TextField>
+                              <TextField fx:id="bill_InputDiscount1" layoutX="208.0" layoutY="500.0" prefHeight="46.0" prefWidth="207.0" promptText="Discount">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
+                              <FontAwesomeIcon glyphName="USER" layoutX="16.0" layoutY="597.0" size="3em" text="" />
+                              <FontAwesomeIcon glyphName="ARROW_CIRCLE_DOWN" layoutX="427.0" layoutY="536.0" size="3em" />
+                              <FontAwesomeIcon glyphName="TABLE" layoutX="14.0" layoutY="536.0" size="3em" />
+                              <TextField fx:id="bill_NoGuest1" layoutX="60.0" layoutY="562.0" prefHeight="45.0" prefWidth="125.0" promptText="No.Guest">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
                            </children>
                            <padding>
                               <Insets right="5.0" />
                            </padding>
                         </AnchorPane>
-                        <AnchorPane fx:id="bill_view2" layoutX="978.0" layoutY="394.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="610.0" prefWidth="476.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
-                           <styleClass>
-                              <String fx:value="shadow" />
-                              <String fx:value="radius" />
-                           </styleClass>
-                           <children>
-                              <TableView fx:id="bill_tbView_2" layoutX="9.0" layoutY="12.0" prefHeight="343.0" prefWidth="458.0">
-                                 <columns>
-                                    <TableColumn fx:id="tb2_tc_bill_proName" prefWidth="217.0" text="ProName" />
-                                    <TableColumn fx:id="tb2_tc_bill_quantity" prefWidth="90.0" text="Quantity" />
-                                    <TableColumn fx:id="tb2_tc_bill_price" prefWidth="150.0" text="Price" />
-                                 </columns>
-                              </TableView>
-                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="423.0" prefHeight="27.0" prefWidth="150.0" text="Discount:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_Discount2" layoutX="214.0" layoutY="423.0" prefHeight="27.0" prefWidth="166.0" text="0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="450.0" prefHeight="27.0" prefWidth="150.0" text="Tax:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_Tax2" layoutX="214.0" layoutY="450.0" prefHeight="27.0" prefWidth="200.0" text="0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="477.0" prefHeight="27.0" prefWidth="150.0" text="Service Charge:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_Service2" layoutX="214.0" layoutY="477.0" prefHeight="27.0" prefWidth="200.0" text="0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="504.0" prefHeight="30.0" prefWidth="150.0" text="Subtotal:">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_Subtotal2" layoutX="214.0" layoutY="504.0" prefHeight="27.0" prefWidth="200.0" text="0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="8.0" layoutY="547.0" prefHeight="28.0" prefWidth="150.0" text="Customer Name:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_cusName2" layoutX="212.0" layoutY="547.0" prefHeight="27.0" prefWidth="200.0" text="0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="8.0" layoutY="391.0" prefHeight="32.0" prefWidth="150.0" text="Total:">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="bill_Total2" layoutX="212.0" layoutY="393.0" prefHeight="27.0" prefWidth="166.0" text="0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets right="5.0" />
-                           </padding>
-                        </AnchorPane>
-                        <TextField fx:id="searchField1" layoutX="978.0" layoutY="27.0" prefHeight="43.0" prefWidth="291.0" promptText="Search table" styleClass="textfield" />
-                        <Button fx:id="bill_mergeBillButton" layoutX="673.0" layoutY="561.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Merge Bill">
+                        <TextField fx:id="bill_searchBillId" layoutX="978.0" layoutY="27.0" prefHeight="43.0" prefWidth="291.0" promptText="Input Bill ID" styleClass="textfield" />
+                        <Button fx:id="bill_mergeBillButton" layoutX="673.0" layoutY="561.0" mnemonicParsing="false" onAction="#Bill_HandleMergeButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Merge Bill">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
@@ -822,37 +768,143 @@
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <Button fx:id="bill_saveButton" layoutX="673.0" layoutY="727.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Save">
+                        <Button fx:id="bill_saveButton" layoutX="673.0" layoutY="727.0" mnemonicParsing="false" onAction="#Bill_HandleSaveButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Save">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <Button fx:id="searchButton1" layoutX="1312.0" layoutY="29.0" mnemonicParsing="false" onAction="#handleSearchByPhone" prefHeight="38.0" prefWidth="104.0" styleClass="button" text="Search" />
-                        <Button fx:id="bill_payButton" layoutX="673.0" layoutY="788.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Pay">
+                        <Button fx:id="bill_searchBillIdButton" layoutX="1312.0" layoutY="29.0" mnemonicParsing="false" onAction="#bill_handleSearchBillId" prefHeight="38.0" prefWidth="104.0" styleClass="button" text="Search">
+                           <font>
+                              <Font size="20.0" />
+                           </font></Button>
+                        <Button fx:id="bill_payButton" layoutX="673.0" layoutY="788.0" mnemonicParsing="false" onAction="#Bill_HandlePaylButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Pay">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <DatePicker fx:id="bill_from" layoutX="69.0" layoutY="35.0" prefHeight="28.0" prefWidth="135.0" />
-                        <DatePicker fx:id="bill_to" layoutX="277.0" layoutY="35.0" prefHeight="28.0" prefWidth="139.0" />
+                        <DatePicker fx:id="bill_from" layoutX="77.0" layoutY="31.0" prefHeight="39.0" prefWidth="151.0" />
+                        <DatePicker fx:id="bill_to" layoutX="300.0" layoutY="30.0" prefHeight="41.0" prefWidth="157.0" />
                         <Label layoutX="14.0" layoutY="39.0" text="From:">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="242.0" layoutY="38.0" text="To:">
+                        <Label layoutX="249.0" layoutY="38.0" text="To:">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Button fx:id="bill_searchDate" layoutX="442.0" layoutY="35.0" mnemonicParsing="false" text="Confirm">
+                        <Button fx:id="bill_searchDate" layoutX="699.0" layoutY="27.0" mnemonicParsing="false" text="Confirm">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="20.0" />
                            </font>
                         </Button>
-                        <Button fx:id="bill_cancelButton1" layoutX="673.0" layoutY="954.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Cancel">
+                        <Button fx:id="bill_cancelButton1" layoutX="673.0" layoutY="954.0" mnemonicParsing="false" onAction="#Bill_HandleCancelButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Cancel">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Button>
+                        <AnchorPane fx:id="bill_view11" layoutX="978.0" layoutY="379.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="649.0" prefWidth="476.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                           <styleClass>
+                              <String fx:value="shadow" />
+                              <String fx:value="radius" />
+                           </styleClass>
+                           <children>
+                              <TableView fx:id="bill_tbView_2" layoutX="8.0" layoutY="14.0" onMouseClicked="#Bill_HandleSelected_table1" prefHeight="231.0" prefWidth="458.0">
+                                 <columns>
+                                    <TableColumn fx:id="tb2_tc_bill_proName" prefWidth="171.99996948242188" text="ProName" />
+                                    <TableColumn fx:id="tb2_tc_bill_quantity" prefWidth="122.6666259765625" text="Quantity" />
+                                    <TableColumn fx:id="tb2_tc_bill_price" prefWidth="160.0" text="Price" />
+                                 </columns>
+                              </TableView>
+                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="299.0" prefHeight="30.0" prefWidth="140.0" text="Discount:" AnchorPane.rightAnchor="293.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Discount2" layoutX="212.0" layoutY="302.0" prefHeight="27.0" prefWidth="166.0" text="0" AnchorPane.leftAnchor="212.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="329.0" prefHeight="30.0" prefWidth="140.0" text="Tax:" AnchorPane.rightAnchor="293.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Tax2" layoutX="212.0" layoutY="329.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="358.0" prefHeight="30.0" prefWidth="140.0" text="Service Charge:" AnchorPane.rightAnchor="286.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Service2" layoutX="212.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="45.0" layoutY="405.0" prefHeight="30.0" prefWidth="140.0" text="Subtotal:" AnchorPane.rightAnchor="291.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Subtotal2" layoutX="212.0" layoutY="405.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" layoutX="45.0" layoutY="449.0" prefHeight="30.0" prefWidth="140.0" text="Cus Name:">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_cusName2" layoutX="212.0" layoutY="450.0" prefHeight="27.0" prefWidth="200.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="37.0" layoutY="257.0" prefHeight="30.0" prefWidth="140.0" text="Total:">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="bill_Total2" layoutX="212.0" layoutY="258.0" prefHeight="27.0" prefWidth="166.0" text="0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="bill_inputPhone2" layoutX="208.0" layoutY="562.0" prefHeight="44.0" prefWidth="207.0" promptText="Cus. Phone">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <FontAwesomeIcon fx:id="bill_buttonSphone2" glyphName="SEARCH" layoutX="430.0" layoutY="592.0" onMouseClicked="#bill_handleSphone2" size="2em" text="" wrappingWidth="25.80948257446289" />
+                              <TextField fx:id="bill_TableNo2" layoutX="61.0" layoutY="501.0" prefHeight="45.0" prefWidth="123.0" promptText="TableNo">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="bill_InputDiscount2" layoutX="208.0" layoutY="500.0" prefHeight="46.0" prefWidth="207.0" promptText="Discount">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
+                              <FontAwesomeIcon glyphName="USER" layoutX="16.0" layoutY="597.0" size="3em" text="" />
+                              <FontAwesomeIcon glyphName="ARROW_CIRCLE_DOWN" layoutX="427.0" layoutY="536.0" size="3em" />
+                              <FontAwesomeIcon glyphName="TABLE" layoutX="14.0" layoutY="536.0" size="3em" />
+                              <TextField fx:id="bill_NoGuest2" layoutX="60.0" layoutY="562.0" prefHeight="45.0" prefWidth="125.0" promptText="No.Guest">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </AnchorPane>
+                        <ComboBox fx:id="bill_sortBillStatus" layoutX="512.0" layoutY="30.0" prefHeight="42.0" prefWidth="105.0" promptText="Status Bill" />
                      </children>
                   </AnchorPane>
                </children>
