@@ -72,28 +72,53 @@ public class OrderDAO {
 
 
  public void archiveAndDeleteOrders(Connection cn) throws SQLException {
-    String selectSql = "SELECT * FROM Orderlist";
+   String selectSql = "SELECT * FROM Orderlist";
     String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, note, archiveDate) "
-                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     String deleteSql = "DELETE FROM Orderlist";
-    
-    try (Statement stmt = cn.createStatement();
-         ResultSet rs = stmt.executeQuery(selectSql);
-         PreparedStatement insertStmt = cn.prepareStatement(insertSql)) {
+   try {
+        cn.setAutoCommit(false); // Begin transaction
 
-        while (rs.next()) {
-            insertStmt.setInt(1, rs.getInt("billId"));
-            insertStmt.setString(2, rs.getString("proId"));
-            insertStmt.setString(3, rs.getString("proName"));
-            insertStmt.setInt(4, rs.getInt("cateId"));
-            insertStmt.setInt(5, rs.getInt("quantity"));
-            insertStmt.setDouble(6, rs.getDouble("proPrice"));
-            insertStmt.setString(7, rs.getString("note"));
-            insertStmt.setDate(8, new java.sql.Date(System.currentTimeMillis()));
-            insertStmt.addBatch();
+        try (Statement stmt = cn.createStatement();
+             ResultSet rs = stmt.executeQuery(selectSql);
+             PreparedStatement insertStmt = cn.prepareStatement(insertSql)) {
+
+            while (rs.next()) {
+                String billId = rs.getString("billId");
+                if (billId == null) {
+                    // Skip records with null billId
+                    continue;
+                }
+                // Thêm bản ghi vào batch
+                insertStmt.setString(1, billId);
+                insertStmt.setString(2, rs.getString("proId"));
+                insertStmt.setString(3, rs.getString("proName"));
+                insertStmt.setInt(4, rs.getInt("cateId"));
+                insertStmt.setInt(5, rs.getInt("quantity"));
+                insertStmt.setDouble(6, rs.getDouble("proPrice"));
+                insertStmt.setString(7, rs.getString("note"));
+                insertStmt.setDate(8, new java.sql.Date(System.currentTimeMillis()));
+
+                insertStmt.addBatch();
+            }
+
+            // Thực hiện thêm tất cả bản ghi vào OrderArchive
+            insertStmt.executeBatch();
+
+            // Xóa tất cả các bản ghi trong Orderlist
+            stmt.executeUpdate(deleteSql);
+
+            cn.commit(); // Commit transaction
+
+        } catch (SQLException e) {
+            cn.rollback(); // Rollback transaction on error
+            throw e;
         }
-        insertStmt.executeBatch();
-        stmt.executeUpdate(deleteSql);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        throw e;
+    } finally {
+        cn.setAutoCommit(true); // Reset auto-commit
     }
 }
 public void markOrdersAsProcessed(Connection cn) throws SQLException {

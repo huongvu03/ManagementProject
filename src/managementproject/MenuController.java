@@ -1853,7 +1853,7 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
     }
     
     //Bill page
-    
+ // ===================================================================================================  BILL =======================================
 //    private BillDAO billDao = new BillDAO();
     private ObservableList<Bill> billList;
     private FilteredList<Bill> filteredBillList;
@@ -1991,8 +1991,13 @@ private void Bill_HandleSplitButton(ActionEvent event) {
                 // tren bill_tbView_main khong the chon bill đã được chọn ở bill_tbView_1 
                 // nếu billId selected ở bill_tbView_1 trùng với billId selected ở bill_tbView2 thì hiện thông báo 
                 bill_view1.setDisable(true);
+                
+                if(bill_table1_Selected.getBillId() == (billSelected.getBillId())){
+                    
+                }
                 showtable2_merge();
                 updateBillDetails2();
+                
             } else {
                 showtable1();
                 updateBillDetails();
@@ -2361,7 +2366,7 @@ private void Bill_HandleSplitButton(ActionEvent event) {
         }
     }
     }
-
+//============================================================================================================     MERGE       ============================================
     // Handle Merge Button Action
     boolean checkMerge = true;
 
