@@ -331,10 +331,7 @@ public class MenuController implements Initializable {
     private TextField menu_inputPhone;
     @FXML
     private TextField txt_menuNoGuest;
-    
-    
-    
-    
+
     //tb main
     @FXML
     private AnchorPane Bill_Anchor;
@@ -360,11 +357,9 @@ public class MenuController implements Initializable {
     private TableColumn<Bill, LocalDate> tc_bill_billDate;
     @FXML
     private TableColumn<Bill, String> tc_bill_billStatus;
-    
+
     private BillDAO billDao = new BillDAO();
-    
-    
-    
+
     //tb1
     @FXML
     private AnchorPane bill_view1;
@@ -388,11 +383,7 @@ public class MenuController implements Initializable {
     private Label bill_cusName1;
     @FXML
     private Label bill_Total1;
-    
-    
-    
-    
-    
+
     @FXML
     private TableView<Bill_Table2> bill_tbView_2;
     @FXML
@@ -518,7 +509,7 @@ public class MenuController implements Initializable {
         positionList();
         questionList();
         showUser();
-        
+
         billList = FXCollections.observableArrayList(billDao.listDB());
         filteredBillList = new FilteredList<>(billList, p -> true);
         sortedBillList = new SortedList<>(filteredBillList);
@@ -532,7 +523,6 @@ public class MenuController implements Initializable {
 //        bill_to.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
 
         // Set up TableView
-        
         billShowData();
     }
 
@@ -598,35 +588,31 @@ public class MenuController implements Initializable {
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
             Bill_Anchor.setVisible(true);
-            
-    
+
             refreshBillTableView();
-            System.out.println("vị trí 4:"+data.position);
-            if(data.position.equals( "Staff") )
-            {
+            System.out.println("vị trí 4:" + data.position);
+            if (data.position.equals("Staff")) {
                 bill_splitBillButton.setDisable(true);
                 bill_mergeBillButton.setDisable(true);;
-                
-            }else{
+
+            } else {
                 bill_splitBillButton.setDisable(false);
                 bill_mergeBillButton.setDisable(false);;
-                
+
             }
 
             //billShowData();
-            if(billList.isEmpty()||billList==null){
+            if (billList.isEmpty() || billList == null) {
                 System.out.println("bill trong 2");
             }
-            for(Bill b:billList)
-            {
+            for (Bill b : billList) {
                 System.out.println(b.toString());
             }
-            if(sortedBillList.isEmpty()||sortedBillList==null){
+            if (sortedBillList.isEmpty() || sortedBillList == null) {
                 System.out.println("sortedBillList trong 2");
             }
             System.out.println("moiw 2");
-            for(Bill b:sortedBillList)
-            {
+            for (Bill b : sortedBillList) {
                 System.out.println(b.toString());
             }
 
@@ -801,7 +787,7 @@ public class MenuController implements Initializable {
     }
 
 //INVENTORY
-Product proSelected;
+    Product proSelected;
     int indexSelected;
     private Image image;
     private ObservableList<Product> productList;
@@ -851,16 +837,16 @@ Product proSelected;
         txtProName.clear();
         txtStock.clear();
         txtProPrice.clear();
-        boxName.getSelectionModel().clearSelection();
-        boxStatus.getSelectionModel().clearSelection();
+        boxName.setValue("Please choose Category option");
+        boxStatus.setValue("Please choose Status option");
         textNotice.setText("");
         ImageView.setImage(null);
     }
 
     @FXML
     private void inven_ClearSort(ActionEvent event) {
-        boxCateSort.getSelectionModel().clearSelection();
-        boxStatusSort.getSelectionModel().clearSelection();
+        boxCateSort.setValue("Please choose Category option");
+        boxStatusSort.setValue("Please choose Status option");
         invent_txtSearch.clear();
         filteredList.setPredicate(p -> true); // Reset to show all products
         textNotice.setText("Sorting and Search cleared.");
@@ -884,7 +870,7 @@ Product proSelected;
             isValid = false;
         } else if (!txtProId.getText().matches("P\\d+")) { // Check format P followed by numbers
             textNotice.setText("ProId must start with P followed by numbers.");
-isValid = false;
+            isValid = false;
         } // Validate CategoryName
         else if (boxName == null || boxName.getSelectionModel().isEmpty()) {
             textNotice.setText("CateName " + validate.getErrorMsg1());
@@ -948,6 +934,7 @@ isValid = false;
         }
     }
 // Khi chọn sản phẩm, vô hiệu hóa trường proId để không thể chỉnh sửa
+
     @FXML
     private void inventory_proSlected(MouseEvent event) {
         proSelected = tvProduct.getSelectionModel().getSelectedItem();
@@ -1019,7 +1006,7 @@ isValid = false;
             if (dao.AddDB(newProduct) != null) {
                 productList.add(newProduct);
                 data.path = null;
-filteredList.setPredicate(p -> true); // Cập nhật tất cả các sản phẩm
+                filteredList.setPredicate(p -> true); // Cập nhật tất cả các sản phẩm
                 tvProduct.refresh();
                 clearFields();
                 textNotice.setText("Product added successfully.");
@@ -1097,7 +1084,7 @@ filteredList.setPredicate(p -> true); // Cập nhật tất cả các sản ph�
 
         filteredList.setPredicate(product -> {
             String categoryName = getCategoryName(product.getCateId());
-boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
+            boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
             boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
 
             return matchesCategory && matchesStatus;
@@ -1106,7 +1093,7 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
         // Apply sortedList to TableView
         tvProduct.setItems(sortedList);
         textNotice.setText("Products sorted successfully.");
-    }  
+    }
     //MENU 
     private ObservableList<Product> cardListDrinkData = FXCollections.observableArrayList();
     private ObservableList<Product> cardListFoodData = FXCollections.observableArrayList();
@@ -1263,9 +1250,9 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
                 discount = 0;
             }
             billservice = total * data.service;
-            billtax = (total + billservice)* data.tax;
+            billtax = (total + billservice) * data.tax;
 
-            subtotal = total  - discount + billtax + billservice;
+            subtotal = total - discount + billtax + billservice;
         } else {
             total = 0.0;
             billtax = 0.0;
@@ -1274,7 +1261,6 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
             discount = 0.0;
         }
     }
-
 
     public void menuDisplayTotal() {
         menuGetSubtotal();
@@ -1546,6 +1532,7 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
     }
 
 //CUSTOMER
+    //CUSTOMER
     private void loadData() {
         List<Customer> customers = CustomerDAO.getList();
         customerTable.getItems().setAll(customers);
@@ -1559,12 +1546,13 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
             emailField.setText(selectedCustomer.getEmail());
             discountField.setText(String.valueOf(selectedCustomer.getDiscount()));
             deletedField.setText(String.valueOf(selectedCustomer.getDeleted()));
+
         }
     }
 
     @FXML
     private void handleAddCustomer(ActionEvent event) {
-        if (validateCustomerInput(event)) {
+        if (validateCustomerInput()) {
             String name = nameField.getText();
             String phone = phoneField.getText();
             String email = emailField.getText();
@@ -1577,7 +1565,7 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
             if (inserted > 0) {
                 customerTable.getItems().add(newCustomer);
                 clearAllFields();
-                textNotice2.setText("Customer added successfully");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer added successfully");
             }
         }
     }
@@ -1585,7 +1573,7 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
     @FXML
     private void handleUpdateCustomer(ActionEvent event) {
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
-        if (selectedCustomer != null && validateCustomerInput(event)) {
+        if (selectedCustomer != null && validateCustomerInput()) {
             String name = nameField.getText();
             String phone = phoneField.getText();
             String email = emailField.getText();
@@ -1599,9 +1587,10 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
                 selectedCustomer.setEmail(email);
                 selectedCustomer.setDiscount(discount);
                 selectedCustomer.setDeleted(deleted);
+
                 customerTable.refresh();
                 clearAllFields();
-                textNotice2.setText("Customer updated successfully");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer updated successfully");
             }
         }
     }
@@ -1614,7 +1603,7 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
             if (deleted > 0) {
                 customerTable.getItems().remove(selectedCustomer);
                 clearAllFields();
-                textNotice2.setText("Customer deleted successfully");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer deleted successfully");
             }
         }
     }
@@ -1631,38 +1620,52 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
         }
     }
 
+    @FXML
+    private void handleClearAllCustomer(ActionEvent event) {
+        clearAllFields();
+    }
+
     private void clearAllFields() {
         nameField.clear();
         phoneField.clear();
         emailField.clear();
         discountField.clear();
         deletedField.clear();
-    }
-
-    @FXML
-    private void handleClearAllCustomer(ActionEvent event) {
-        clearAllFields();
 
     }
 
-    private boolean validateCustomerInput(ActionEvent event) {
+    private boolean validateCustomerInput() {
         boolean isValid = true;
-        errorMessage validate = new errorMessage();
 
         if (nameField.getText().trim().isEmpty()) {
-            textNotice2.setText("Name " + validate.getErrorMsg1());
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Name is required");
             isValid = false;
-        } else if (!phoneField.getText().matches("\\d{1,10}")) {
-            textNotice2.setText("Phone " + validate.getErrorMsg2());
+        }
+
+        String phone = phoneField.getText().trim();
+        if (phone.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Phone number is required");
             isValid = false;
-        } else if (!emailField.getText().isEmpty() && !emailField.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-            textNotice2.setText("Email " + validate.getErrorMsg3());
+        } else if (!phone.matches("\\d{10}")) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Phone must be exactly 10 digits");
             isValid = false;
-        } else {
-            textNotice2.setText(null);
+        }
+
+        String email = emailField.getText().trim();
+        if (!email.isEmpty() && !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Email is not valid");
+            isValid = false;
         }
 
         return isValid;
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     //STAFF
     static ObservableList<String> positionList;
@@ -1851,33 +1854,32 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
         Staff_textNotice.setText("");
 
     }
-    
+
     //Bill page
- // ===================================================================================================  BILL =======================================
+    // ===================================================================================================  BILL =======================================
 //    private BillDAO billDao = new BillDAO();
     private ObservableList<Bill> billList;
     private FilteredList<Bill> filteredBillList;
     private SortedList<Bill> sortedBillList;
-    private ObservableList<Bill_Table1>  billtable1;
-    private ObservableList<Bill_Table2>  billtable2_merge;
+    private ObservableList<Bill_Table1> billtable1;
+    private ObservableList<Bill_Table2> billtable2_merge;
     private Bill billSelected;
     private Bill_Table1 bill_table1_Selected;
     private int indexbillSelected;
     private int indexbill_table1Selected;
     private ArrayList<Bill_Table1> tlist1 = new ArrayList<Bill_Table1>();
     private ArrayList<Bill_Table2> tlist2 = new ArrayList<Bill_Table2>();
-    
-    
-    public void billShowData(){
+
+    public void billShowData() {
 
         tc_bill_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
         tc_bill_tableNo.setCellValueFactory(new PropertyValueFactory<>("tableNo"));
         tc_bill_cusId.setCellValueFactory(new PropertyValueFactory<>("cus_id"));
         //tc_bill_cusName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tc_bill_cusName.setCellValueFactory(cellData -> {
-        Bill bill = cellData.getValue();
-        return new SimpleStringProperty(bill.getCustomer().getName());
-    });
+            Bill bill = cellData.getValue();
+            return new SimpleStringProperty(bill.getCustomer().getName());
+        });
         tc_bill_billTotal.setCellValueFactory(new PropertyValueFactory<>("billTotal"));
         tc_bill_billTax.setCellValueFactory(new PropertyValueFactory<>("billTax"));
         tc_bill_billService.setCellValueFactory(new PropertyValueFactory<>("billService"));
@@ -1888,149 +1890,148 @@ boolean matchesCategory = (selectedCategory == null) || categoryName.equals(sele
         bill_tbView_main.setItems(sortedBillList);
     }
 
-    
     @FXML
-private void Bill_HandleSplitButton(ActionEvent event) {
-    if (bill_table1_Selected == null || 
-        bill_table1_Selected.getProId() == null || 
-        bill_table1_Selected.getProId().isEmpty()) {
-        // Show an alert to the user
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Split Button");
-        alert.setContentText("Please select a product on the bill located on the left side of the screen to split the bill.");
-        alert.showAndWait();
-        return; // Exit the method
-    }
-
-    boolean validQuantity = false;
-    int quantity = 1; // Default value
-    while (!validQuantity) {
-        // Prompt user to enter quantity
-        TextInputDialog dialog = new TextInputDialog(String.valueOf(quantity)); // Default value is the last valid quantity
-        dialog.setTitle("Enter Quantity");
-        dialog.setHeaderText("Quantity Input");
-        dialog.setContentText("Please enter the quantity:");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent() && !result.get().isEmpty()) {
-            try {
-                quantity = Integer.parseInt(result.get());
-
-                // Validate the entered quantity
-                if (quantity < 1 || quantity > bill_table1_Selected.getQuantity()) {
-                    throw new NumberFormatException();
-                }
-
-                validQuantity = true; // Quantity is valid, exit the loop
-
-            } catch (NumberFormatException e) {
-                // Show an alert if the entered quantity is not valid
-                Alert numberAlert = new Alert(AlertType.ERROR);
-                numberAlert.setTitle("Error");
-                numberAlert.setHeaderText("Invalid Quantity");
-                numberAlert.setContentText("The entered quantity must be a valid number between 1 and " + bill_table1_Selected.getQuantity() + ".");
-                numberAlert.showAndWait();
-            }
-        } else {
-            return; // Exit the method if the dialog is canceled or empty
+    private void Bill_HandleSplitButton(ActionEvent event) {
+        if (bill_table1_Selected == null
+                || bill_table1_Selected.getProId() == null
+                || bill_table1_Selected.getProId().isEmpty()) {
+            // Show an alert to the user
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Split Button");
+            alert.setContentText("Please select a product on the bill located on the left side of the screen to split the bill.");
+            alert.showAndWait();
+            return; // Exit the method
         }
+
+        boolean validQuantity = false;
+        int quantity = 1; // Default value
+        while (!validQuantity) {
+            // Prompt user to enter quantity
+            TextInputDialog dialog = new TextInputDialog(String.valueOf(quantity)); // Default value is the last valid quantity
+            dialog.setTitle("Enter Quantity");
+            dialog.setHeaderText("Quantity Input");
+            dialog.setContentText("Please enter the quantity:");
+
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent() && !result.get().isEmpty()) {
+                try {
+                    quantity = Integer.parseInt(result.get());
+
+                    // Validate the entered quantity
+                    if (quantity < 1 || quantity > bill_table1_Selected.getQuantity()) {
+                        throw new NumberFormatException();
+                    }
+
+                    validQuantity = true; // Quantity is valid, exit the loop
+
+                } catch (NumberFormatException e) {
+                    // Show an alert if the entered quantity is not valid
+                    Alert numberAlert = new Alert(AlertType.ERROR);
+                    numberAlert.setTitle("Error");
+                    numberAlert.setHeaderText("Invalid Quantity");
+                    numberAlert.setContentText("The entered quantity must be a valid number between 1 and " + bill_table1_Selected.getQuantity() + ".");
+                    numberAlert.showAndWait();
+                }
+            } else {
+                return; // Exit the method if the dialog is canceled or empty
+            }
+        }
+
+        // Proceed with the valid quantity
+        bill_cancelButton1.setDisable(false);
+        bill_tbView_main.setDisable(true);
+
+        Bill_Table2 tb2 = new Bill_Table2();
+        tb2.setProId(bill_table1_Selected.getProId());
+        tb2.setProName(bill_table1_Selected.getProName());
+        tb2.setCateId(bill_table1_Selected.getCateId());
+        tb2.setQuantity(quantity);
+
+        tb2.setProPrice(((bill_table1_Selected.getProPrice()) * quantity) / (bill_table1_Selected.getQuantity()));
+        tb2.setBillDiscount(bill_table1_Selected.getBillDiscount());
+        tb2.setBillTax(bill_table1_Selected.getBillTax());
+        tb2.setBillService(bill_table1_Selected.getBillService());
+        tb2.setBillSubTotal(bill_table1_Selected.getBillSubTotal());
+
+        tb2.setCus_id(bill_table1_Selected.getCus_id());
+        tb2.setCus_name(bill_table1_Selected.getCus_name());
+
+        if (bill_table1_Selected.getQuantity() == 1 || quantity == bill_table1_Selected.getQuantity()) {
+            billtable1.remove(indexbill_table1Selected);
+        } else if (bill_table1_Selected.getQuantity() > 1 && quantity < bill_table1_Selected.getQuantity()) {
+            bill_table1_Selected.setQuantity(bill_table1_Selected.getQuantity() - quantity);
+            bill_table1_Selected.setProPrice((bill_table1_Selected.getQuantity() * bill_table1_Selected.getProPrice())
+                    / (bill_table1_Selected.getQuantity() + quantity));
+            // Update the data in bill_tbView_1
+            bill_showtable1_total();
+            bill_tbView_1.refresh();
+        }
+
+        tlist2.add(tb2);
+
+        for (Bill_Table2 tb : tlist2) {
+            System.out.println(tb.toString());
+        }
+        for (Bill_Table1 tb : billtable1) {
+            System.out.println(tb.toString());
+        }
+        showtable2();
     }
 
-    // Proceed with the valid quantity
-    bill_cancelButton1.setDisable(false);
-    bill_tbView_main.setDisable(true);
-
-    Bill_Table2 tb2 = new Bill_Table2();
-    tb2.setProId(bill_table1_Selected.getProId());
-    tb2.setProName(bill_table1_Selected.getProName());
-    tb2.setCateId(bill_table1_Selected.getCateId());
-    tb2.setQuantity(quantity);
-    
-    tb2.setProPrice(((bill_table1_Selected.getProPrice())*quantity)/(bill_table1_Selected.getQuantity()));
-    tb2.setBillDiscount(bill_table1_Selected.getBillDiscount());
-    tb2.setBillTax(bill_table1_Selected.getBillTax());
-    tb2.setBillService(bill_table1_Selected.getBillService());
-    tb2.setBillSubTotal(bill_table1_Selected.getBillSubTotal());
-    
-    tb2.setCus_id(bill_table1_Selected.getCus_id());
-    tb2.setCus_name(bill_table1_Selected.getCus_name());
-
-    if (bill_table1_Selected.getQuantity() == 1 || quantity == bill_table1_Selected.getQuantity()) {
-        billtable1.remove(indexbill_table1Selected);
-    } else if (bill_table1_Selected.getQuantity() > 1 && quantity < bill_table1_Selected.getQuantity()) {
-        bill_table1_Selected.setQuantity(bill_table1_Selected.getQuantity() - quantity);
-        bill_table1_Selected.setProPrice((bill_table1_Selected.getQuantity()*bill_table1_Selected.getProPrice())/
-                                                    (bill_table1_Selected.getQuantity()+quantity));
-        // Update the data in bill_tbView_1
-        bill_showtable1_total();
-        bill_tbView_1.refresh();
-    }
-
-    tlist2.add(tb2);
-
-    for (Bill_Table2 tb : tlist2) {
-        System.out.println(tb.toString());
-    }
-    for (Bill_Table1 tb : billtable1) {
-        System.out.println(tb.toString());
-    }
-    showtable2();
-}
-    
     @FXML
     private void Bill_HandleSelected_main(MouseEvent event) {
         billSelected = bill_tbView_main.getSelectionModel().getSelectedItem();
         indexbillSelected = bill_tbView_main.getSelectionModel().getSelectedIndex();
-        showtable1();
+//        showtable1();
         Bill_Table1 tb = new Bill_Table1();
-        
+
         if (billSelected != null) {
             System.out.println("Selected bill ID: " + billSelected.getBillId());
             if (!checkMerge) {
-                // tren bill_tbView_main khong the chon bill đã được chọn ở bill_tbView_1 
-                // nếu billId selected ở bill_tbView_1 trùng với billId selected ở bill_tbView2 thì hiện thông báo 
+                
                 bill_view1.setDisable(true);
-                
-                if(bill_table1_Selected.getBillId() == (billSelected.getBillId())){
-                    
-                }
-                showtable2_merge();
-                updateBillDetails2();
-                
-            } else {
-                showtable1();
-                updateBillDetails();
-            }
-        } else {
-            System.out.println("No bill selected in the main TableView.");
-        }
-        
-        
-        if(billSelected.getBillStatus().equals("PAID"))
-        {
-        bill_splitBillButton.setDisable(true);
-        bill_mergeBillButton.setDisable(true);
-        bill_saveButton.setDisable(true);
-        bill_payButton.setDisable(true);
-        }else{
-        if(data.position.equals( "Staff") )
-            {
 
-                bill_splitBillButton.setDisable(true);
-                bill_mergeBillButton.setDisable(true);;
-                bill_saveButton.setDisable(false);
-                bill_cancelButton1.setDisable(true);
-                bill_payButton.setDisable(false);
-            }else{
-                bill_saveButton.setDisable(false);
-                bill_cancelButton1.setDisable(true);
-                bill_splitBillButton.setDisable(false);
-                bill_mergeBillButton.setDisable(false);;
-                bill_payButton.setDisable(false);
-                
-            }
-        }
+                if (bill_table1_Selected.getBillId() == (billSelected.getBillId())) {
+                    Alert insufficientAlert = new Alert(AlertType.WARNING);
+                    insufficientAlert.setTitle("Warning");
+                    insufficientAlert.setHeaderText("Error");
+                    insufficientAlert.setContentText("Không được chọn bill: " + bill_table1_Selected.getBillId());
+                } else if (billSelected.getBillStatus().equals("PAID")) {
+                    Alert insufficientAlert = new Alert(AlertType.WARNING);
+                    insufficientAlert.setTitle("Warning");
+                    insufficientAlert.setHeaderText("Error");
+                    insufficientAlert.setContentText("Không thể chọn " + bill_table1_Selected.getBillId() + " vì đã được thanh toán");
+                } else {
+                    showtable2_merge();
+                    updateBillDetails2();
+                }
+
+            } else {
+                    showtable1();
+//                updateBillDetails();
+                if (billSelected.getBillStatus().equals("PAID")) {
+                    bill_splitBillButton.setDisable(true);
+                    bill_mergeBillButton.setDisable(true);
+                    bill_saveButton.setDisable(true);
+                    bill_payButton.setDisable(true);
+                } else {
+                    if (data.position.equals("Staff")) {
+
+                        bill_splitBillButton.setDisable(true);
+                        bill_mergeBillButton.setDisable(true);;
+                        bill_saveButton.setDisable(false);
+                        bill_cancelButton1.setDisable(true);
+                        bill_payButton.setDisable(false);
+                    } else {
+                        bill_saveButton.setDisable(false);
+                        bill_cancelButton1.setDisable(true);
+                        bill_splitBillButton.setDisable(false);
+                        bill_mergeBillButton.setDisable(false);;
+                        bill_payButton.setDisable(false);
+
+                    }
+                }
 //        bill_Total1.setText("$ "+bill_sumTotal_1());
 //        
 //        bill_Discount1.setText("$ "+billSelected.getBillDiscount());
@@ -2042,62 +2043,65 @@ private void Bill_HandleSplitButton(ActionEvent event) {
 //        bill_TableNo1.setText(billSelected.getTableNo());
 //        bill_NoGuest1.setText(String.valueOf(billSelected.getGuestNo()));
 //        bill_InputDiscount1.setText(((billSelected.getBillDiscount())/(billSelected.getBillTotal()))+"%");
-        bill_showtable1_total();
-        if(billtable1.isEmpty()||billtable1==null){
-                System.out.println("billtable1 null");
+                bill_showtable1_total();
+                if (billtable1.isEmpty() || billtable1 == null) {
+                    System.out.println("billtable1 null");
+                }
+                for (Bill_Table1 b : billtable1) {
+                    System.out.println(b.toString());
+                }
+
             }
-            for(Bill_Table1 b:billtable1)
-            {
-                System.out.println(b.toString());
-            }
-        
+        } else {
+            System.out.println("No bill selected in the main TableView.");
+        }
+
     }
-    private double bill_sumTotal_1()
-    {
-        
+
+    private double bill_sumTotal_1() {
+
         double total = 0.0;
         for (Bill_Table1 bill : billtable1) {
             total += bill.getProPrice();
         }
         return total;
-        
-    }
-    private void bill_discount1(){
-        
-    
-    }
-   private void bill_showtable1_total() {
-    double total = bill_sumTotal_1();
-    double tax = total * 0.08;
-    double service = tax * 0.05;
-    
-    // Get discount percentage from bill_InputDiscount1, convert it to a decimal
-    double discountPercentage = 0.0;
-    try {
-        discountPercentage = Double.parseDouble(bill_InputDiscount1.getText().replace("%", "")) / 100.0;
-    } catch (NumberFormatException e) {
-        // Handle invalid input, e.g., set to 0 if invalid
-        discountPercentage = 0.0;
-    }
-    
-    double discountprice = billSelected.getBillDiscount();
 
-    double discount = discountprice *100 /(total + tax + service);
-    
-    
-    
-    double subtotal = total - tax - service - discount;
+    }
 
-    bill_Total1.setText("$ " + String.format("%.2f", total));
-    
-    bill_Tax1.setText("$ " + String.format("%.2f", tax));
-    bill_Service1.setText("$ " + String.format("%.2f", service));
-    bill_Subtotal1.setText("$ " + String.format("%.2f", subtotal));
-    bill_cusName1.setText(billSelected.getCustomer().getName() + " " + billSelected.getCustomer().getPhone());
-    bill_TableNo1.setText(billSelected.getTableNo());
-    bill_NoGuest1.setText(String.valueOf(billSelected.getGuestNo()));
-    bill_inputPhone1.setText(String.valueOf(billSelected.getCustomer().getPhone()));
-    //bill_InputDiscount1.setText(String.format("%.2f", discountPercentage * 100) + "%");
+    private void bill_discount1() {
+
+    }
+
+    private void bill_showtable1_total() {
+        double total = bill_sumTotal_1();
+        double tax = total * 0.08;
+        double service = tax * 0.05;
+
+        // Get discount percentage from bill_InputDiscount1, convert it to a decimal
+        double discountPercentage = 0.0;
+        try {
+            discountPercentage = Double.parseDouble(bill_InputDiscount1.getText().replace("%", "")) / 100.0;
+        } catch (NumberFormatException e) {
+            // Handle invalid input, e.g., set to 0 if invalid
+            discountPercentage = 0.0;
+        }
+
+        double discountprice = billSelected.getBillDiscount();
+
+        double discount = discountprice * 100 / (total + tax + service);
+
+        double subtotal = total - tax - service - discount;
+
+        bill_Total1.setText("$ " + String.format("%.2f", total));
+
+        bill_Tax1.setText("$ " + String.format("%.2f", tax));
+        bill_Service1.setText("$ " + String.format("%.2f", service));
+        bill_Subtotal1.setText("$ " + String.format("%.2f", subtotal));
+        bill_cusName1.setText(billSelected.getCustomer().getName() + " " + billSelected.getCustomer().getPhone());
+        bill_TableNo1.setText(billSelected.getTableNo());
+        bill_NoGuest1.setText(String.valueOf(billSelected.getGuestNo()));
+        bill_inputPhone1.setText(String.valueOf(billSelected.getCustomer().getPhone()));
+        //bill_InputDiscount1.setText(String.format("%.2f", discountPercentage * 100) + "%");
 //    bill_InputDiscount1.textProperty().addListener((observable, oldValue, newValue) -> {
 //        billDiscount();
 //    });
@@ -2106,20 +2110,19 @@ private void Bill_HandleSplitButton(ActionEvent event) {
 //    }else{
 //        discountprice = Double.parseDouble(bill_InputDiscount1.getText().replace("%", ""));
 //    }
-       System.out.println("biến discountprice: "+discountprice);
+        System.out.println("biến discountprice: " + discountprice);
 
-    bill_InputDiscount1.setText( String.format("%.0f",discount )+ "%");
-    
-   
-    double txtdiscount = Double.parseDouble(bill_InputDiscount1.getText().replace("%", ""));
-       System.out.println(txtdiscount);
-    double discountshow = (total + tax + service)*(txtdiscount/100);
-    
-    
-    bill_Discount1.setText("$ " + String.format("%.2f", discountshow));
-    
-}
-   public void billDiscount() {
+        bill_InputDiscount1.setText(String.format("%.0f", discount) + "%");
+
+        double txtdiscount = Double.parseDouble(bill_InputDiscount1.getText().replace("%", ""));
+        System.out.println(txtdiscount);
+        double discountshow = (total + tax + service) * (txtdiscount / 100);
+
+        bill_Discount1.setText("$ " + String.format("%.2f", discountshow));
+
+    }
+
+    public void billDiscount() {
         String discountText = bill_InputDiscount1.getText();
         if (discountText != null && !discountText.isEmpty()) {
             try {
@@ -2134,7 +2137,8 @@ private void Bill_HandleSplitButton(ActionEvent event) {
         menuGetSubtotal();
         menuDisplayTotal();
     }
-   private void updateBillDetails() {
+
+    private void updateBillDetails() {
         if (billSelected != null) {
             bill_Total1.setText("$ " + billSelected.getBillTotal());
             bill_Discount1.setText(billSelected.getCustomer().getDiscount() + " %");
@@ -2147,7 +2151,7 @@ private void Bill_HandleSplitButton(ActionEvent event) {
         }
     }
 
-   private void updateBillDetails2() {
+    private void updateBillDetails2() {
         if (billSelected != null) {
             bill_Total2.setText("$ " + billSelected.getBillTotal());
             bill_Discount2.setText(billSelected.getCustomer().getDiscount() + " %");
@@ -2159,28 +2163,29 @@ private void Bill_HandleSplitButton(ActionEvent event) {
             System.out.println("No bill selected for detail update.");
         }
     }
-    private void showtable1(){
+
+    private void showtable1() {
         billtable1 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
         tb1_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tb1_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         tb1_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
 
         // Set the data to the table
-
         bill_tbView_1.setItems(billtable1);
     }
-    private void showtable2(){
+
+    private void showtable2() {
         //billtable2 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
         tb2_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tb2_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
 
         // Set the data to the table
-
         ObservableList<Bill_Table2> observableList2 = FXCollections.observableArrayList(tlist2);
         bill_tbView_2.setItems(observableList2);
     }
 // Display merged data in TableView2
+
     private void showtable2_merge() {
         billtable2_merge = FXCollections.observableArrayList(billDao.Addtable2(billSelected.getBillId()));
         tb2_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
@@ -2188,13 +2193,14 @@ private void Bill_HandleSplitButton(ActionEvent event) {
         tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
         System.out.println("Merged Table2 data:");
         bill_tbView_2.setItems(billtable2_merge);
-    }  
+    }
 
     @FXML
     private void Bill_HandleSelected_table1(MouseEvent event) {
         bill_table1_Selected = bill_tbView_1.getSelectionModel().getSelectedItem();
         indexbill_table1Selected = bill_tbView_1.getSelectionModel().getSelectedIndex();
     }
+
     private void filterBillList() {
         LocalDate fromDate = bill_from.getValue();
         LocalDate toDate = bill_to.getValue();
@@ -2203,18 +2209,18 @@ private void Bill_HandleSplitButton(ActionEvent event) {
             filteredBillList.setPredicate(bill -> {
                 Date billDate = bill.getBillDate(); // Ensure this is a java.util.Date
                 LocalDate billLocalDate = convertToLocalDate(billDate);
-                System.out.println("billDate: " +billDate);
-                System.out.println("billLocalDate: " +billLocalDate);
-                System.out.println("fromDate: " +fromDate);
-                System.out.println("toDate: " +toDate);
-                
-                return (billLocalDate.isEqual(fromDate) || billLocalDate.isAfter(fromDate)) &&
-                       (billLocalDate.isEqual(toDate) || billLocalDate.isBefore(toDate));
+                System.out.println("billDate: " + billDate);
+                System.out.println("billLocalDate: " + billLocalDate);
+                System.out.println("fromDate: " + fromDate);
+                System.out.println("toDate: " + toDate);
+
+                return (billLocalDate.isEqual(fromDate) || billLocalDate.isAfter(fromDate))
+                        && (billLocalDate.isEqual(toDate) || billLocalDate.isBefore(toDate));
             });
         } else {
             filteredBillList.setPredicate(bill -> true); // Show all bills if dates are not set
         }
-        
+
     }
 
     private LocalDate convertToLocalDate(Date date) {
@@ -2232,7 +2238,7 @@ private void Bill_HandleSplitButton(ActionEvent event) {
 
         // Re-enable bill_tbView_main
         bill_tbView_main.setDisable(false);
-
+        bill_view1.setDisable(false);
         // Update bill_tbView_1 using the showtable1() method
         showtable1();
         bill_showtable1_total();
@@ -2240,131 +2246,129 @@ private void Bill_HandleSplitButton(ActionEvent event) {
 
     @FXML
     private void Bill_HandlePaylButton(ActionEvent event) {
-    // Create a custom dialog for payment input
-    Dialog<Double> dialog = new Dialog<>();
-    dialog.setTitle("Enter Payment Amount");
-    dialog.setHeaderText("Payment Input");
-    
-    // Set up the dialog content
-    VBox vbox = new VBox();
-    TextField paymentField = new TextField("0.0"); // Default value is 0.0
-    paymentField.setPromptText("Enter the amount given by the customer");
-    Label changeLabel = new Label();
-    
-    // Update the change label when the text changes
-    paymentField.textProperty().addListener((obs, oldText, newText) -> {
-        try {
-            double paymentAmount = Double.parseDouble(newText);
-            double billSubTotal = billSelected.getBillSubTotal();
-            if (paymentAmount >= billSubTotal) {
-                double change = paymentAmount - billSubTotal;
-                changeLabel.setText("Change: $" + String.format("%.2f", change));
-            } else {
-                changeLabel.setText("Change: Not enough payment.");
-            }
-        } catch (NumberFormatException e) {
-            changeLabel.setText("Change: Invalid amount.");
-        }
-    });
-    
-    vbox.getChildren().addAll(paymentField, changeLabel);
-    dialog.getDialogPane().setContent(vbox);
-    
-    // Add OK and Cancel buttons
-    dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-    
-    // Convert the result to a double and handle it
-    dialog.setResultConverter(dialogButton -> {
-        if (dialogButton == ButtonType.OK) {
+        // Create a custom dialog for payment input
+        Dialog<Double> dialog = new Dialog<>();
+        dialog.setTitle("Enter Payment Amount");
+        dialog.setHeaderText("Payment Input");
+
+        // Set up the dialog content
+        VBox vbox = new VBox();
+        TextField paymentField = new TextField("0.0"); // Default value is 0.0
+        paymentField.setPromptText("Enter the amount given by the customer");
+        Label changeLabel = new Label();
+
+        // Update the change label when the text changes
+        paymentField.textProperty().addListener((obs, oldText, newText) -> {
             try {
-                return Double.parseDouble(paymentField.getText());
+                double paymentAmount = Double.parseDouble(newText);
+                double billSubTotal = billSelected.getBillSubTotal();
+                if (paymentAmount >= billSubTotal) {
+                    double change = paymentAmount - billSubTotal;
+                    changeLabel.setText("Change: $" + String.format("%.2f", change));
+                } else {
+                    changeLabel.setText("Change: Not enough payment.");
+                }
             } catch (NumberFormatException e) {
-                return null;
+                changeLabel.setText("Change: Invalid amount.");
             }
-        }
-        return null;
-    });
-    
-    // Show the dialog and process the result
-    Optional<Double> result = dialog.showAndWait();
-    if (result.isPresent()) {
-        double paymentAmount = result.get();
-        double billSubTotal = billSelected.getBillSubTotal();
-        
-        if (paymentAmount < billSubTotal) {
-            // Show an alert if the payment amount is less than the total bill
-            Alert insufficientAlert = new Alert(AlertType.WARNING);
-            insufficientAlert.setTitle("Warning");
-            insufficientAlert.setHeaderText("Insufficient Payment");
-            insufficientAlert.setContentText("The payment amount must be greater than or equal to the total bill amount.\n" +
-                                             "Amount Given: $" + String.format("%.2f", paymentAmount) + "\n" +
-                                             "Amount Due: $" + String.format("%.2f", billSubTotal));
-            insufficientAlert.showAndWait();
-        } else {
-            // Calculate the change
-            double change = paymentAmount - billSubTotal;
-            
-            // Show the result in an alert
-            Alert successAlert = new Alert(AlertType.CONFIRMATION);
-            successAlert.setTitle("Payment Information");
-            successAlert.setHeaderText("Payment Processed");
-            successAlert.setContentText("Payment successful!\n" +
-                                        "Amount Given: $" + String.format("%.2f", paymentAmount) + "\n" +
-                                        "Change to be Returned: $" + String.format("%.2f", change) + "\n" +
-                                        "Do you want to update the bill status?");
-            Optional<ButtonType> confirmationResult = successAlert.showAndWait();
-            if (confirmationResult.isPresent() && confirmationResult.get() == ButtonType.OK) {
-                // Update the bill status and refresh the table
-                billDao.UpdateBillStatus(billSelected);
-                
+        });
+
+        vbox.getChildren().addAll(paymentField, changeLabel);
+        dialog.getDialogPane().setContent(vbox);
+
+        // Add OK and Cancel buttons
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Convert the result to a double and handle it
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                try {
+                    return Double.parseDouble(paymentField.getText());
+                } catch (NumberFormatException e) {
+                    return null;
+                }
+            }
+            return null;
+        });
+
+        // Show the dialog and process the result
+        Optional<Double> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            double paymentAmount = result.get();
+            double billSubTotal = billSelected.getBillSubTotal();
+
+            if (paymentAmount < billSubTotal) {
+                // Show an alert if the payment amount is less than the total bill
+                Alert insufficientAlert = new Alert(AlertType.WARNING);
+                insufficientAlert.setTitle("Warning");
+                insufficientAlert.setHeaderText("Insufficient Payment");
+                insufficientAlert.setContentText("The payment amount must be greater than or equal to the total bill amount.\n"
+                        + "Amount Given: $" + String.format("%.2f", paymentAmount) + "\n"
+                        + "Amount Due: $" + String.format("%.2f", billSubTotal));
+                insufficientAlert.showAndWait();
+            } else {
+                // Calculate the change
+                double change = paymentAmount - billSubTotal;
+
+                // Show the result in an alert
+                Alert successAlert = new Alert(AlertType.CONFIRMATION);
+                successAlert.setTitle("Payment Information");
+                successAlert.setHeaderText("Payment Processed");
+                successAlert.setContentText("Payment successful!\n"
+                        + "Amount Given: $" + String.format("%.2f", paymentAmount) + "\n"
+                        + "Change to be Returned: $" + String.format("%.2f", change) + "\n"
+                        + "Do you want to update the bill status?");
+                Optional<ButtonType> confirmationResult = successAlert.showAndWait();
+                if (confirmationResult.isPresent() && confirmationResult.get() == ButtonType.OK) {
+                    // Update the bill status and refresh the table
+                    billDao.UpdateBillStatus(billSelected);
+
 //                billList = FXCollections.observableArrayList(billDao.listDB());
 //                filteredBillList = new FilteredList<>(billList, p -> true);
 //                sortedBillList = new SortedList<>(filteredBillList);
 //                billShowData();
-           
+                }
             }
+        } else {
+            // Handle the case where the user cancels the dialog
+            Alert cancelAlert = new Alert(AlertType.INFORMATION);
+            cancelAlert.setTitle("Cancelled");
+            cancelAlert.setHeaderText("Payment Cancelled");
+            cancelAlert.setContentText("The payment process was cancelled.");
+            cancelAlert.showAndWait();
         }
-    } else {
-        // Handle the case where the user cancels the dialog
-        Alert cancelAlert = new Alert(AlertType.INFORMATION);
-        cancelAlert.setTitle("Cancelled");
-        cancelAlert.setHeaderText("Payment Cancelled");
-        cancelAlert.setContentText("The payment process was cancelled.");
-        cancelAlert.showAndWait();
-    }
     }
 
-    
     public void refreshBillTableView() {
-    // Clear the existing data
-    billList.clear();
-    sortedBillList.clear();
-    // Reload the data from the database and add it to the billList
-    //billList.addAll(billDao.listDB());
-    billList = FXCollections.observableArrayList(billDao.listDB());
+        // Clear the existing data
+        billList.clear();
+        sortedBillList.clear();
+        // Reload the data from the database and add it to the billList
+        //billList.addAll(billDao.listDB());
+        billList = FXCollections.observableArrayList(billDao.listDB());
         filteredBillList = new FilteredList<>(billList, p -> true);
         sortedBillList = new SortedList<>(filteredBillList);
-    
-    // Refresh the table view
-    bill_tbView_main.refresh();
-    billShowData();
-}
+
+        // Refresh the table view
+        bill_tbView_main.refresh();
+        billShowData();
+    }
 
     public void Bill_clearFields(Parent parent) {
-     for (Node node : parent.getChildrenUnmodifiable()) {
-        if (node instanceof TextField) {
-            ((TextField) node).clear();  // Clear text from TextField
-        } else if (node instanceof Label) {
-            Label label = (Label) node;
-            if (label.getId() != null && !label.getId().isEmpty()) {
-                label.setText("0");  // Clear text from Label if it has an ID
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            if (node instanceof TextField) {
+                ((TextField) node).clear();  // Clear text from TextField
+            } else if (node instanceof Label) {
+                Label label = (Label) node;
+                if (label.getId() != null && !label.getId().isEmpty()) {
+                    label.setText("0");  // Clear text from Label if it has an ID
+                }
+            } else if (node instanceof TableView) {
+                ((TableView<?>) node).getItems().clear();  // Clear items from TableView
+            } else if (node instanceof Parent) {
+                Bill_clearFields((Parent) node);  // Recursive call for nested containers
             }
-        } else if (node instanceof TableView) {
-            ((TableView<?>) node).getItems().clear();  // Clear items from TableView
-        } else if (node instanceof Parent) {
-            Bill_clearFields((Parent) node);  // Recursive call for nested containers
         }
-    }
     }
 //============================================================================================================     MERGE       ============================================
     // Handle Merge Button Action
@@ -2380,33 +2384,32 @@ private void Bill_HandleSplitButton(ActionEvent event) {
     @FXML
     private void Bill_HandleSaveButton(ActionEvent event) {
         if (tlist2.isEmpty()) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Save Bill");
-        alert.setHeaderText(null);
-        alert.setContentText("Do you want to save?");
-        
-        // Adding Yes and No buttons
-        ButtonType buttonYes = new ButtonType("Yes");
-        ButtonType buttonNo = new ButtonType("No");
-        alert.getButtonTypes().setAll(buttonYes, buttonNo);
-        
-        // Waiting for the user to respond
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == buttonYes) {
-            Bill_HandleSaveStatus();
-            Bill_clearFields(bill_view1);
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Save Bill");
+            alert.setHeaderText(null);
+            alert.setContentText("Do you want to save?");
+
+            // Adding Yes and No buttons
+            ButtonType buttonYes = new ButtonType("Yes");
+            ButtonType buttonNo = new ButtonType("No");
+            alert.getButtonTypes().setAll(buttonYes, buttonNo);
+
+            // Waiting for the user to respond
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == buttonYes) {
+                Bill_HandleSaveStatus();
+                Bill_clearFields(bill_view1);
+            }
+            // No need to handle the No case explicitly as we do nothing
         }
-        // No need to handle the No case explicitly as we do nothing
     }
-    }
-    private void Bill_HandleSaveStatus(){
-    
-        if( !bill_TableNo1.equals(billSelected.getTableNo()) ||
-                !bill_NoGuest1.equals(billSelected.getGuestNo()) ||
-//                !bill_InputDiscount1.equals(billSelected.getBillDiscount()) ||
-                !bill_inputPhone1.equals(billSelected.getCustomer().getPhone())
-                )
-        {
+
+    private void Bill_HandleSaveStatus() {
+
+        if (!bill_TableNo1.equals(billSelected.getTableNo())
+                || !bill_NoGuest1.equals(billSelected.getGuestNo())
+                || //                !bill_InputDiscount1.equals(billSelected.getBillDiscount()) ||
+                !bill_inputPhone1.equals(billSelected.getCustomer().getPhone())) {
             bill_saveButton.setDisable(false);
             Bill b = new Bill();
             b.setBillId(billSelected.getBillId());
@@ -2418,24 +2421,22 @@ private void Bill_HandleSplitButton(ActionEvent event) {
             b.setBillSubTotal(Double.parseDouble(bill_Subtotal1.getText().replace("$", "")));
             b.setTableNo(String.valueOf(bill_TableNo1.getText()));
             b.setGuestNo(Integer.parseInt(bill_NoGuest1.getText()));
-            if(data.customerId ==null||data.customerId.equals(""))
-            {
-            if (billSelected != null && billSelected.getCus_id() != null) {
-                b.setCus_id(billSelected.getCus_id());
+            if (data.customerId == null || data.customerId.equals("")) {
+                if (billSelected != null && billSelected.getCus_id() != null) {
+                    b.setCus_id(billSelected.getCus_id());
+                } else {
+                    // Handle the case where billSelected or billSelected.getCus_id() is null
+                    System.out.println("billSelected or billSelected.getCus_id() is null");
+                }
             } else {
-                // Handle the case where billSelected or billSelected.getCus_id() is null
-                System.out.println("billSelected or billSelected.getCus_id() is null");
-            }
-            }else{
-            b.setCus_id(data.customerId);
+                b.setCus_id(data.customerId);
             }
             billDao.UpdateBillSplit(b);
-            
+
             refreshBillTableView();
-            
+
         }
     }
-            
 
     @FXML
     private void bill_handleSearchBillId(ActionEvent event) {
@@ -2443,7 +2444,7 @@ private void Bill_HandleSplitButton(ActionEvent event) {
 
     @FXML
     private void bill_handleSphone1(MouseEvent event) {
-         if (!bill_inputPhone1.getText().isEmpty()) {
+        if (!bill_inputPhone1.getText().isEmpty()) {
             bill_getCustomerId();
         } else {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -2453,6 +2454,7 @@ private void Bill_HandleSplitButton(ActionEvent event) {
             alert.showAndWait();
         }
     }
+
     public String bill_getCustomerId() {
         String cusPhoneSearching = bill_inputPhone1.getText();
         List<Customer> cusList = CustomerDAO.searchByPhone(cusPhoneSearching);
@@ -2467,7 +2469,6 @@ private void Bill_HandleSplitButton(ActionEvent event) {
         System.out.println("Customer ID tu getcusid: " + data.customerId);
         return data.customerId;
     }
-
 
     @FXML
     private void bill_handleSphone2(MouseEvent event) {
