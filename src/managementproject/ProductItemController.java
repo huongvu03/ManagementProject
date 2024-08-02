@@ -41,6 +41,7 @@ public class ProductItemController implements Initializable {
     private Integer pro_cateId;
     private String pro_cateName;
     private String pro_date;
+    private int stock;
 
     private MenuController menuController;
 
@@ -54,7 +55,7 @@ public class ProductItemController implements Initializable {
         setQuantity();
     }
 
-    public void setProductItem(Product pro) {
+     public void setProductItem(Product pro) {
         this.pro = pro;
         pro_cateId = pro.getCateId();
         if (pro_cateId == 1) {
@@ -65,13 +66,26 @@ public class ProductItemController implements Initializable {
         prodId = pro.getProId();
         proItem_Name.setText(pro.getProName());
         proItem_Price.setText(String.valueOf(pro.getProPrice()));
+        stock = pro.getStock();
         String path = pro.getProImage();
-        if (path != null) {
-            image = new Image("file:" + path, 250, 161, false, true);
-            proItem_Image.setImage(image);
+
+        if (stock > 0) {
+            if (pro.getStatus().equals("Available")) {
+                if (path!=null) {
+                    image = new Image("file:" + path, 250, 161, false, true);
+                } else {
+                    image = null;
+                }
+            }
+            if (pro.getStatus().equals("UnAvailable")) {
+                URL imageUrl = getClass().getResource("/managementproject/resources/image/unavaiable.png");
+                image = new Image(imageUrl.toString(), 250, 161, false, true);
+            }
         } else {
-            proItem_Image.setImage(null);
+            URL imageUrl = getClass().getResource("/managementproject/resources/image/soldOut.png");
+            image = new Image(imageUrl.toString(), 250, 161, false, true);
         }
+        proItem_Image.setImage(image);
 
     }
 
@@ -124,6 +138,7 @@ public class ProductItemController implements Initializable {
                 menuController.menuShowOrderData();
                 menuController.menuDisplayTotal();
                 menuController.ShowProducts();
+                menuController.menuDisplayCard();
 
             }
              menuController.clearNote();

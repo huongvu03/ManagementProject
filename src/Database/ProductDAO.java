@@ -21,11 +21,13 @@ public class ProductDAO {
     static Scanner sc;
     static PreparedStatement pStm = null;// de chay cau lenh co bien
 
-    ArrayList<Product> list = new ArrayList<>();
+    
     ArrayList<Product> menulist = new ArrayList<>();
     ArrayList<Product> menuFoodlist = new ArrayList<>();
 
     public ArrayList<Product> listDB() {
+        ArrayList<Product> list = new ArrayList<>();
+        list.clear();
         String sql = "SELECT p.proId, p.proName, p.proPrice, p.cateId, p.stock, p.status, p.proImage, p.proDate," + "c.cateName FROM Product p JOIN Category c ON p.cateId = c.cateId";
         try {
             cn = connect.GetConnectDB();
@@ -81,6 +83,8 @@ public class ProductDAO {
                 pro.setProPrice(rs.getDouble("proPrice"));
                 pro.setProImage(rs.getString("proImage"));
                 pro.setCateId(rs.getInt("cateId"));
+                pro.setStock(rs.getInt("stock"));
+                pro.setStatus(rs.getString("status"));
 
                 menulist.add(pro);
             }
@@ -114,6 +118,8 @@ public class ProductDAO {
                 pro.setProPrice(rs.getDouble("proPrice"));
                 pro.setProImage(rs.getString("proImage"));
                 pro.setCateId(rs.getInt("cateId"));
+                pro.setStock(rs.getInt("stock"));
+                pro.setStatus(rs.getString("status"));
 
                 menuFoodlist.add(pro);
 
@@ -225,32 +231,21 @@ public class ProductDAO {
 
     public Integer CheckStock(String proId) {
         int stock = 0;
-        String checksql = "SELECT status,stock FROM Product WHERE proId =?";
-        try {
-            cn = connect.GetConnectDB();
-            pStm = cn.prepareStatement(checksql);
+        String checksql = "SELECT status, stock FROM Product WHERE proId = ?";
+        try (Connection cn = connect.GetConnectDB(); PreparedStatement pStm = cn.prepareStatement(checksql)) {
             pStm.setString(1, proId);
-            rs = pStm.executeQuery();
-
-            if (rs.next()) {
-                String status = rs.getString("status");
-                stock = rs.getInt("stock");
-
-                if (!status.equals("Available") || stock == 0) {
-                    stock = 0; 
+            try (ResultSet rs = pStm.executeQuery()) {
+                if (rs.next()) {
+                    String status = rs.getString("status");
+                    stock = rs.getInt("stock");
+                    if (!status.equals("Available") || stock == 0) {
+                        stock = 0;
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                cn.close();
-                pStm.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
-
         return stock;
     }
 
@@ -321,4 +316,16 @@ public class ProductDAO {
         return product;
     }
 
+    public void UpdateStockDeleted(String proId, int quantity) {
+int newStock = CheckStock(proId) + quantity;
+        String sql = "UPDATE Product SET stock = ?, status = ? WHERE proId = ?";
+        try (Connection cn = connect.GetConnectDB(); PreparedStatement pStm = cn.prepareStatement(sql)) {
+            pStm.setInt(1, newStock);
+            pStm.setString(2, newStock == 0 ? "OutOfStock" : "Available");
+            pStm.setString(3, proId);
+            pStm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -77,8 +77,6 @@ public class BillDAO {
     static Scanner sc;
     static PreparedStatement pStm = null;// de chay cau lenh co bien
 
-    
-
     public ArrayList<Bill> listDB() {
         ArrayList<Bill> list = new ArrayList<>();
         String sql = "SELECT DISTINCT b.*, \n"
@@ -97,7 +95,7 @@ public class BillDAO {
                 pro.setBillId(rs.getInt("billId"));
                 pro.setTableNo(rs.getString("tableNo"));
                 pro.setGuestNo(rs.getInt("guestNo"));
-                
+
                 pro.setCus_id(rs.getString("cus_id"));
 
                 pro.setUserName(rs.getString("userName"));
@@ -175,7 +173,7 @@ public class BillDAO {
     }
 
     public ArrayList<Bill_Table2> Addtable2(Integer billId) {
-         ArrayList<Bill_Table2> tablelist2 = new ArrayList<>();
+        ArrayList<Bill_Table2> tablelist2 = new ArrayList<>();
         String checksql = "SELECT * FROM OrderArchive WHERE billId = ?";
 
         try {
@@ -190,7 +188,7 @@ public class BillDAO {
                 btb1.setProName(rs.getString("proName"));
                 btb1.setCateId(rs.getInt("cateId"));
                 btb1.setQuantity(rs.getInt("quantity"));
-                btb1.setProPrice(rs.getDouble("proPrice")*rs.getInt("quantity") );
+                btb1.setProPrice(rs.getDouble("proPrice") * rs.getInt("quantity"));
                 tablelist2.add(btb1);
             }
         } catch (Exception e) {
@@ -214,7 +212,6 @@ public class BillDAO {
         return tablelist2;
     }
 
-
     public void UpdateBillStatus(Bill pro) {
         try {
             cn = connect.GetConnectDB();
@@ -236,7 +233,7 @@ public class BillDAO {
             }
         }
     }
-    
+
 //    tiếp tục phần lưu bill khi slit
     public void UpdateBillSplit(Bill pro) {
         try {
@@ -265,6 +262,145 @@ public class BillDAO {
             }
         }
     }
+
+    public boolean checkOrderArchiveExists(int billId, String proId) {
+        boolean exists = false;
+        String sql = "select * from OrderArchive where billId = ? and proId = ?;";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, billId);
+            pStm.setString(2, proId);
+            rs = pStm.executeQuery();
+            exists = rs.next(); // If there's a result, it means the record exists
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return exists;
+    }
+
+    public void updateIfExists(Bill_Table1 pro) {
+        if (checkOrderArchiveExists(pro.getBillId(), pro.getProId())) {
+            UpdateOrderArchiveSplit1(pro);
+        } else {
+            System.out.println("Record does not exist.");
+        }
+    }
+
+    public void DeleteOrderArchiveSplit(int billId, int proId) {
+        String sql = "delete OrderArchive where billId =? and proId =?;";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, billId);
+            pStm.setInt(2, proId);
+            pStm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void UpdateOrderArchiveSplit1(Bill_Table1 pro) {
+        try {
+            cn = connect.GetConnectDB();
+            String sql = "update OrderArchive set quantity =? where billId =? and proId =?;";
+            pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, pro.getQuantity());
+            pStm.setInt(2, pro.getBillId());
+            pStm.setString(3, pro.getProId());
+            pStm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                cn.close();
+                pStm.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public List<String> getProIdsForBill(int billId) {
+        List<String> proIds = new ArrayList<>();
+        String selectSql = "select proId from OrderArchive where billId = ?;";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(selectSql);
+            pStm.setInt(1, billId);
+            rs = pStm.executeQuery();
+            while (rs.next()) {
+                proIds.add(rs.getString("proId"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return proIds;
+    }
+
+    public void deleteProIdFromBill(int billId, String proId) {
+        String sql = "delete from OrderArchive where billId = ? and proId = ?;";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, billId);
+            pStm.setString(2, proId);
+            pStm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void DeleteDB(int id) {
         String sql = "delete OrderArchive where billId =?;";
         try {
@@ -276,35 +412,117 @@ public class BillDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (cn != null) cn.close();
-                if (pStm != null) pStm.close();
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
     public Bill AddBillSlit(Bill pro) {
-        String sql = "INSERT INTO product (name, description, price, imagePath) VALUES (?, ?, ?, ?)";
+    if (pro == null) {
+        throw new IllegalArgumentException("Bill object cannot be null");
+    }
+
+    String sql = "insert into Bill (tableNo,guestNo,cus_id,userName,billTotal,billTax,billService,billDiscount,billSubTotal,billDate,billStatus) values (?,?,?,?,?,?,?,?,?,?,?)";
+    try {
+        cn = connect.GetConnectDB();
+        pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        pStm.setString(1, pro.getTableNo());
+        pStm.setInt(2, pro.getGuestNo());
+        pStm.setString(3, pro.getCus_id());
+        pStm.setString(4, pro.getUserName());
+        pStm.setDouble(5, pro.getBillTotal());
+        pStm.setDouble(6, pro.getBillTax());
+        pStm.setDouble(7, pro.getBillService());
+        pStm.setDouble(8, pro.getBillDiscount());
+        pStm.setDouble(9, pro.getBillSubTotal());
+        
+        // Sử dụng thời gian hiện tại
+        pStm.setDate(10, new java.sql.Date(System.currentTimeMillis()));
+        
+        pStm.setString(11, pro.getBillStatus());
+        pStm.execute();
+
+        rs = pStm.getGeneratedKeys();
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
         try {
-            cn = connect.GetConnectDB();
-            pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            pStm.setInt(1, pro.getBillId());
-            pStm.setString(1, pro.getTableNo());
-            pStm.setInt(2, pro.getGuestNo());
-            pStm.execute();
-            
-            rs = pStm.getGeneratedKeys();
+            if (cn != null) cn.close();
+            if (pStm != null) pStm.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) cn.close();
-                if (pStm != null) pStm.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
-        return pro;
     }
-    
+    return pro;
+}
+
+   public Bill_Table2 AddBillOrderArchive(Bill_Table2 pro) {
+    int maxBillId = 0;
+
+    // Bước 1: Lấy billId lớn nhất từ bảng Bill
+    String selectMaxBillIdSql = "SELECT MAX(billId) FROM Bill";
+    try {
+        cn = connect.GetConnectDB();
+
+        // Thực hiện truy vấn để lấy billId lớn nhất
+        Statement stmt = cn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectMaxBillIdSql);
+        if (rs.next()) {
+            maxBillId = rs.getInt(1); // Lấy giá trị của billId lớn nhất
+        }
+
+        // Bước 2: Kiểm tra sự tồn tại của bản ghi trong bảng OrderArchive
+        String checkExistSql = "SELECT COUNT(*) FROM OrderArchive WHERE billId = ? AND proId = ?";
+        pStm = cn.prepareStatement(checkExistSql);
+        pStm.setInt(1, maxBillId);
+        pStm.setString(2, pro.getProId());
+        rs = pStm.executeQuery();
+        
+        boolean exists = false;
+        if (rs.next()) {
+            exists = rs.getInt(1) > 0; // Kiểm tra số lượng bản ghi trả về
+        }
+        
+        if (exists) {
+            // Bước 3: Cập nhật số lượng nếu bản ghi đã tồn tại
+            String updateSql = "UPDATE OrderArchive SET quantity = quantity + ? WHERE billId = ? AND proId = ?";
+            pStm = cn.prepareStatement(updateSql);
+            pStm.setInt(1, pro.getQuantity());
+            pStm.setInt(2, maxBillId);
+            pStm.setString(3, pro.getProId());
+            pStm.executeUpdate();
+        } else {
+            // Bước 4: Chèn dữ liệu mới nếu bản ghi không tồn tại
+            String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, archiveDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            pStm = cn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pStm.setInt(1, maxBillId);
+            pStm.setString(2, pro.getProId());
+            pStm.setString(3, pro.getProName());
+            pStm.setInt(4, pro.getCateId());
+            pStm.setInt(5, pro.getQuantity());
+            pStm.setDouble(6, pro.getProPrice());
+            pStm.setDate(7, new java.sql.Date(System.currentTimeMillis()));
+            pStm.execute();
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (cn != null) cn.close();
+            if (pStm != null) pStm.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    return pro;
+}
+
 }

@@ -58,7 +58,7 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "Billmain{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id +", cus_name= "+customer.getName()+ ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + '}';
+        return "Billmain{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id +", cus_name= "+customer.getName()+ ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus +", billDiscount=" + billDiscount +'}';
     }
 
     public Bill(Integer billId, String tableNo, int guestNo, String cus_id, String userName,
