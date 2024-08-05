@@ -2755,7 +2755,9 @@ AlertInfor("Save successful");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == buttonYes) {
+                 Bill_updateOrderArchiveMerge();
                 System.out.println("đã merge");
+              
             }
         }
     }
