@@ -2867,6 +2867,10 @@ AlertInfor("Save successful");
             } else {
                 b.setCus_id(data.customerId);
             }
+            
+                       System.out.println("check show b "+ b);          
+          
+           
             billDao.UpdateBillSplit(b);
 
             refreshBillTableView();
@@ -2944,6 +2948,51 @@ AlertInfor("Save successful");
     @FXML
     private void menu_SearchCus_id(MouseEvent event) {
     }
+    
+    private void Bill_updateBill_Merge2() {
+
+        if (!bill_TableNo2.equals(billSelected.getTableNo())
+                || !bill_NoGuest2.equals(billSelected.getGuestNo())
+                || //                !bill_InputDiscount1.equals(billSelected.getBillDiscount()) ||
+                !bill_inputPhone2.equals(billSelected.getCustomer().getPhone())) {
+            bill_saveButton.setDisable(false);
+            Bill b = new Bill();
+            b.setBillId(billSelected.getBillId());
+            b.setUserName(data.username);
+            b.setBillTotal(Double.parseDouble(bill_Total2.getText().replace("$", "")));
+            b.setBillDiscount(Double.parseDouble(bill_Discount2.getText().replace("- $", "")));
+            b.setBillTax(Double.parseDouble(bill_Tax1.getText().replace("$", "")));
+            b.setBillService(Double.parseDouble(bill_Service2.getText().replace("$", "")));
+            b.setBillSubTotal(Double.parseDouble(bill_Subtotal2.getText().replace("$", "")));
+            b.setTableNo(String.valueOf(bill_TableNo2.getText()));
+            b.setGuestNo(Integer.parseInt(bill_NoGuest2.getText()));
+            if (data.customerId == null || data.customerId.equals("")) {
+                if (billSelected != null) {
+                    b.setCus_id(billSelected.getCus_id());
+                } else {
+                    // Handle the case where billSelected or billSelected.getCus_id() is null
+                    System.out.println("billSelected or billSelected.getCus_id() is null");
+                }
+            } else {
+                b.setCus_id(data.customerId);
+            }
+            
+                       System.out.println("check show b "+ b);          
+          
+           
+            billDao.UpdateBillSplit(b);
+
+            refreshBillTableView();
+
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Save Button");
+            alert.setContentText("no changes need to be saved.");
+            alert.showAndWait();
+            return; // Exit the method
+        }
+    }
 
     private void Bill_updateOrderArchiveMerge() {
         for (Bill_Table2 itemNew : billtable2_merge) {
@@ -2953,7 +3002,10 @@ AlertInfor("Save successful");
         System.out.println("danh sach proId trong orderArchive duoi DB theo BillId vừa selected:" + orderArchiveProIds);
         
         System.out.println("size orderArchiveProIds:" +orderArchiveProIds.size() );
-        System.out.println("size billtable2_merge:" +billtable2_merge.size() );      
+        System.out.println("size billtable2_merge:" +billtable2_merge.size() );  
+        //update bill
+        Bill_updateBill_Merge2();
+        
             for(Bill_Table2 pro : billtable2_merge){
                 //gán billId vừa được selected cho phần tử trong billtable2_merge 
                 pro.setBillId(billSelected.getBillId());
