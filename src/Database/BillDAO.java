@@ -524,5 +524,80 @@ public class BillDAO {
     }
     return pro;
 }
+   public void UpdateOrderArchiveMerge(Bill_Table2 pro) {
+        try {
+            cn = connect.GetConnectDB();
+            String sql = "update OrderArchive set quantity =? where billId =? and proId =?;";
+            pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, pro.getQuantity());
+            pStm.setInt(2, pro.getBillId());
+            pStm.setString(3, pro.getProId());
+            pStm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                cn.close();
+                pStm.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+     
+    public Bill_Table2 AddOrderArchiveMerge(Bill_Table2 pro) {
+     String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, archiveDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try {
+            cn = connect.GetConnectDB();
+           
+            pStm = cn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pStm.setInt(1, pro.getBillId());
+            pStm.setString(2, pro.getProId());
+            pStm.setString(3, pro.getProName());
+            pStm.setInt(4, pro.getCateId());
+            pStm.setInt(5, pro.getQuantity());
+            pStm.setDouble(6, pro.getProPrice());
+            pStm.setDate(7, new java.sql.Date(System.currentTimeMillis()));
+            pStm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+     
+           
+        }
+             return pro;
+    }
+          public void DeleteDB_tableBill(int id) {
+        String sql = "delete Bill where billId =?;";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setInt(1, id);
+            pStm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

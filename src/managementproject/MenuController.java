@@ -1255,30 +1255,63 @@ public class MenuController implements Initializable {
         return result.isPresent() && result.get() == buttonYes;
     }
 
-    @FXML
+@FXML
     private void inven_Search(ActionEvent event) {
-        String searchValue = invent_txtSearch.getText().toLowerCase().trim();
-        filteredList.setPredicate(p -> p.getProName().toLowerCase().contains(searchValue));
-        textNotice.setText("Search successfully.");
+        applySearchFilter();
     }
 
     @FXML
     private void inven_Sort(ActionEvent event) {
+        applySearchAndSortFilters();
+    }
+
+    private void applySearchFilter() {
+        String searchValue = invent_txtSearch.getText().toLowerCase().trim();
+
+        filteredList.setPredicate(product
+                -> searchValue.isEmpty() || product.getProName().toLowerCase().contains(searchValue)
+        );
+
+        tvProduct.setItems(filteredList);
+        textNotice.setText("Search successfully applied.");
+    }
+
+    private void applySearchAndSortFilters() {
+        String searchValue = invent_txtSearch.getText().toLowerCase().trim();
         String selectedCategory = boxCateSort.getValue();
         String selectedStatus = boxStatusSort.getValue();
 
         filteredList.setPredicate(product -> {
+            boolean matchesSearch = searchValue.isEmpty() || product.getProName().toLowerCase().contains(searchValue);
+
             String categoryName = getCategoryName(product.getCateId());
             boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
             boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
 
-            return matchesCategory && matchesStatus;
+            return matchesSearch && matchesCategory && matchesStatus;
         });
 
-        // Apply sortedList to TableView
-        tvProduct.setItems(sortedList);
-        textNotice.setText("Products sorted successfully.");
+        tvProduct.setItems(filteredList);
+        textNotice.setText("Search and sort successfully applied.");
     }
+    
+//    @FXML
+//    private void inven_Sort(ActionEvent event) {
+//        String selectedCategory = boxCateSort.getValue();
+//        String selectedStatus = boxStatusSort.getValue();
+//
+//        filteredList.setPredicate(product -> {
+//            String categoryName = getCategoryName(product.getCateId());
+//            boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
+//            boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
+//
+//            return matchesCategory && matchesStatus;
+//        });
+//
+//        // Apply sortedList to TableView
+//        tvProduct.setItems(sortedList);
+//        textNotice.setText("Products sorted successfully.");
+//    }
     //MENU 
     private ObservableList<Product> cardListDrinkData = FXCollections.observableArrayList();
     private ObservableList<Product> cardListFoodData = FXCollections.observableArrayList();
@@ -2525,6 +2558,8 @@ AlertInfor("Save successful");
         showtable1();
         bill_showtable1_total();
         Bill_clearFields(bill_view11);
+        // de clear luc merge ,ko có thì sẽ click cancel 2 lan moi đc
+        tlist2.clear();
     }
 
     @FXML
@@ -2908,4 +2943,47 @@ AlertInfor("Save successful");
     private void menu_SearchCus_id(MouseEvent event) {
     }
 
+    private void Bill_updateOrderArchiveMerge() {
+        for (Bill_Table2 itemNew : billtable2_merge) {
+                       System.out.println("san pham trong billtable2_merge: "+ itemNew);          
+          }     
+        List<String> orderArchiveProIds = billDao.getProIdsForBill(billSelected.getBillId());
+        System.out.println("danh sach proId trong orderArchive duoi DB theo BillId vừa selected:" + orderArchiveProIds);
+        
+        System.out.println("size orderArchiveProIds:" +orderArchiveProIds.size() );
+        System.out.println("size billtable2_merge:" +billtable2_merge.size() );      
+            for(Bill_Table2 pro : billtable2_merge){
+                //gán billId vừa được selected cho phần tử trong billtable2_merge 
+                pro.setBillId(billSelected.getBillId());
+                pro.setProPrice(pro.getProPrice()/pro.getQuantity());
+                //nếu orderArchive có proId trùng proId với phần tử trong billtable2_merge 
+                if(orderArchiveProIds.contains(pro.getProId())){                  
+                    billDao.UpdateOrderArchiveMerge(pro);
+                    System.out.println("Đã cập nhật sản phẩm trong orderArchive: " + pro);                  
+                }else if(!orderArchiveProIds.contains(pro.getProId())){
+                    billDao.AddOrderArchiveMerge(pro);
+                }
+            }
+            System.out.println("bill được chọn đầu tiên : "+ billtable1.get(0).getBillId());
+            billDao.DeleteDB(billtable1.get(0).getBillId());
+            billDao.DeleteDB_tableBill(billtable1.get(0).getBillId());
+             tlist2.clear();
+        // Refresh bill_tbView_2
+             bill_tbView_2.setItems(FXCollections.observableArrayList(tlist2));
+             bill_tbView_2.refresh();
+        // Re-enable bill_tbView_main
+            bill_tbView_main.setDisable(false);
+            bill_view1.setDisable(false);
+            checkMerge = true;
+        // Update bill_tbView_1 using the showtable1() method
+            showtable1();
+             bill_showtable1_total();
+            Bill_clearFields(bill_view11);
+        // de clear luc merge ,ko có thì sẽ click cancel 2 lan moi đc
+             tlist2.clear();
+//            billDao.DeleteDB(billSelected.getBillId());
+            bill_tbView_main.refresh();
+            refreshBillTableView();     
+        }
+    
 }

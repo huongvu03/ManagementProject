@@ -69,9 +69,6 @@
                      </graphic>
                   </Button>
                   <Button fx:id="bill_btn" layoutX="62.0" layoutY="674.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="BILL" textAlignment="JUSTIFY" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIcon glyphName="BILL" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
-                     </graphic>
                      <font>
                         <Font size="18.0" />
                      </font>
