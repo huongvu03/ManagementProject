@@ -328,6 +328,8 @@ public class MenuController implements Initializable {
     @FXML
     private Button bill_cancelButton1;
     @FXML
+    private Button bill_deleteButton;
+    @FXML
     private TextField menu_InputDiscount;
     @FXML
     private TextField menu_inputPhone;
@@ -1255,7 +1257,7 @@ public class MenuController implements Initializable {
         return result.isPresent() && result.get() == buttonYes;
     }
 
-@FXML
+    @FXML
     private void inven_Search(ActionEvent event) {
         applySearchFilter();
     }
@@ -1294,7 +1296,7 @@ public class MenuController implements Initializable {
         tvProduct.setItems(filteredList);
         textNotice.setText("Search and sort successfully applied.");
     }
-    
+
 //    @FXML
 //    private void inven_Sort(ActionEvent event) {
 //        String selectedCategory = boxCateSort.getValue();
@@ -1387,7 +1389,7 @@ public class MenuController implements Initializable {
         }
 
     }
-public OrderDAO orderDAO = new OrderDAO();
+    public OrderDAO orderDAO = new OrderDAO();
     public ObservableList<Order> menuOrderList = FXCollections.observableArrayList();
     public BillDAO billDAO = new BillDAO();
 
@@ -1482,7 +1484,7 @@ public OrderDAO orderDAO = new OrderDAO();
     public void menuDisplayTotal() {
         menuGetSubtotal();
         menu_Total.setText("$ " + String.format("%,.2f", total));
-menu_Tax.setText("$ " + String.format("%,.2f", billtax));
+        menu_Tax.setText("$ " + String.format("%,.2f", billtax));
         menu_Service.setText("$ " + String.format("%,.2f", billservice));
         menu_Discount.setText("$ " + "-" + String.format("%,.2f", discount));
         if (subtotal != 0) {
@@ -1559,7 +1561,7 @@ menu_Tax.setText("$ " + String.format("%,.2f", billtax));
                 bill.setBillService(billservice);
                 bill.setBillDiscount(discount);
                 bill.setBillSubTotal(subtotal);
-java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+                java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
                 bill.setBillDate(sqlDate);
                 bill.setBillStatus("PAID");
                 int billId = billDAO.insertBillAndGetId(bill, cn);
@@ -1568,7 +1570,7 @@ java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
                 orderDAO.archiveAndDeleteOrders(cn);
                 // Commit the transaction
                 cn.commit();
-                            menu_DisplayChange();
+                menu_DisplayChange();
                 menuShowOrderData();
                 menuRestart();
                 AlertInfor("Paid successful");
@@ -1638,7 +1640,7 @@ java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
             cn.commit();
             menuShowOrderData();
             menuRestart();
-AlertInfor("Save successful");
+            AlertInfor("Save successful");
 
         } catch (SQLException ex) {
             if (cn != null) {
@@ -1678,8 +1680,8 @@ AlertInfor("Save successful");
     }
 
     public void menuRestart() {
-          menu_txtAmount.clear();
-          menu_Change.setText("0.0");
+        menu_txtAmount.clear();
+        menu_Change.setText("0.0");
         total = 0;
         billtax = 0;
         billservice = 0;
@@ -1687,19 +1689,18 @@ AlertInfor("Save successful");
         amount = 0;
         change = 0;
         discount = 0;
-        
+
         txt_menuNoGuest.clear();
         txt_menuTableNo.clear();
         menu_inputPhone.clear();
         menu_InputDiscount.clear();
-      
-        
+
         menu_Total.setText("0.0");
         menu_Tax.setText(" 0.0");
         menu_Service.setText("0.0");
         menu_Discount.setText("0.0");
         menu_Subtotal.setText(" 0.0");
-        
+
     }
 
     private String getProId;
@@ -1740,8 +1741,10 @@ AlertInfor("Save successful");
             }
         }
     }
-@FXML
-    private void menu_Receipt(MouseEvent event) throws SQLException {}
+
+    @FXML
+    private void menu_Receipt(MouseEvent event) throws SQLException {
+    }
 
 //CUSTOMER
     //CUSTOMER
@@ -2755,9 +2758,9 @@ AlertInfor("Save successful");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == buttonYes) {
-                 Bill_updateOrderArchiveMerge();
+                Bill_updateOrderArchiveMerge();
                 System.out.println("đã merge");
-              
+
             }
         }
     }
@@ -2867,10 +2870,9 @@ AlertInfor("Save successful");
             } else {
                 b.setCus_id(data.customerId);
             }
-            
-                       System.out.println("check show b "+ b);          
-          
-           
+
+            System.out.println("check show b " + b);
+
             billDao.UpdateBillSplit(b);
 
             refreshBillTableView();
@@ -2948,7 +2950,7 @@ AlertInfor("Save successful");
     @FXML
     private void menu_SearchCus_id(MouseEvent event) {
     }
-    
+
     private void Bill_updateBill_Merge2() {
 
         if (!bill_TableNo2.equals(billSelected.getTableNo())
@@ -2976,10 +2978,9 @@ AlertInfor("Save successful");
             } else {
                 b.setCus_id(data.customerId);
             }
-            
-                       System.out.println("check show b "+ b);          
-          
-           
+
+            System.out.println("check show b " + b);
+
             billDao.UpdateBillSplit(b);
 
             refreshBillTableView();
@@ -2996,48 +2997,76 @@ AlertInfor("Save successful");
 
     private void Bill_updateOrderArchiveMerge() {
         for (Bill_Table2 itemNew : billtable2_merge) {
-                       System.out.println("san pham trong billtable2_merge: "+ itemNew);          
-          }     
+            System.out.println("san pham trong billtable2_merge: " + itemNew);
+        }
         List<String> orderArchiveProIds = billDao.getProIdsForBill(billSelected.getBillId());
         System.out.println("danh sach proId trong orderArchive duoi DB theo BillId vừa selected:" + orderArchiveProIds);
-        
-        System.out.println("size orderArchiveProIds:" +orderArchiveProIds.size() );
-        System.out.println("size billtable2_merge:" +billtable2_merge.size() );  
+
+        System.out.println("size orderArchiveProIds:" + orderArchiveProIds.size());
+        System.out.println("size billtable2_merge:" + billtable2_merge.size());
         //update bill
         Bill_updateBill_Merge2();
-        
-            for(Bill_Table2 pro : billtable2_merge){
-                //gán billId vừa được selected cho phần tử trong billtable2_merge 
-                pro.setBillId(billSelected.getBillId());
-                pro.setProPrice(pro.getProPrice()/pro.getQuantity());
-                //nếu orderArchive có proId trùng proId với phần tử trong billtable2_merge 
-                if(orderArchiveProIds.contains(pro.getProId())){                  
-                    billDao.UpdateOrderArchiveMerge(pro);
-                    System.out.println("Đã cập nhật sản phẩm trong orderArchive: " + pro);                  
-                }else if(!orderArchiveProIds.contains(pro.getProId())){
-                    billDao.AddOrderArchiveMerge(pro);
-                }
+
+        for (Bill_Table2 pro : billtable2_merge) {
+            //gán billId vừa được selected cho phần tử trong billtable2_merge 
+            pro.setBillId(billSelected.getBillId());
+            pro.setProPrice(pro.getProPrice() / pro.getQuantity());
+            //nếu orderArchive có proId trùng proId với phần tử trong billtable2_merge 
+            if (orderArchiveProIds.contains(pro.getProId())) {
+                billDao.UpdateOrderArchiveMerge(pro);
+                System.out.println("Đã cập nhật sản phẩm trong orderArchive: " + pro);
+            } else if (!orderArchiveProIds.contains(pro.getProId())) {
+                billDao.AddOrderArchiveMerge(pro);
             }
-            System.out.println("bill được chọn đầu tiên : "+ billtable1.get(0).getBillId());
-            billDao.DeleteDB(billtable1.get(0).getBillId());
-            billDao.DeleteDB_tableBill(billtable1.get(0).getBillId());
-             tlist2.clear();
-        // Refresh bill_tbView_2
-             bill_tbView_2.setItems(FXCollections.observableArrayList(tlist2));
-             bill_tbView_2.refresh();
-        // Re-enable bill_tbView_main
-            bill_tbView_main.setDisable(false);
-            bill_view1.setDisable(false);
-            checkMerge = true;
-        // Update bill_tbView_1 using the showtable1() method
-            showtable1();
-             bill_showtable1_total();
-            Bill_clearFields(bill_view11);
-        // de clear luc merge ,ko có thì sẽ click cancel 2 lan moi đc
-             tlist2.clear();
-//            billDao.DeleteDB(billSelected.getBillId());
-            bill_tbView_main.refresh();
-            refreshBillTableView();     
         }
-    
+        System.out.println("bill được chọn đầu tiên : " + billtable1.get(0).getBillId());
+        billDao.DeleteDB(billtable1.get(0).getBillId());
+        billDao.DeleteDB_tableBill(billtable1.get(0).getBillId());
+        tlist2.clear();
+        // Refresh bill_tbView_2
+        bill_tbView_2.setItems(FXCollections.observableArrayList(tlist2));
+        bill_tbView_2.refresh();
+        // Re-enable bill_tbView_main
+        bill_tbView_main.setDisable(false);
+        bill_view1.setDisable(false);
+        checkMerge = true;
+        // Update bill_tbView_1 using the showtable1() method
+        showtable1();
+        bill_showtable1_total();
+        Bill_clearFields(bill_view11);
+        // de clear luc merge ,ko có thì sẽ click cancel 2 lan moi đc
+        tlist2.clear();
+//            billDao.DeleteDB(billSelected.getBillId());
+        bill_tbView_main.refresh();
+        refreshBillTableView();
+    }
+
+    @FXML
+    private void Bill_HandleDeleteButton(ActionEvent event) {
+        if (showConfirmation("DELETE " + billSelected.getBillId())) {
+            if (billtable1 != null) {
+                for (Bill_Table1 itemDel : billtable1) {
+                    System.out.println("proId: " + itemDel.getProId() + " quantity: " + itemDel.getQuantity());
+                    dao.updateQuantity(itemDel.getProId(), itemDel.getQuantity());
+                }
+                
+                int billId_Del = billSelected.getBillId();
+                //delete orderArchive
+                billDao.DeleteDB(billId_Del);
+                //delete bill
+                billDao.DeleteDB_tableBill(billId_Del);
+                showAlert(AlertType.INFORMATION, "Alert", "Mesage", "DELETE " + billId_Del + " successfully");
+                billtable1.clear();
+                bill_tbView_main.refresh();
+                refreshBillTableView();
+            } else {
+                showAlert(AlertType.WARNING, "Warning", "Mesage", "No bill selected for deletion.");
+
+            }
+
+        } else {
+
+        }
+    }
+
 }

@@ -209,6 +209,51 @@ public class ProductDAO {
     
     return isUpdated;
 }
+   public boolean updateQuantity(String proId, int quantity) {
+    Connection cn = null;
+    PreparedStatement selectStm = null;
+    PreparedStatement updateStm = null;
+    boolean isUpdated = false;
+
+    try {
+        cn = connect.GetConnectDB();
+        
+        // Lấy số lượng hiện tại từ cơ sở dữ liệu
+        String selectSql = "SELECT stock FROM Product WHERE proId = ?";
+        selectStm = cn.prepareStatement(selectSql);
+        selectStm.setString(1, proId);
+        ResultSet rs = selectStm.executeQuery();
+        
+        int currentStock = 0;
+        if (rs.next()) {
+            currentStock = rs.getInt("stock");
+        }
+        
+        // Tăng số lượng hiện tại bằng số lượng sản phẩm được xóa
+        int newStock = currentStock + quantity;
+
+        // Cập nhật số lượng mới trong cơ sở dữ liệu
+        String updateSql = "UPDATE Product SET stock = ? WHERE proId = ?";
+        updateStm = cn.prepareStatement(updateSql);
+        updateStm.setInt(1, newStock);
+        updateStm.setString(2, proId);
+
+        int rowsAffected = updateStm.executeUpdate();
+        isUpdated = rowsAffected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (selectStm != null) selectStm.close();
+            if (updateStm != null) updateStm.close();
+            if (cn != null) cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    return isUpdated;
+}
 
     public void DeleteDB(String id) {
         try {
