@@ -26,6 +26,16 @@ public class Bill {
     private Customer customer;
     private Product product;
     private Date archiveDate;
+    private String note;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+    
 
     public Bill() {
         this.customer = new Customer();
@@ -58,8 +68,10 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "Billmain{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id +", cus_name= "+customer.getName()+ ", userName=" + userName + ", proId=" + proId + ", proName=" + proName + ", cateId=" + cateId + ", quantity=" + quantity + ", proPrice=" + proPrice + ", status=" + status + ", proImage=" + proImage + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus +", billDiscount=" + billDiscount +'}';
+        return "Bill{" + "billId=" + billId + ", tableNo=" + tableNo + ", cus_id=" + cus_id + ", userName=" + userName + ", billTotal=" + billTotal + ", billTax=" + billTax + ", billService=" + billService + ", billDiscount=" + billDiscount + ", billSubTotal=" + billSubTotal + ", billDate=" + billDate + ", billStatus=" + billStatus + ", guestNo=" + guestNo + ", customer=" + customer + ", archiveDate=" + archiveDate + ", note=" + note + '}';
     }
+
+ 
 
     public Bill(Integer billId, String tableNo, int guestNo, String cus_id, String userName,
             Double billTotal, Double billTax, Double billService, Double billDiscount, Double billSubTotal, Date billDate, String billStatus,Customer customer) {

@@ -59,6 +59,9 @@
 .menuButton:hover{
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
 }
+.menuButton:disabled {
+    -fx-fill: #a0a0a0; /* Màu khi bị vô hiệu hóa */
+}
 /*DashBoard*/
 .hbox{
     -fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);

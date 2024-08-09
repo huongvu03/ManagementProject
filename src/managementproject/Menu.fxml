@@ -30,7 +30,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
+<BorderPane fx:id="PageView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managementproject.MenuController">
    <left>
       <AnchorPane prefHeight="1080.0" prefWidth="400.0" styleClass="gradient" stylesheets="@MainForm.css">
          <children>
@@ -69,11 +69,14 @@
                      </graphic>
                   </Button>
                   <Button fx:id="bill_btn" layoutX="62.0" layoutY="674.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="60.0" prefWidth="260.0" stylesheets="@MainForm.css" text="BILL" textAlignment="JUSTIFY" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="BILL" size="2.5em" textAlignment="JUSTIFY" wrappingWidth="46.64285659790039" />
+                     </graphic>
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button layoutX="27.0" layoutY="973.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="66.0" prefWidth="173.0" style="-fx-border-color: none; -fx-background-color: none;" text="Sign Out" textFill="WHITE">
+                  <Button fx:id="system_Logout" layoutX="27.0" layoutY="973.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="66.0" prefWidth="173.0" style="-fx-border-color: none; -fx-background-color: none;" text="Sign Out" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIcon glyphName="SIGN_OUT" size="3em" />
                      </graphic>
@@ -137,39 +140,12 @@
                                                                 <ImageView fitHeight="60.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" />
                                                             </graphic>
                                                         </Label>
-                                          <VBox prefHeight="99.0" prefWidth="413.0" />
-                                          <VBox prefHeight="99.0" prefWidth="869.0">
-                                             <children>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="80.0" text="From:   ">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <DatePicker fx:id="DashBoard_datefrom" prefHeight="33.0" prefWidth="220.0" />
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="64.0" text="To: ">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <DatePicker fx:id="DashBoard_dateto" prefHeight="34.0" prefWidth="210.0" />
-                                                      <Pane prefHeight="99.0" prefWidth="63.0" />
-                                                      <Button fx:id="DashBoard_exportButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="134.0" text="Export">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </VBox>
                                                     </children>
                                                 </HBox>
                                                 <HBox prefHeight="2.0" prefWidth="1500.0" style="-fx-background-color: black; -fx-border-radius: 30px;" />
                                                 <VBox prefHeight="979.0" prefWidth="1500.0">
                                                     <children>
-                                                        <HBox prefHeight="119.0" prefWidth="1521.0" styleClass="hbox" stylesheets="@MainForm.css">
+                                                        <HBox prefHeight="119.0" prefWidth="1499.0" styleClass="hbox" stylesheets="@MainForm.css">
                                                             <children>
                                                                 <VBox prefHeight="91.0" prefWidth="100.0" />
                                                                 <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
@@ -181,38 +157,7 @@
                                                                                         <Font size="40.0" />
                                                                                     </font>
                                                                                 </Label>
-                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="Sales">
-                                                                                    <font>
-                                                                                        <Font size="20.0" />
-                                                                                    </font>
-                                                                                </Label>
-                                                                            </children>
-                                                                        </VBox>
-                                                                        <HBox prefHeight="119.0" prefWidth="114.0">
-                                                                            <children>
-                                                                                <ImageView fitHeight="71.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
-                                                                                    <HBox.margin>
-                                                                                        <Insets left="10.0" top="20.0" />
-                                                                                    </HBox.margin>
-                                                                                    <image>
-                                                                                        <Image url="@../image/icon/coffee.png" />
-                                                                                    </image>
-                                                                                </ImageView>
-                                                                            </children>
-                                                                        </HBox>
-                                                                    </children>
-                                                                </HBox>
-                                                                <Pane prefHeight="103.0" prefWidth="79.0" />
-                                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
-                                                                    <children>
-                                                                        <VBox prefHeight="150.0" prefWidth="147.0">
-                                                                            <children>
-                                                                                <Label fx:id="totalCustomer" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
-                                                                                    <font>
-                                                                                        <Font name="Calibri" size="40.0" />
-                                                                                    </font>
-                                                                                </Label>
-                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="Customers">
+                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="product">
                                                                                     <font>
                                                                                         <Font size="20.0" />
                                                                                     </font>
@@ -226,76 +171,75 @@
                                                                                         <Insets left="10.0" top="20.0" />
                                                                                     </HBox.margin>
                                                                                     <image>
-                                                                                        <Image url="@../image/icon/customer.png" />
+                                                                                        <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/coffee.png" />
                                                                                     </image>
                                                                                 </ImageView>
                                                                             </children>
                                                                         </HBox>
                                                                     </children>
                                                                 </HBox>
-                                                                <Pane prefHeight="103.0" prefWidth="88.0" />
-                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
-                                                   <children>
-                                                      <VBox prefHeight="150.0" prefWidth="147.0">
-                                                         <children>
-                                                            <Label fx:id="totalRevenue" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
-                                                               <font>
-                                                                  <Font name="Calibri" size="40.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="Revenue">
-                                                               <font>
-                                                                  <Font size="20.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </VBox>
-                                                      <HBox prefHeight="119.0" prefWidth="114.0">
-                                                         <children>
-                                                            <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" top="20.0" />
-                                                               </HBox.margin>
-                                                               <image>
-                                                                  <Image url="@../image/icon/money.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </HBox>
-                                                <Pane prefHeight="103.0" prefWidth="93.0" />
-                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
-                                                   <children>
-                                                      <VBox prefHeight="150.0" prefWidth="147.0">
-                                                         <children>
-                                                            <Label fx:id="totalGuests" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
-                                                               <font>
-                                                                  <Font name="Calibri" size="40.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="Guests">
-                                                               <font>
-                                                                  <Font size="20.0" />
-                                                               </font>
-                                                            </Label>
-                                                         </children>
-                                                      </VBox>
-                                                      <HBox prefHeight="119.0" prefWidth="114.0">
-                                                         <children>
-                                                            <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" top="20.0" />
-                                                               </HBox.margin>
-                                                               <image>
-                                                                  <Image url="@../image/icon/money.png" />
-                                                               </image>
-                                                            </ImageView>
-                                                         </children>
-                                                      </HBox>
-                                                   </children>
-                                                </HBox>
-                                                <Pane prefHeight="119.0" prefWidth="60.0" />
+                                                                <Pane prefHeight="119.0" prefWidth="60.0" />
+                                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox">
+                                                                    <children>
+                                                                        <VBox prefHeight="150.0" prefWidth="147.0">
+                                                                            <children>
+                                                                                <Label fx:id="totalCustomer" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                                                                    <font>
+                                                                                        <Font name="Calibri" size="40.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="category">
+                                                                                    <font>
+                                                                                        <Font size="20.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                            </children>
+                                                                        </VBox>
+                                                                        <HBox prefHeight="119.0" prefWidth="114.0">
+                                                                            <children>
+                                                                                <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="10.0" top="20.0" />
+                                                                                    </HBox.margin>
+                                                                                    <image>
+                                                                                        <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/customer.png" />
+                                                                                    </image>
+                                                                                </ImageView>
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </HBox>
+                                                                <Pane prefHeight="119.0" prefWidth="60.0" />
+                                                                <HBox prefHeight="119.0" prefWidth="259.0" style="-fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0); -fx-background-color: #e9e9e9; -fx-background-radius: 15px;" styleClass="hbox" visible="false">
+                                                                    <children>
+                                                                        <VBox prefHeight="150.0" prefWidth="147.0">
+                                                                            <children>
+                                                                                <Label fx:id="totalRevenue" alignment="CENTER" prefHeight="82.0" prefWidth="163.0" text="20" textFill="ORANGE">
+                                                                                    <font>
+                                                                                        <Font name="Calibri" size="40.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                                <Label alignment="CENTER" prefHeight="41.0" prefWidth="162.0" text="user">
+                                                                                    <font>
+                                                                                        <Font size="20.0" />
+                                                                                    </font>
+                                                                                </Label>
+                                                                            </children>
+                                                                        </VBox>
+                                                                        <HBox prefHeight="119.0" prefWidth="114.0">
+                                                                            <children>
+                                                                                <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+                                                                                    <HBox.margin>
+                                                                                        <Insets left="10.0" top="20.0" />
+                                                                                    </HBox.margin>
+                                                                                    <image>
+                                                                                        <Image url="@../../../NetBeansProjects/ManagementProject/src/image/icon/money.png" />
+                                                                                    </image>
+                                                                                </ImageView>
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </HBox>
                                                             </children>
                                                             <opaqueInsets>
                                                                 <Insets />
@@ -309,11 +253,11 @@
                                                                 <VBox prefHeight="776.0" prefWidth="40.0" />
                                                                 <VBox prefHeight="776.0" prefWidth="650.0">
                                                                     <children>
-                                                                        <ScrollPane prefHeight="719.0" prefWidth="639.0">
+                                                                        <ScrollPane prefHeight="756.0" prefWidth="666.0">
                                                                             <content>
                                                                                 <HBox prefHeight="636.0" prefWidth="650.0">
                                                                                     <children>
-                                                                                        <AreaChart fx:id="areaChart1" prefHeight="669.0" prefWidth="635.0" style="-fx-background-color: #e9e9e9;">
+                                                                                        <AreaChart fx:id="areaChart1" prefHeight="663.0" prefWidth="635.0" style="-fx-background-color: #e9e9e9;">
                                                                                             <xAxis>
                                                                                                 <CategoryAxis side="BOTTOM" fx:id="xAxis1" />
                                                                                             </xAxis>
@@ -327,9 +271,9 @@
                                                                         </ScrollPane>
                                                                         <VBox prefHeight="131.0" prefWidth="639.0">
                                                                             <children>
-                                                                                <Label alignment="CENTER" prefHeight="154.0" prefWidth="639.0" text="Total Revenue Statistics" textFill="#e11313">
+                                                                                <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" text="Total product Price Statistics" textFill="#e11313">
                                                                                     <font>
-                                                                                        <Font size="20.0" />
+                                                                                        <Font size="15.0" />
                                                                                     </font>
                                                                                 </Label>
                                                                             </children>
@@ -339,131 +283,25 @@
                                                                 <VBox prefHeight="776.0" prefWidth="40.0" />
                                                                 <VBox prefHeight="776.0" prefWidth="650.0">
                                                                     <children>
-                                                                        <ScrollPane prefHeight="707.0" prefWidth="639.0">
-                                                         <content>
-                                                            <VBox prefHeight="667.0" prefWidth="635.0">
-                                                               <children>
-                                                                  <HBox prefHeight="598.0" prefWidth="635.0">
-                                                                     <children>
-                                                                        <VBox prefHeight="598.0" prefWidth="337.0">
-                                                                           <children>
-                                                                              <HBox prefHeight="100.0" prefWidth="200.0" />
-                                                                           </children>
-                                                                        </VBox>
-                                                                     </children>
-                                                                  </HBox>
-                                                                  <HBox prefHeight="69.0" prefWidth="625.0">
-                                                                     <children>
-                                                                        <VBox prefHeight="69.0" prefWidth="73.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_BillId" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Bills">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                        <VBox prefHeight="69.0" prefWidth="75.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_GuestNo" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Guests">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_Total" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Total">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_Discount" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Discount">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_Service" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Service">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_Tax" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Tax">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #e9e9e9; -fx-border-radius: 5px; -fx-border-color: black;">
-                                                                           <children>
-                                                                              <Label fx:id="DB_sum_SubTotal" alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="20" textFill="#e20e0e">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <Label alignment="CENTER" prefHeight="51.0" prefWidth="109.0" text="Sub Total">
-                                                                                 <font>
-                                                                                    <Font size="20.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                           </children>
-                                                                        </VBox>
-                                                                     </children>
-                                                                  </HBox>
-                                                               </children>
-                                                            </VBox>
-                                                         </content>
+                                                                        <ScrollPane prefHeight="756.0" prefWidth="666.0">
+                                                                            <content>
+                                                                                <HBox prefHeight="636.0" prefWidth="650.0">
+                                                                                    <children>
+                                                                                        <AreaChart fx:id="areaChart2" prefHeight="633.0" prefWidth="637.0" style="-fx-background-color: #e9e9e9;">
+                                                                                            <xAxis>
+                                                                                                <CategoryAxis side="BOTTOM" fx:id="xAxis2" />
+                                                                                            </xAxis>
+                                                                                            <yAxis>
+                                                                                                <NumberAxis side="LEFT" />
+                                                                                            </yAxis>
+                                                                                        </AreaChart>
+                                                                                    </children>
+                                                                                </HBox>
+                                                                            </content>
                                                                         </ScrollPane>
                                                                         <VBox prefHeight="131.0" prefWidth="650.0">
                                                                             <children>
-                                                                                <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" text="Bảng thống kê doanh số bán hàng theo sản phẩm" textFill="#e11313">
-                                                               <font>
-                                                                  <Font size="20.0" />
-                                                               </font></Label>
+                                                                                <Label alignment="CENTER" prefHeight="144.0" prefWidth="650.0" textFill="#e11313" />
                                                                             </children>
                                                                         </VBox>
                                                                     </children>
@@ -539,15 +377,15 @@
                               <Button layoutX="972.0" layoutY="55.0" mnemonicParsing="false" onAction="#inven_ClearSort" text="Clear Sort" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="107.0" layoutY="644.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="401.0" stylesheets="@MainForm.css">
+                                <AnchorPane layoutX="16.0" layoutY="645.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="410.0" prefWidth="1468.0" stylesheets="@MainForm.css">
                                     <children>
                                         <TextField fx:id="txtProId" layoutX="2.0" prefHeight="50.0" prefWidth="250.0" promptText="userId" styleClass="textfield" />
                                         <TextField fx:id="txtProName" layoutX="2.0" layoutY="104.0" prefHeight="50.0" prefWidth="250.0" promptText="proName" styleClass="textfield" />
                                         <TextField fx:id="txtProPrice" layoutX="2.0" layoutY="209.0" prefHeight="50.0" prefWidth="250.0" promptText="price" styleClass="textfield" />
                                         <Button layoutX="2.0" layoutY="326.0" mnemonicParsing="false" onAction="#inven_Add" prefHeight="50.0" prefWidth="100.0" text="Add" textFill="WHITE" />
-                                        <ComboBox fx:id="boxName" layoutX="437.0" prefHeight="50.0" prefWidth="250.0" promptText="CateName" />
-                                        <ComboBox fx:id="boxStatus" layoutX="437.0" layoutY="114.0" prefHeight="50.0" prefWidth="250.0" promptText="Status" />
-                                        <TextField fx:id="txtStock" layoutX="437.0" layoutY="210.0" prefHeight="50.0" prefWidth="250.0" promptText="stock" styleClass="textfield" />
+                                        <ComboBox fx:id="boxName" layoutX="383.0" layoutY="-1.0" prefHeight="50.0" prefWidth="250.0" promptText="CateName" />
+                                        <ComboBox fx:id="boxStatus" layoutX="383.0" layoutY="113.0" prefHeight="50.0" prefWidth="250.0" promptText="Status" />
+                                        <TextField fx:id="txtStock" layoutX="383.0" layoutY="209.0" prefHeight="50.0" prefWidth="250.0" promptText="stock" styleClass="textfield" />
                                         <Button layoutX="340.0" layoutY="331.0" mnemonicParsing="false" onAction="#Inven_Delete" prefHeight="50.0" prefWidth="100.0" text="Delete" textFill="WHITE" />
                                         <Button layoutX="160.0" layoutY="331.0" mnemonicParsing="false" onAction="#inven_Update" prefHeight="50.0" prefWidth="100.0" text="Update" textFill="WHITE" />
                                         <Text fx:id="textNotice1" fill="#d34444" layoutX="252.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notice:">
@@ -556,15 +394,60 @@
                                             </font>
                                         </Text>
                                         <Button layoutX="522.0" layoutY="331.0" mnemonicParsing="false" onAction="#inven_ClearFields" prefHeight="50.0" prefWidth="100.0" text=" Clear All" textFill="WHITE" />
-                                        <AnchorPane layoutX="902.0" layoutY="-5.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;">
+                                        <AnchorPane layoutX="750.0" layoutY="2.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;">
                                             <children>
-                                                <ImageView fx:id="ImageView" fitHeight="199.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                                <ImageView fx:id="ImageView" fitHeight="199.0" fitWidth="200.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
                                             </children>
                                         </AnchorPane>
-                                        <Button layoutX="962.0" layoutY="223.0" mnemonicParsing="false" onAction="#HanleImportImage" prefHeight="50.0" prefWidth="100.0" text="Import" textFill="WHITE" />
+                                        <Button layoutX="800.0" layoutY="233.0" mnemonicParsing="false" onAction="#HanleImportImage" prefHeight="50.0" prefWidth="100.0" text="Import" textFill="WHITE" />
                                         <Text fx:id="textNotice" layoutX="307.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                              <TextField fx:id="system_txtService" layoutX="1071.0" layoutY="104.0" prefHeight="50.0" prefWidth="250.0" promptText="System Service" styleClass="textfield">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="system_txtTax" layoutX="1071.0" layoutY="208.0" prefHeight="50.0" prefWidth="250.0" promptText="System Tax" styleClass="textfield">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </TextField>
+                              <Button layoutX="1071.0" layoutY="326.0" mnemonicParsing="false" onAction="#system_Set" prefHeight="50.0" prefWidth="242.0" text="Set" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="1221.0" layoutY="266.0" mnemonicParsing="false" onAction="#system_ClearInput" prefHeight="15.0" prefWidth="100.0" text="Clear" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="1071.0" layoutY="-2.0" text="Service Charge :">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="1169.0" layoutY="42.0" text="TAX :">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="system_serDisplay" layoutX="1230.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="88.0946044921875">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="system_taxDisplay" layoutX="1230.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="88.0946044921875">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Text>
                                     </children>
                                 </AnchorPane>
+                        <Label layoutX="1130.0" layoutY="601.0" prefHeight="32.0" prefWidth="158.0" text="SYSTEM INFOR">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
                             </children>
                         </AnchorPane>
                     </children>
@@ -573,13 +456,13 @@
                     <children>
                         <AnchorPane layoutX="8.0" layoutY="10.0" prefHeight="1061.0" prefWidth="966.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
                             <children>
-                                <TabPane fx:id="MenuTab_View" layoutX="10.0" layoutY="5.0" prefHeight="914.0" prefWidth="916.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="5.0">
+                                <TabPane fx:id="MenuTab_View" layoutX="10.0" layoutY="40.8" prefHeight="878.0" prefWidth="945.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="41.0">
                                     <tabs>
                                         <Tab text="DRINK">
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="886.0" prefWidth="940.0">
                                                     <children>
-                                                        <ScrollPane layoutX="3.0" layoutY="2.0" onMouseClicked="#menu_SearchCus_id" prefHeight="894.0" prefWidth="935.0">
+                                                        <ScrollPane layoutX="3.0" layoutY="2.0" prefHeight="894.0" prefWidth="935.0">
                                                             <content>
                                                                 <GridPane fx:id="menu_gridPaneDrink" prefHeight="25.0" prefWidth="115.0">
                                                                     <columnConstraints>
@@ -621,26 +504,44 @@
                                         <FontAwesomeIcon glyphName="PENCIL" layoutX="6.0" layoutY="37.0" size="2em" wrappingWidth="34.85714340209961" />
                                     </children>
                                 </AnchorPane>
-                        <TextField fx:id="menu_inputPhone" layoutX="14.0" layoutY="934.0" prefHeight="45.0" prefWidth="350.0" promptText="Customer Name" AnchorPane.leftAnchor="14.0">
+                        <Button layoutX="237.0" layoutY="995.0" mnemonicParsing="false" onAction="#menu_ClearSearchBill" prefHeight="40.0" prefWidth="126.0" text="Clear Bill No." textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                        <TextField fx:id="menu_inputBillId" layoutX="14.0" layoutY="934.0" prefHeight="45.0" prefWidth="350.0" promptText="BillId">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <FontAwesomeIcon fx:id="menu_btn_SearchCus" glyphName="SEARCH" layoutX="379.0" layoutY="970.0" onMouseClicked="#menu_SearchCus" size="2em" text="" wrappingWidth="41.14285659790039" />
-                        <Button layoutX="799.0" layoutY="993.0" mnemonicParsing="false" onAction="#menu_clear" prefHeight="37.0" prefWidth="99.0" text="ClearALL" />
+                        <FontAwesomeIcon fx:id="menu_btnsearchBillId" glyphName="SEARCH" layoutX="375.0" layoutY="966.0" onMouseClicked="#menuSearchBillId" size="2em" text="" wrappingWidth="41.14285659790039" />
+                        <Button layoutX="777.0" layoutY="994.0" mnemonicParsing="false" onAction="#menu_ClearNoteInput" prefHeight="40.0" prefWidth="123.0" text="Clear Note" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Text fx:id="txt_BillText" fill="#c52626" layoutX="14.0" layoutY="1016.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="220.13668823242188">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="menu_txt_outOfStock" fill="#100f0f" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="936.4049682617188">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
                             </children>
                             <styleClass>
                                 <String fx:value="shadow" />
                                 <String fx:value="radius" />
                             </styleClass>
                         </AnchorPane>
-                  <AnchorPane layoutX="999.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1057.0" prefWidth="496.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
+                  <AnchorPane layoutX="997.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1057.0" prefWidth="496.0" style="-fx-background-color: white;" stylesheets="@MainForm.css">
                      <styleClass>
                         <String fx:value="shadow" />
                         <String fx:value="radius" />
                      </styleClass>
                      <children>
-                        <TableView fx:id="menu_TbView" editable="true" layoutX="8.0" layoutY="7.0" onMouseClicked="#menu_productSelected" prefHeight="504.0" prefWidth="480.0">
+                        <TableView fx:id="menu_TbView" editable="true" layoutX="8.0" layoutY="40.0" onMouseClicked="#menu_productSelected" prefHeight="471.0" prefWidth="480.0">
                            <columns>
                               <TableColumn fx:id="menu_Col_ProName" prefWidth="140.0" text="ProName" />
                               <TableColumn fx:id="menu_Col_Quantity" prefWidth="101.3333740234375" text="Quantity" />
@@ -648,12 +549,12 @@
                               <TableColumn fx:id="menu_ColNote" prefWidth="97.0" text="Note" />
                            </columns>
                         </TableView>
-                        <Label alignment="CENTER_RIGHT" layoutX="174.0" layoutY="515.0" prefWidth="150.0" text="Total :" textAlignment="RIGHT" AnchorPane.rightAnchor="264.0">
+                        <Label alignment="CENTER_RIGHT" layoutX="174.0" layoutY="515.0" prefWidth="150.0" text="SubTotal :" textAlignment="RIGHT" AnchorPane.rightAnchor="264.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Total" layoutX="252.0" layoutY="515.0" prefHeight="27.0" prefWidth="193.0" AnchorPane.leftAnchor="261.0">
+                        <Label fx:id="menu_Subtotal" layoutX="252.0" layoutY="515.0" prefHeight="27.0" prefWidth="193.0" AnchorPane.leftAnchor="261.0">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -688,12 +589,12 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="90.0" layoutY="635.0" prefHeight="30.0" prefWidth="150.0" text="Subtotal :" textAlignment="RIGHT" AnchorPane.rightAnchor="268.0">
+                        <Label alignment="CENTER_RIGHT" layoutX="90.0" layoutY="635.0" prefHeight="30.0" prefWidth="150.0" text=" Total :" textAlignment="RIGHT" AnchorPane.rightAnchor="268.0">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="menu_Subtotal" layoutX="244.0" layoutY="635.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="261.0">
+                        <Label fx:id="menu_Total" layoutX="244.0" layoutY="635.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="261.0">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -705,7 +606,7 @@
                         </Label>
                         <Label fx:id="menu_Change" layoutX="259.0" layoutY="716.0" prefHeight="27.0" prefWidth="200.0" AnchorPane.leftAnchor="261.0">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <Label alignment="CENTER_RIGHT" layoutX="86.0" layoutY="677.0" prefHeight="27.0" prefWidth="150.0" text="Amount :" textAlignment="RIGHT" AnchorPane.rightAnchor="268.0">
@@ -718,60 +619,34 @@
                               <Font size="22.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="txt_menuTableNo" layoutX="332.0" layoutY="923.0" prefHeight="45.0" prefWidth="152.0" promptText="TableNo" AnchorPane.leftAnchor="332.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font></TextField>
-                        <AnchorPane layoutX="41.0" layoutY="763.0" onMouseClicked="#menu_StoreBill" prefHeight="62.0" prefWidth="71.0" stylesheets="@MainForm.css">
-                           <children>
-                              <FontAwesomeIcon fill="#dda60e" glyphName="SAVE" layoutX="6.0" layoutY="65.0" size="5em" wrappingWidth="59.42856979370117">
+                        <FontAwesomeIcon fx:id="menu_btnSave" fill="#dda60e" glyphName="SAVE" layoutX="47.0" layoutY="828.0" onMouseClicked="#menu_StoreBill" size="5em" styleClass="menuButton" wrappingWidth="59.42856979370117">
                                 
                               </FontAwesomeIcon>
-                           </children>
-                        </AnchorPane>
                         <Text fill="#847979" layoutX="46.0" layoutY="855.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save" textAlignment="CENTER" wrappingWidth="52.1246337890625">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <AnchorPane layoutX="152.0" layoutY="765.0" onMouseClicked="#menu_Pay" prefHeight="51.0" prefWidth="59.0" AnchorPane.bottomAnchor="222.33333333333326">
-                           <children>
-                              <FontAwesomeIcon fx:id="menu_btnPAY" fill="#3ac335" glyphName="MONEY" layoutX="2.0" layoutY="61.0" size="5em" strokeLineCap="ROUND" strokeType="INSIDE" text="" wrappingWidth="69.42885208129883">
-                                 <font>
-                                    <Font size="5.0" />
-                                 </font>
-                                 
-                              </FontAwesomeIcon>
-                           </children>
-                        </AnchorPane>
-                        <Text fill="#847979" layoutX="162.0" layoutY="855.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pay" textAlignment="CENTER" wrappingWidth="52.1246337890625">
+                        <FontAwesomeIcon fx:id="menu_btnPAY" fill="#3ac335" glyphName="MONEY" layoutX="154.0" layoutY="826.3333129882812" onMouseClicked="#menu_Pay" size="5em" strokeLineCap="ROUND" strokeType="INSIDE" styleClass="menuButton" text="" wrappingWidth="69.42885208129883">
+                           <font>
+                              <Font size="5.0" />
+                           </font>
+                           
+                                    </FontAwesomeIcon>
+                        <Text fx:id="menu_PayLabel" fill="#847979" layoutX="162.0" layoutY="855.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pay" textAlignment="CENTER" wrappingWidth="52.1246337890625">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <AnchorPane layoutX="389.0" layoutY="770.0" onMouseClicked="#menu_RemoveItem" prefHeight="58.0" prefWidth="60.0">
-                           <children>
-                              <FontAwesomeIcon fill="#e90c0c" glyphName="TIMES" layoutX="6.0" layoutY="50.0" size="5em" wrappingWidth="48.19039535522461" />
-                           </children>
-                        </AnchorPane>
-                        <FontAwesomeIcon fx:id="menu_btnRECEIPT" glyphName="PRINT" layoutX="283.0" layoutY="821.0" onMouseClicked="#menu_Receipt" size="5em" styleClass="menuButton" />
+                        <FontAwesomeIcon fx:id="menu_btnRECEIPT" glyphName="PRINT" layoutX="283.0" layoutY="821.0" onMouseClicked="#menu_printReceipt" size="5em" styleClass="menuButton" />
                         <Text fill="#847979" layoutX="284.0" layoutY="854.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Print" textAlignment="CENTER" wrappingWidth="52.1246337890625">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="menu_InputDiscount" layoutX="106.0" layoutY="923.0" prefHeight="45.0" prefWidth="152.0" promptText="Discount" AnchorPane.leftAnchor="106.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font></TextField>
-                        <AnchorPane layoutX="45.0" layoutY="988.0" prefHeight="51.0" prefWidth="51.0">
+                        <AnchorPane fx:id="menu_btnRemove" layoutX="389.0" layoutY="770.0" onMouseClicked="#menu_RemoveItem" prefHeight="58.0" prefWidth="60.0">
                            <children>
-                              <FontAwesomeIcon glyphName="USER" layoutX="11.0" layoutY="38.0" size="3em" text="" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="45.0" layoutY="918.0" prefHeight="56.0" prefWidth="52.0">
-                           <children>
-                              <FontAwesomeIcon glyphName="ARROW_CIRCLE_DOWN" layoutX="11.0" layoutY="40.0" size="3em" />
+                              <FontAwesomeIcon fill="#e90c0c" glyphName="TIMES" layoutX="6.0" layoutY="50.0" size="5em" styleClass="menuButton" wrappingWidth="48.19039535522461" />
                            </children>
                         </AnchorPane>
                         <Text fill="#847979" layoutX="393.0" layoutY="854.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delete" textAlignment="CENTER" wrappingWidth="52.1246337890625">
@@ -779,17 +654,59 @@
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <AnchorPane layoutX="290.0" layoutY="924.0" prefHeight="37.0" prefWidth="42.0">
+                        <AnchorPane layoutX="51.0" layoutY="949.0" prefHeight="51.0" prefWidth="51.0">
                            <children>
-                              <FontAwesomeIcon glyphName="TABLE" layoutX="-3.0" layoutY="34.0" size="3em" />
+                              <FontAwesomeIcon glyphName="USER" layoutX="11.0" layoutY="38.0" size="3em" text="" />
                            </children>
                         </AnchorPane>
-                        <Button layoutX="382.0" layoutY="995.0" mnemonicParsing="false" onAction="#menu_ClearBillInput" prefHeight="37.0" prefWidth="99.0" text="ClearALL" />
-                        <TextField fx:id="txt_menuNoGuest" layoutX="106.0" layoutY="988.0" prefHeight="45.0" prefWidth="152.0" promptText="No.Guest">
+                        <TextField fx:id="txt_menuNoGuest" layoutX="107.0" layoutY="952.0" prefHeight="45.0" prefWidth="152.0" promptText="No.Guest">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </TextField>
+                        <AnchorPane layoutX="46.0" layoutY="896.0" prefHeight="56.0" prefWidth="52.0">
+                           <children>
+                              <FontAwesomeIcon glyphName="ARROW_CIRCLE_DOWN" layoutX="11.0" layoutY="40.0" size="3em" />
+                           </children>
+                        </AnchorPane>
+                        <TextField fx:id="menu_InputDiscount" layoutX="107.0" layoutY="901.0" prefHeight="45.0" prefWidth="152.0" promptText="Discount" AnchorPane.leftAnchor="107.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font></TextField>
+                        <AnchorPane layoutX="50.0" layoutY="1002.0" prefHeight="37.0" prefWidth="42.0">
+                           <children>
+                              <FontAwesomeIcon glyphName="TABLE" layoutX="4.0" layoutY="39.0" size="3em" text="" />
+                           </children>
+                        </AnchorPane>
+                        <TextField fx:id="txt_menuTableNo" layoutX="107.0" layoutY="1001.0" prefHeight="45.0" prefWidth="152.0" promptText="TableNo" AnchorPane.leftAnchor="107.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font></TextField>
+                        <Button layoutX="382.0" layoutY="1001.0" mnemonicParsing="false" onAction="#menu_ClearBillInput" prefHeight="37.0" prefWidth="99.0" text="ClearALL" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Button>
+                        <TextField fx:id="menu_inputPhone" layoutX="274.0" layoutY="901.0" prefHeight="45.0" prefWidth="214.0" promptText="Customer Phone" AnchorPane.leftAnchor="274.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <FontAwesomeIcon fx:id="menu_btn_SearchCus" glyphName="SEARCH" layoutX="452.0" layoutY="975.0" onMouseClicked="#menu_SearchCus" size="2em" text="" wrappingWidth="41.14285659790039" />
+                        <Label alignment="CENTER_RIGHT" layoutX="149.0" layoutY="4.0" prefHeight="35.0" prefWidth="111.0" text="BILL No:" textAlignment="RIGHT">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="menu_billNo" layoutX="274.0" layoutY="4.0" prefHeight="30.0" prefWidth="159.0">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="348.0" layoutY="955.0" mnemonicParsing="false" onAction="#menu_ClearCusSearch" prefHeight="25.0" prefWidth="95.0" text="Clear" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
                      </children>
                      <padding>
                         <Insets right="5.0" />
@@ -838,22 +755,22 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="329.0" prefHeight="30.0" prefWidth="140.0" text="Service Charge:" AnchorPane.rightAnchor="293.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="329.0" prefHeight="30.0" prefWidth="140.0" text="Tax:" AnchorPane.rightAnchor="293.0">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Service1" layoutX="212.0" layoutY="329.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                              <Label fx:id="bill_Tax1" layoutX="212.0" layoutY="329.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="358.0" prefHeight="30.0" prefWidth="140.0" text="Tax" AnchorPane.rightAnchor="286.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="358.0" prefHeight="30.0" prefWidth="140.0" text="Service Charge:" AnchorPane.rightAnchor="286.0">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Tax1" layoutX="212.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                              <Label fx:id="bill_Service1" layoutX="212.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -918,11 +835,6 @@
                            </padding>
                         </AnchorPane>
                         <TextField fx:id="bill_searchBillId" layoutX="978.0" layoutY="27.0" prefHeight="43.0" prefWidth="291.0" promptText="Input Bill ID" styleClass="textfield" />
-                        <Button fx:id="bill_deleteButton" layoutX="673.0" layoutY="850.0" mnemonicParsing="false" onAction="#Bill_HandleDeleteButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Delete">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Button>
                         <Button fx:id="bill_mergeBillButton" layoutX="673.0" layoutY="561.0" mnemonicParsing="false" onAction="#Bill_HandleMergeButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Merge Bill">
                            <font>
                               <Font size="16.0" />
@@ -988,22 +900,22 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="329.0" prefHeight="30.0" prefWidth="140.0" text="Service Charge:" AnchorPane.rightAnchor="293.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="329.0" prefHeight="30.0" prefWidth="140.0" text="Tax:" AnchorPane.rightAnchor="293.0">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Service2" layoutX="212.0" layoutY="329.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                              <Label fx:id="bill_Tax2" layoutX="212.0" layoutY="329.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="358.0" prefHeight="30.0" prefWidth="140.0" text="Tax:" AnchorPane.rightAnchor="286.0">
+                              <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="358.0" prefHeight="30.0" prefWidth="140.0" text="Service Charge:" AnchorPane.rightAnchor="286.0">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="bill_Tax2" layoutX="212.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
+                              <Label fx:id="bill_Service2" layoutX="212.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" text="0" AnchorPane.leftAnchor="212.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -1068,6 +980,11 @@
                            </padding>
                         </AnchorPane>
                         <ComboBox fx:id="bill_sortBillStatus" layoutX="512.0" layoutY="30.0" prefHeight="42.0" prefWidth="105.0" promptText="Status Bill" />
+                        <Button fx:id="bill_deleteButton" layoutX="673.0" layoutY="874.0" mnemonicParsing="false" onAction="#Bill_HandleDeleteButton" prefHeight="50.0" prefWidth="150.0" styleClass="button" text="Delete">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>
@@ -1078,12 +995,18 @@
                             <children>
                                 <TableView fx:id="customerTable" layoutY="94.0" prefHeight="601.0" prefWidth="1500.0">
                                     <columns>
-                                        <TableColumn fx:id="cusIdColumn" prefWidth="176.0" text="Customer ID" />
-                                        <TableColumn fx:id="nameColumn" prefWidth="279.0" text="Name" />
-                                        <TableColumn fx:id="phoneColumn" prefWidth="301.0" text="Phone" />
-                                        <TableColumn fx:id="emailColumn" prefWidth="431.0" text="Email" />
-                                        <TableColumn fx:id="discountColumn" prefWidth="167.0" text="Discount" />
-                                        <TableColumn fx:id="deletedColumn" prefWidth="145.0" text="Deleted" />
+                                        <TableColumn fx:id="cusIdColumn" prefWidth="114.66659545898438" text="Customer ID" />
+                                        <TableColumn fx:id="nameColumn" prefWidth="142.6666259765625" text="Name" />
+                                        <TableColumn fx:id="phoneColumn" prefWidth="166.6666259765625" text="Phone" />
+                                        <TableColumn fx:id="emailColumn" prefWidth="170.66668701171875" text="Email" />
+                                        <TableColumn fx:id="discountColumn" prefWidth="86.0" text="Discount" />
+                                        <TableColumn fx:id="deletedColumn" prefWidth="76.0" text="Deleted" />
+                              <TableColumn fx:id="Cus_tbCol_Member" prefWidth="139.333251953125" text="membershipType" />
+                              <TableColumn fx:id="Cus_tbCol_BillId" prefWidth="93.9998779296875" text="BillId" />
+                              <TableColumn fx:id="Cus_tbCol_BillToTsl" prefWidth="146.666748046875" text="BillTotal" />
+                              <TableColumn fx:id="Cus_tbCold_BillDate" prefWidth="130.0" text="BillDate" />
+                              <TableColumn fx:id="Cus_TbCol_billStatus" prefWidth="100.0" text="BillStatus" />
+                              <TableColumn fx:id="Cus_tbCol_TotalSpend" prefWidth="142.6666259765625" text="TotalSpending" />
                                     </columns>
                                 </TableView>
                                 <TextField fx:id="nameField" layoutX="110.0" layoutY="733.0" prefHeight="50.0" prefWidth="300.0" promptText="Name" styleClass="textfield" />

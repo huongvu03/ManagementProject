@@ -21,13 +21,13 @@ public class ProductDAO {
     static Scanner sc;
     static PreparedStatement pStm = null;// de chay cau lenh co bien
 
-    
     ArrayList<Product> menulist = new ArrayList<>();
     ArrayList<Product> menuFoodlist = new ArrayList<>();
 
     public ArrayList<Product> listDB() {
-        ArrayList<Product> list = new ArrayList<>();
-        list.clear();
+            ArrayList<Product> list = new ArrayList<>();
+            list.clear();
+
         String sql = "SELECT p.proId, p.proName, p.proPrice, p.cateId, p.stock, p.status, p.proImage, p.proDate," + "c.cateName FROM Product p JOIN Category c ON p.cateId = c.cateId";
         try {
             cn = connect.GetConnectDB();
@@ -71,7 +71,7 @@ public class ProductDAO {
 
     public ArrayList<Product> menuListDB() {
         menulist.clear();
-        String sql = "SELECT * from Product where CateId=2";
+        String sql = "SELECT * from Product where cateId=2";
         try {
             cn = connect.GetConnectDB();
             stm = cn.createStatement();
@@ -106,7 +106,7 @@ public class ProductDAO {
 
     public ArrayList<Product> menuListFoodDB() {
         menuFoodlist.clear();
-        String sql = "SELECT * from Product where CateId=1 ";
+        String sql = "SELECT * from Product where cateId=1 ";
         try {
             cn = connect.GetConnectDB();
             stm = cn.createStatement();
@@ -120,7 +120,6 @@ public class ProductDAO {
                 pro.setCateId(rs.getInt("cateId"));
                 pro.setStock(rs.getInt("stock"));
                 pro.setStatus(rs.getString("status"));
-
                 menuFoodlist.add(pro);
 
             }
@@ -140,7 +139,7 @@ public class ProductDAO {
     }
 
     public Product AddDB(Product pro) {
-        String checksql = "SELECT ProId FROM Product WHERE ProId =?";
+        String checksql = "SELECT proId FROM Product WHERE proId =?";
         try {
             cn = connect.GetConnectDB();
             pStm = cn.prepareStatement(checksql);
@@ -177,100 +176,49 @@ public class ProductDAO {
     }
 
     public boolean UpdateDB(Product pro) {
-    Connection cn = null;
-    PreparedStatement pStm = null;
-    boolean isUpdated = false;
+        Connection cn = null;
+        PreparedStatement pStm = null;
+        boolean isUpdated = false;
 
-    try {
-        cn = connect.GetConnectDB();
-        String sql = "UPDATE Product SET proName = ?, cateId = ?, stock = ?, proPrice = ?, status = ?, proImage = ?, proDate = ? WHERE proId = ?";
-        pStm = cn.prepareStatement(sql);
-        pStm.setString(1, pro.getProName());
-        pStm.setInt(2, pro.getCateId());
-        pStm.setInt(3, pro.getStock());
-        pStm.setDouble(4, pro.getProPrice());
-        pStm.setString(5, pro.getStatus());
-        pStm.setString(6, pro.getProImage());
-        pStm.setDate(7, new java.sql.Date(pro.getProDate().getTime()));
-        pStm.setString(8, pro.getProId());
-
-        int rowsAffected = pStm.executeUpdate();
-        isUpdated = rowsAffected > 0; // Nếu có ít nhất một dòng được cập nhật
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (pStm != null) pStm.close();
-            if (cn != null) cn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    return isUpdated;
-}
-   public boolean updateQuantity(String proId, int quantity) {
-    Connection cn = null;
-    PreparedStatement selectStm = null;
-    PreparedStatement updateStm = null;
-    boolean isUpdated = false;
-
-    try {
-        cn = connect.GetConnectDB();
-        
-        // Lấy số lượng hiện tại từ cơ sở dữ liệu
-        String selectSql = "SELECT stock FROM Product WHERE proId = ?";
-        selectStm = cn.prepareStatement(selectSql);
-        selectStm.setString(1, proId);
-        ResultSet rs = selectStm.executeQuery();
-        
-        int currentStock = 0;
-        if (rs.next()) {
-            currentStock = rs.getInt("stock");
-        }
-        
-        // Tăng số lượng hiện tại bằng số lượng sản phẩm được xóa
-        int newStock = currentStock + quantity;
-
-        // Cập nhật số lượng mới trong cơ sở dữ liệu
-        String updateSql = "UPDATE Product SET stock = ? WHERE proId = ?";
-        updateStm = cn.prepareStatement(updateSql);
-        updateStm.setInt(1, newStock);
-        updateStm.setString(2, proId);
-
-        int rowsAffected = updateStm.executeUpdate();
-        isUpdated = rowsAffected > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (selectStm != null) selectStm.close();
-            if (updateStm != null) updateStm.close();
-            if (cn != null) cn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    return isUpdated;
-}
-
-    public void DeleteDB(String id) {
         try {
             cn = connect.GetConnectDB();
-            String sql = "DELETE FROM Product WHERE proId = ?";
+            String sql = "UPDATE Product SET proName = ?, cateId = ?, stock = ?, proPrice = ?, status = ?, proImage = ?, proDate = ? WHERE proId = ?";
             pStm = cn.prepareStatement(sql);
-            pStm.setString(1, id);
-            pStm.executeUpdate();
+            pStm.setString(1, pro.getProName());
+            pStm.setInt(2, pro.getCateId());
+            pStm.setInt(3, pro.getStock());
+            pStm.setDouble(4, pro.getProPrice());
+            pStm.setString(5, pro.getStatus());
+            pStm.setString(6, pro.getProImage());
+            pStm.setDate(7, new java.sql.Date(pro.getProDate().getTime()));
+            pStm.setString(8, pro.getProId());
+
+            int rowsAffected = pStm.executeUpdate();
+            isUpdated = rowsAffected > 0; // Nếu có ít nhất một dòng được cập nhật
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                cn.close();
-                pStm.close();
+                if (pStm != null) {
+                    pStm.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        return isUpdated;
+    }
+
+    public void DeleteDB(String id) {
+        try (Connection cn = connect.GetConnectDB(); PreparedStatement pStm = cn.prepareStatement("DELETE FROM Product WHERE proId = ?")) {
+            pStm.setString(1, id);
+            pStm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -362,7 +310,7 @@ public class ProductDAO {
     }
 
     public void UpdateStockDeleted(String proId, int quantity) {
-int newStock = CheckStock(proId) + quantity;
+        int newStock = CheckStock(proId) + quantity;
         String sql = "UPDATE Product SET stock = ?, status = ? WHERE proId = ?";
         try (Connection cn = connect.GetConnectDB(); PreparedStatement pStm = cn.prepareStatement(sql)) {
             pStm.setInt(1, newStock);
@@ -373,4 +321,49 @@ int newStock = CheckStock(proId) + quantity;
             e.printStackTrace();
         }
     }
+    public boolean updateQuantity(String proId, int quantity) {
+    Connection cn = null;
+    PreparedStatement selectStm = null;
+    PreparedStatement updateStm = null;
+    boolean isUpdated = false;
+
+    try {
+        cn = connect.GetConnectDB();
+        
+        // Lấy số lượng hiện tại từ cơ sở dữ liệu
+        String selectSql = "SELECT stock FROM Product WHERE proId = ?";
+        selectStm = cn.prepareStatement(selectSql);
+        selectStm.setString(1, proId);
+        ResultSet rs = selectStm.executeQuery();
+        
+        int currentStock = 0;
+        if (rs.next()) {
+            currentStock = rs.getInt("stock");
+        }
+        
+        // Tăng số lượng hiện tại bằng số lượng sản phẩm được xóa
+        int newStock = currentStock + quantity;
+
+        // Cập nhật số lượng mới trong cơ sở dữ liệu
+        String updateSql = "UPDATE Product SET stock = ? WHERE proId = ?";
+        updateStm = cn.prepareStatement(updateSql);
+        updateStm.setInt(1, newStock);
+        updateStm.setString(2, proId);
+
+        int rowsAffected = updateStm.executeUpdate();
+        isUpdated = rowsAffected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (selectStm != null) selectStm.close();
+            if (updateStm != null) updateStm.close();
+            if (cn != null) cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    return isUpdated;
+}
 }

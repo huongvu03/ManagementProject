@@ -9,7 +9,7 @@ public class data {
     public static String username;
         public static String position;
         public static String customerId;
-          public static double tax = 0.08;
-    public static double service = 0.05;
+          public static double tax=0;
+    public static double service=0;
 
 }

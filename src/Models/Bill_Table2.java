@@ -1,8 +1,6 @@
 
 package Models;
 
-import java.util.Date;
-
 public class Bill_Table2 {
     private int billId;
     private String proId;
@@ -10,7 +8,6 @@ public class Bill_Table2 {
     private int cateId;
     private int quantity;
     private double proPrice;
-    private Date archiveDate;
     private String status;
     private String proImage;
     private Double billTotal;
@@ -40,14 +37,6 @@ public class Bill_Table2 {
         this.billSubTotal = billSubTotal;
         this.cus_id = cus_id;
         this.cus_name = cus_name;
-    }
-
-    public Date getArchiveDate() {
-        return archiveDate;
-    }
-
-    public void setArchiveDate(Date archiveDate) {
-        this.archiveDate = archiveDate;
     }
 
     @Override

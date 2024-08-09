@@ -12,7 +12,7 @@ public class Order {
     private double proPrice;
     private String note;
     private Date archiveDate;
-    private double billTotal;
+    private double billSubTotal;
 
     public Date getArchiveDate() {
         return archiveDate;
@@ -38,12 +38,12 @@ public class Order {
         this.cateId = cateId;
     }
 
-    public double getBillTotal() {
-        return billTotal;
+    public double getBillSubTotal() {
+        return billSubTotal;
     }
 
-    public void setBillTotal(double billTotal) {
-        this.billTotal = billTotal;
+    public void setBillSubTotal(double billSubTotal) {
+        this.billSubTotal = billSubTotal;
     }
 
     @Override

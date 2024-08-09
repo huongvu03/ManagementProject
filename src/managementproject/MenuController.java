@@ -3,34 +3,37 @@ package managementproject;
 import Database.BillDAO;
 import Database.ConnectDB;
 import Database.CustomerDAO;
-import Database.DashBoardDAO;
 import Database.OrderDAO;
 import Database.ProductDAO;
 import Database.UserDAO;
 import Models.*;
 import Validation.errorMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import static groovy.sql.Sql.resultSet;
 import java.beans.Statement;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -47,7 +50,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -89,6 +91,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class MenuController implements Initializable {
 
@@ -200,7 +210,7 @@ public class MenuController implements Initializable {
     @FXML
     private Text textNotice1;
     @FXML
-    private TextField menu_TextNote;
+    public TextField menu_TextNote;
     @FXML
     private FontAwesomeIcon menu_btnPAY;
     @FXML
@@ -298,9 +308,12 @@ public class MenuController implements Initializable {
     @FXML
     private TextField txt_SeachStaff;
     @FXML
+    private AreaChart<?, ?> areaChart2;
+    @FXML
+    private CategoryAxis xAxis2;
+    @FXML
     private TextField invent_txtSearch;
 
-    public Alert alert;
     private ProductDAO dao = new ProductDAO();
     private TextField menu_phoneInput;
     @FXML
@@ -327,8 +340,6 @@ public class MenuController implements Initializable {
     private Button bill_searchDate;
     @FXML
     private Button bill_cancelButton1;
-    @FXML
-    private Button bill_deleteButton;
     @FXML
     private TextField menu_InputDiscount;
     @FXML
@@ -436,56 +447,64 @@ public class MenuController implements Initializable {
     private TextField bill_NoGuest2;
     @FXML
     private ComboBox<?> bill_sortBillStatus;
-    @FXML
-    private DatePicker DashBoard_datefrom;
-    @FXML
-    private DatePicker DashBoard_dateto;
-    @FXML
-    private Button DashBoard_exportButton;
-    @FXML
-    private Label totalGuests;
-    private TableView<Bill> DB_TableView;
-    private TableColumn<Bill, Double> DB_Table_Total;
-    private TableColumn<Bill, Double> DB_Table_discount;
-    private TableColumn<Bill, Double> DB_Table_service;
-    private TableColumn<Bill, Double> DB_Table_tax;
-    private TableColumn<Bill, Double> DB_Table_subTotal;
-    private TableColumn<Bill, Integer> DB_Table_billId;
-    private TableColumn<Bill, Integer> DB_Table_guestNo;
-    private TableColumn<Bill, String> DB_Table_status;
-    private DashBoardDAO DBDao = new DashBoardDAO();
-    @FXML
-    private Label DB_sum_BillId;
-    @FXML
-    private Label DB_sum_GuestNo;
-    @FXML
-    private Label DB_sum_Total;
-    @FXML
-    private Label DB_sum_Discount;
-    @FXML
-    private Label DB_sum_Service;
-    @FXML
-    private Label DB_sum_SubTotal;
-    @FXML
-    private Label DB_sum_Tax;
+
     @FXML
     private FontAwesomeIcon menu_btn_SearchCus;
+    private int menuBillId;
+    @FXML
+    private TextField menu_inputBillId;
+    @FXML
+    private FontAwesomeIcon menu_btnsearchBillId;
+    @FXML
+    private FontAwesomeIcon menu_btnSave;
+    @FXML
+    private TableColumn<Customer, String> Cus_tbCol_Member;
+    @FXML
+    private TableColumn<Customer, Integer> Cus_tbCol_BillId;
+    @FXML
+    private TableColumn<Customer, Double> Cus_tbCol_BillToTsl;
+    @FXML
+    private TableColumn<Customer, Double> Cus_tbCol_TotalSpend;
+    @FXML
+    private TableColumn<Customer, String> Cus_tbCold_BillDate;
+    @FXML
+    private TableColumn<Customer, String> Cus_TbCol_billStatus;
+    @FXML
+    private Text menu_PayLabel;
+    @FXML
+    private Button system_Logout;
+    @FXML
+    private Label menu_billNo;
+    @FXML
+    private AnchorPane menu_btnRemove;
+    @FXML
+    private Text txt_BillText;
+    @FXML
+    private Text menu_txt_outOfStock;
+    @FXML
+    private TextField system_txtService;
+    @FXML
+    private TextField system_txtTax;
+    @FXML
+    private Text system_serDisplay;
+    @FXML
+    private Text system_taxDisplay;
+    @FXML
+    private Button bill_deleteButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error:");
-        alert.setHeaderText(null);
-
         ShowUserName();
         //Dashboard
         connectDb = db.GetConnectDB();
-
+        if (connectDb != null) {
+            getTotalData();
+            ratioDay.setSelected(true);
+            getDataByDay();
+        } else {
+            System.err.println("Database connection failed.");
+        }
         // inventory
-//        productList = FXCollections.observableArrayList(dao.listDB());
-//        filteredList = new FilteredList<>(productList, p -> true);
-//        sortedList = new SortedList<>(filteredList);
-//        sortedList.setComparator((p1, p2) -> p1.getProId().compareTo(p2.getProId()));
         categoryList = FXCollections.observableArrayList("food", "drink");
         statusList = FXCollections.observableArrayList("Available", "UnAvailable", "OutOfStock");
 
@@ -499,6 +518,7 @@ public class MenuController implements Initializable {
 //        System.out.println("Status List: " + statusList);
 
         //Menu
+        SystemDisplay();
         menu_Col_ProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         menu_Col_Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         menu_Col_Price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
@@ -523,6 +543,12 @@ public class MenuController implements Initializable {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         discountColumn.setCellValueFactory(new PropertyValueFactory<>("discount"));
         deletedColumn.setCellValueFactory(new PropertyValueFactory<>("deleted"));
+        Cus_tbCol_Member.setCellValueFactory(new PropertyValueFactory<>("membershipType"));
+        Cus_tbCol_BillId.setCellValueFactory(new PropertyValueFactory<>("billId"));
+        Cus_tbCol_BillToTsl.setCellValueFactory(new PropertyValueFactory<>("billSubTotal"));
+        Cus_tbCold_BillDate.setCellValueFactory(new PropertyValueFactory<>("billDate"));
+        Cus_TbCol_billStatus.setCellValueFactory(new PropertyValueFactory<>("billStatus"));
+        Cus_tbCol_TotalSpend.setCellValueFactory(new PropertyValueFactory<>("totalSpending"));
 
         // Load data into TableView
         loadData();
@@ -540,41 +566,24 @@ public class MenuController implements Initializable {
         questionList();
         showUser();
 
-//        billList = FXCollections.observableArrayList(billDao.listDB());
-//        filteredBillList = new FilteredList<>(billList, p -> true);
-//        sortedBillList = new SortedList<>(filteredBillList);
+        billList = FXCollections.observableArrayList(billDao.listDB());
+        filteredBillList = new FilteredList<>(billList, p -> true);
+        sortedBillList = new SortedList<>(filteredBillList);
         //sortedBillList.setComparator((p1, p2) -> p1.getBillId().compareTo(p2.getBillId()));     
         // Initialize DatePickers
         bill_from.setValue(LocalDate.now());
         bill_to.setValue(LocalDate.now());
-        billShowData();
-        bill_from.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
-        bill_to.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
         //filterBillList();
+        // Add listeners to DatePickers to filter the list when the date is changed
+//        bill_from.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
+//        bill_to.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
+
         // Set up TableView
-        bill_InputDiscount1.setEditable(true); // Make sure the TextField is editable
-
-        bill_InputDiscount1.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateDiscountAndTotals(newValue);
-        });
-        bill_InputDiscount2.setEditable(true); // Make sure the TextField is editable
-
-        bill_InputDiscount2.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateDiscountAndTotals2(newValue);
-        });
-
-//        DashBoard
-        DashBoard_datefrom.setValue(LocalDate.now());
-        DashBoard_dateto.setValue(LocalDate.now());
-        // Add listeners to date pickers
-        DashBoard_datefrom.valueProperty().addListener((observable, oldValue, newValue) -> DB_updateTable());
-        DashBoard_dateto.valueProperty().addListener((observable, oldValue, newValue) -> DB_updateTable());
-        //DB_updateTable();
-        // Initial table view load
-
+        billShowData();
     }
-
     //ALERT
+    public Alert alert;
+
     public void AlertError(String error) {
         alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error:");
@@ -606,7 +615,6 @@ public class MenuController implements Initializable {
 
     @FXML
     public void switchForm(ActionEvent event) {
-
         if (data.position.equals("Staff")) {
             dashboard_btn.setDisable(true);
             inventory_btn.setDisable(true);
@@ -617,6 +625,21 @@ public class MenuController implements Initializable {
             staff_btn.setDisable(false);
 
         }
+        if (event.getSource() != menu_btn) {
+            if (!orderDAO.showOrderDB().isEmpty()) {
+                if (event.getSource() != menu_btnSave || event.getSource() != menu_btnPAY) {
+                    AlertConfirm("Order havent save.Are u sure to exit");
+                    Optional<ButtonType> option = alert.showAndWait();
+                    if (option.isPresent() && option.get() == ButtonType.CANCEL) {
+                        menuShowOrderData();
+                        return;
+                    } else {
+                        orderDAO.CancelOrder();
+                    }
+                }
+            }
+        }
+
         if (event.getSource() == dashboard_btn) {
             DashBoard_Anchor.setVisible(true);
             Inventory_Anchor.setVisible(false);
@@ -624,13 +647,6 @@ public class MenuController implements Initializable {
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
             Bill_Anchor.setVisible(false);
-            if (connectDb != null) {
-                getTotalData();
-                ratioDay.setSelected(true);
-                getDataByDay();
-            } else {
-                System.err.println("Database connection failed.");
-            }
 
         } else if (event.getSource() == inventory_btn) {
             DashBoard_Anchor.setVisible(false);
@@ -682,7 +698,7 @@ public class MenuController implements Initializable {
             System.out.println("vị trí 4:" + data.position);
             if (data.position.equals("Staff")) {
                 bill_splitBillButton.setDisable(true);
-                bill_mergeBillButton.setDisable(true);;
+                bill_mergeBillButton.setDisable(true);
 
             } else {
                 bill_splitBillButton.setDisable(false);
@@ -705,7 +721,10 @@ public class MenuController implements Initializable {
                 System.out.println(b.toString());
             }
 
+        } else if (event.getSource() == system_Logout) {
+            LogOut();
         }
+
     }
 
     public void Clear() {
@@ -718,19 +737,12 @@ public class MenuController implements Initializable {
 
     }
 
-    @FXML
-    private void LogOut(ActionEvent event) {
+    private void LogOut() {
         try {
-            alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Notice:");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to logout?");
+            AlertConfirm("Are you sure you want to logout?");
             Optional<ButtonType> option = alert.showAndWait();
 
             if (option.get().equals(ButtonType.OK)) {
-
-                // TO HIDE MAIN FORM 
-                PageView.getScene().getWindow().hide();
 
                 // LINK YOUR LOGIN FORM AND SHOW IT 
                 URL url = new File("src/managementproject/LogPage.fxml").toURI().toURL();
@@ -744,12 +756,11 @@ public class MenuController implements Initializable {
                 stage.setFullScreen(true);
                 stage.show();
 
+                // TO HIDE MAIN FORM 
+                PageView.getScene().getWindow().hide();
+
             } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Notice:");
-                alert.setHeaderText(null);
-                alert.setContentText("Log out operation was cancelled.");
-                alert.showAndWait();
+                AlertInfor("Log out operation was cancelled.");
             }
 
         } catch (Exception e) {
@@ -759,91 +770,28 @@ public class MenuController implements Initializable {
     }
 // DASHBOARD
 
-    private void DB_updateTable() {
-        String from = null;
-        String to = null;
-
-        if (DashBoard_datefrom.getValue() != null) {
-            from = DashBoard_datefrom.getValue().toString();
-        }
-        if (DashBoard_dateto.getValue() != null) {
-            to = DashBoard_dateto.getValue().toString();
-        }
-
-        DB_tableView(from, to);
-    }
-
-    private void DB_tableView(String from, String to) {
-        billList = FXCollections.observableArrayList(DBDao.listDB(from, to));
-        DB_Table_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
-        DB_Table_guestNo.setCellValueFactory(new PropertyValueFactory<>("guestNo"));
-        DB_Table_Total.setCellValueFactory(new PropertyValueFactory<>("billTotal"));
-        DB_Table_discount.setCellValueFactory(new PropertyValueFactory<>("billDiscount"));
-        DB_Table_service.setCellValueFactory(new PropertyValueFactory<>("billService"));
-        DB_Table_tax.setCellValueFactory(new PropertyValueFactory<>("billTax"));
-        DB_Table_subTotal.setCellValueFactory(new PropertyValueFactory<>("billSubTotal"));
-        DB_Table_status.setCellValueFactory(new PropertyValueFactory<>("billStatus"));
-
-        // Calculate totals
-        int billCount = 0;
-        int totalGuestNo = 0;
-        double totalBill = 0;
-        double totalDiscount = 0;
-        double totalService = 0;
-        double totalTax = 0;
-        double totalSubTotal = 0;
-
-        for (Bill bill : billList) {
-            billCount += 1;
-            totalGuestNo += bill.getGuestNo();
-            totalBill += bill.getBillTotal();
-            totalDiscount += bill.getBillDiscount();
-            totalService += bill.getBillService();
-            totalTax += bill.getBillTax();
-            totalSubTotal += bill.getBillSubTotal();
-        }
-
-        // Set the data to the table
-        DB_TableView.setItems(billList);
-
-        DB_sum_BillId.setText(String.valueOf(billCount));
-        DB_sum_GuestNo.setText(String.valueOf(totalGuestNo));
-        DB_sum_Total.setText(String.format("%.2f", totalBill));
-        DB_sum_Discount.setText(String.format("%.2f", totalDiscount));
-        DB_sum_Service.setText(String.format("%.2f", totalService));
-        DB_sum_Tax.setText(String.format("%.2f", totalTax));
-        DB_sum_SubTotal.setText(String.format("%.2f", totalSubTotal));
-
-    }
-
     private void getTotalData() {
         try (java.sql.Statement statement = connectDb.createStatement()) {
-            String getTotalSaleQuery = "SELECT COUNT(BillId) AS total_sale FROM Bill;";
+            String getTotalSaleQuery = "SELECT COUNT(proId) AS total_sale FROM Product;";
             ResultSet queryResult1 = statement.executeQuery(getTotalSaleQuery);
             if (queryResult1.next()) {
                 totalSale.setText(queryResult1.getString("total_sale"));
             }
             queryResult1.close();
 
-            String getTotalCustomerQuery = "SELECT COUNT(cus_id) AS total_customer FROM tbCustomer;";
+            String getTotalCustomerQuery = "SELECT COUNT(cateId) AS total_customer FROM Category;";
             ResultSet queryResult2 = statement.executeQuery(getTotalCustomerQuery);
             if (queryResult2.next()) {
                 totalCustomer.setText(queryResult2.getString("total_customer"));
             }
             queryResult2.close();
 
-            String getTotalRevenueQuery = "SELECT sum(billSubTotal) AS total_earn FROM Bill;";
+            String getTotalRevenueQuery = "SELECT COUNT(userId) AS total_earn FROM UserInfo;";
             ResultSet queryResult3 = statement.executeQuery(getTotalRevenueQuery);
             if (queryResult3.next()) {
                 totalRevenue.setText(queryResult3.getString("total_earn"));
             }
             queryResult3.close();
-            String getTotalGuestQuery = "SELECT sum(guestNo) AS total_guest FROM Bill;";
-            ResultSet queryResult4 = statement.executeQuery(getTotalGuestQuery);
-            if (queryResult4.next()) {
-                totalGuests.setText(queryResult4.getString("total_guest"));
-            }
-            queryResult4.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -876,7 +824,7 @@ public class MenuController implements Initializable {
             String formattedPeriod = (period < 10 ? "0" : "") + period;
             categories.add(formattedPeriod);
             try (java.sql.Statement statement = connectDb.createStatement()) {
-                String getSaleQuery = "select sum(billSubTotal) as sale from Bill where billDate LIKE '" + dateFormat1 + formattedPeriod + dateFormat2 + "';";
+                String getSaleQuery = "SELECT SUM(proPrice) AS sale FROM Product WHERE proDate LIKE '" + dateFormat1 + formattedPeriod + dateFormat2 + "';";
                 ResultSet queryResult1 = statement.executeQuery(getSaleQuery);
                 double sale = 0;
                 if (queryResult1.next()) {
@@ -973,7 +921,7 @@ public class MenuController implements Initializable {
 //        tvProduct.refresh();
     }
 
-    private String getCategoryName(int cateId) {
+ private String getCategoryName(int cateId) {
         String categoryName;
         switch (cateId) {
             case 1:
@@ -1016,7 +964,7 @@ public class MenuController implements Initializable {
         clearFields();
     }
 
-    private boolean validateInput() {
+  private boolean validateInput() {
         boolean isValid = true;
         errorMessage validate = new errorMessage();
 
@@ -1077,7 +1025,7 @@ public class MenuController implements Initializable {
         return isValid;
     }
 
-    @FXML
+   @FXML
     private void HanleImportImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image File");
@@ -1129,9 +1077,7 @@ public class MenuController implements Initializable {
         return false; // ID chưa tồn tại
     }
 
-    // Khi thêm sản phẩm mới, kích hoạt lại trường proId
-    // Khi thêm sản phẩm mới, kích hoạt lại trường proId
-    @FXML
+  @FXML
     private void inven_Add(ActionEvent event) {
 
         if (validateInput()) {
@@ -1201,7 +1147,7 @@ public class MenuController implements Initializable {
             proSelected.setProDate(new Date());
 
             // Cập nhật sản phẩm trong cơ sở dữ liệu
-            if (dao.UpdateDB(proSelected)) {
+if (dao.UpdateDB(proSelected)) {
                 // Cập nhật danh sách sản phẩm
                 tvProduct.refresh();
                 clearFields();
@@ -1220,7 +1166,7 @@ public class MenuController implements Initializable {
         }
     }
 
-    @FXML
+  @FXML
     private void Inven_Delete(ActionEvent event) {
         if (showConfirmation("DELETE " + proSelected.getProId())) {
             if (proSelected != null) {
@@ -1292,28 +1238,9 @@ public class MenuController implements Initializable {
 
             return matchesSearch && matchesCategory && matchesStatus;
         });
-
-        tvProduct.setItems(filteredList);
+tvProduct.setItems(filteredList);
         textNotice.setText("Search and sort successfully applied.");
     }
-
-//    @FXML
-//    private void inven_Sort(ActionEvent event) {
-//        String selectedCategory = boxCateSort.getValue();
-//        String selectedStatus = boxStatusSort.getValue();
-//
-//        filteredList.setPredicate(product -> {
-//            String categoryName = getCategoryName(product.getCateId());
-//            boolean matchesCategory = (selectedCategory == null) || categoryName.equals(selectedCategory);
-//            boolean matchesStatus = (selectedStatus == null) || product.getStatus().equals(selectedStatus);
-//
-//            return matchesCategory && matchesStatus;
-//        });
-//
-//        // Apply sortedList to TableView
-//        tvProduct.setItems(sortedList);
-//        textNotice.setText("Products sorted successfully.");
-//    }
     //MENU 
     private ObservableList<Product> cardListDrinkData = FXCollections.observableArrayList();
     private ObservableList<Product> cardListFoodData = FXCollections.observableArrayList();
@@ -1387,11 +1314,24 @@ public class MenuController implements Initializable {
                 e.printStackTrace();
             }
         }
+        ArrayList<Product> allProducts = new ArrayList<>();
+        allProducts.addAll(cardListDrinkData);
+        allProducts.addAll(cardListFoodData);
+        ArrayList<String> outList = new ArrayList();
+        for (Product pro : allProducts) {
+            if (!pro.getStatus().equals("Available")) {
+                String proName = pro.getProName();
+                outList.add(proName);
+                menu_txt_outOfStock.setText("UnAvailable: " + String.join(", ", outList));
+            }
+        }
 
     }
+
     public OrderDAO orderDAO = new OrderDAO();
     public ObservableList<Order> menuOrderList = FXCollections.observableArrayList();
     public BillDAO billDAO = new BillDAO();
+// ORDER DETAIL
 
     public void menuShowOrderData() {
         menuOrderList.clear();
@@ -1401,7 +1341,53 @@ public class MenuController implements Initializable {
         } else {
             menu_TbView.getItems().clear();
         }
+
+        if (resultedBillId != -1) {
+            processOrder();
+        }
     }
+
+    public void processOrder() {
+        Connection cn = null;
+        try {
+            cn = new ConnectDB().GetConnectDB();
+            if (resultedBillId != -1) {
+                System.out.println("resultedBillId de them san pham" + resultedBillId);
+                // Thêm sản phẩm vào OrderArchive cho billId đã có trước đó
+                orderDAO.archiveAndDeleteBillOrder(cn, resultedBillId);
+
+                // Xóa dữ liệu cũ trong Orderlist (nếu cần)
+                // orderDAO.clearOrderList(cn); // Gọi phương thức xóa Orderlist nếu bạn muốn
+                // Lấy dữ liệu mới từ OrderArchive
+                menuOrderList.clear();
+                menuOrderList.addAll(orderDAO.showBillDB(resultedBillId));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            AlertError("An error occurred while processing the order."); // Hiển thị thông báo lỗi nếu có
+        } finally {
+            if (cn != null) {
+                try {
+                    cn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // show SAVED  bill details
+    public void menuShowBillDetails(int resultedBillId) {
+        menuOrderList.clear();
+        menuOrderList.addAll(orderDAO.showBillDB(resultedBillId));
+        if (!menuOrderList.isEmpty()) {
+            menu_TbView.setItems(menuOrderList);
+        } else {
+            menu_TbView.getItems().clear();
+        }
+    }
+    private double cusDiscount;
 
     public String getCustomerId() {
         String cusPhoneSearching = menu_inputPhone.getText();
@@ -1410,11 +1396,16 @@ public class MenuController implements Initializable {
             Customer c = cusList.get(0);
             menu_inputPhone.setText("Name: " + c.getName() + "/Discount:" + c.getDiscount());
             data.customerId = c.getCus_id();
+            cusDiscount = c.getDiscount();
+            menu_InputDiscount.setText(String.valueOf(cusDiscount));
         } else {
             data.customerId = "New ";
             menu_inputPhone.setText("No Result");
+            cusDiscount = 0;
+            menu_InputDiscount.setText(String.valueOf(cusDiscount));
+
         }
-        System.out.println("Customer ID tu getcusid: " + data.customerId);
+        System.out.println("Customer ID atu getcusid: " + data.customerId);
         return data.customerId;
     }
 
@@ -1438,7 +1429,8 @@ public class MenuController implements Initializable {
         String discountText = menu_InputDiscount.getText();
         if (discountText != null && !discountText.isEmpty()) {
             try {
-                discountvalue = Double.parseDouble(discountText);
+                double inputDiscount = Double.parseDouble(discountText);
+                discountvalue = inputDiscount / 100.0;
             } catch (NumberFormatException e) {
                 discountvalue = 0;
             }
@@ -1459,38 +1451,48 @@ public class MenuController implements Initializable {
     private double discount = 0;
 
     public void menuGetSubtotal() {
-        List<Order> menuSubList = orderDAO.getbillTotalDB();
-        if (!menuSubList.isEmpty()) {
-            Order c = menuSubList.get(0);
-            total = c.getBillTotal();
-            if (discountvalue != 0) {
-                discount = (total) * (discountvalue / 100);
-            } else {
-                discount = 0;
-            }
-            billservice = total * data.service;
-            billtax = (total + billservice) * data.tax;
+        ArrayList<Order> listTotal = new ArrayList();
+        if (resultedBillId != -1) {
+            listTotal = orderDAO.getSumTotalDB(resultedBillId);
 
-            subtotal = total - discount + billtax + billservice;
         } else {
-            total = 0.0;
-            billtax = 0.0;
-            billservice = 0.0;
-            subtotal = 0.0;
-            discount = 0.0;
+            listTotal = orderDAO.getbillTotalDB();
+
         }
+        for (Order o : listTotal) {
+            subtotal = o.getBillSubTotal();
+            System.out.println("subtotal sau chay ham menuGetSubtotal" + subtotal);
+        }
+
+        if (discountvalue == 1) {
+            discount = 0;
+            billtax = 0;
+            billservice = 0;
+            total = 0;
+        } else {
+            discount = subtotal * discountvalue;
+            billservice = (subtotal - discount) * data.service;
+            billtax = (subtotal + billservice) * data.tax;
+            total = subtotal - discount + billtax + billservice;
+        }
+        // Làm tròn các giá trị đến 2 chữ số thập phân và in ra dưới dạng String
+        discount = Double.parseDouble(String.format("%.2f", discount));
+        billservice = Double.parseDouble(String.format("%.2f", billservice));
+        billtax = Double.parseDouble(String.format("%.2f", billtax));
+        total = Double.parseDouble(String.format("%.2f", total));
+
     }
 
     public void menuDisplayTotal() {
         menuGetSubtotal();
-        menu_Total.setText("$ " + String.format("%,.2f", total));
+        menu_Subtotal.setText("$ " + String.format("%,.2f", subtotal));
         menu_Tax.setText("$ " + String.format("%,.2f", billtax));
         menu_Service.setText("$ " + String.format("%,.2f", billservice));
         menu_Discount.setText("$ " + "-" + String.format("%,.2f", discount));
-        if (subtotal != 0) {
-            menu_Subtotal.setText("$ " + String.format("%,.2f", subtotal));
+        if (total != 0) {
+            menu_Total.setText("$ " + String.format("%,.2f", total));
         } else {
-            menu_Subtotal.setText("");
+            menu_Total.setText("");
         }
     }
 
@@ -1505,37 +1507,152 @@ public class MenuController implements Initializable {
         }
     }
 
+    public int getBillId(int resultedBillId) {
+        ArrayList<Bill> billList = billDAO.listDB();
+        boolean found = false;
+
+        for (Bill b : billList) {
+            if (b.getBillId() == resultedBillId) {
+                found = true;
+                if ("UNPAID".equals(b.getBillStatus())) {
+                    menu_inputBillId.setText("Found : " + resultedBillId);
+                } else if ("PAID".equals(b.getBillStatus())) {
+                    menu_inputBillId.setText("Found : " + resultedBillId);
+                    txt_BillText.setText("Notice: BillId already PAID ");
+                }
+                menu_billNo.setText(String.valueOf(resultedBillId));
+
+                return resultedBillId;
+            }
+        }
+        if (!found) {
+            menu_inputBillId.setText("Bill ID Not Found");
+            return -1;
+        }
+        return -1;
+    }
+
+    private int resultedBillId = -1;
+    private double cus_dis = 0;
+    private String cusName;
+
+    @FXML
+    private void menuSearchBillId(MouseEvent event) {
+        int inputBillId = 0;
+        if (event.getSource() == menu_btnsearchBillId) {
+            // check nhap lieu
+            if (!menu_inputBillId.getText().isEmpty()) {
+                try {
+                    String billText = menu_inputBillId.getText();
+                    inputBillId = Integer.parseInt(billText.trim());
+                } catch (NumberFormatException e) {
+                    AlertError("Invalid Bill ID. Please enter a valid number.");
+                    return;
+                }
+                resultedBillId = getBillId(inputBillId);
+                // co ket qua
+                if (resultedBillId != -1) {
+                    //show thong tin OrderArchive
+                    menuShowBillDetails(resultedBillId);
+                    //show thong tin bill
+                    ArrayList<Bill> billInfor = billDAO.billInfoDB(resultedBillId);
+                    for (Bill bill : billInfor) {
+                        subtotal = bill.getBillSubTotal();
+                        billtax = bill.getBillTax();
+                        billservice = bill.getBillService();
+                        discount = bill.getBillDiscount();
+                        total = bill.getBillTotal();
+                        if (bill.getBillStatus().equals("PAID")) {
+                            menu_btnPAY.setDisable(true);
+                            menu_btnRemove.setDisable(true);
+                            menu_btnSave.setDisable(true);
+                        } else {
+                            menu_btnPAY.setDisable(false);
+                            menu_btnRemove.setDisable(false);
+                            menu_btnSave.setDisable(false);
+                        }
+                        Customer customer = bill.getCustomer();
+                        cus_dis = (discount / subtotal) * 100;
+                        cusName = customer.getName();
+                        int cusDisc = customer.getDiscount();
+                        menu_InputDiscount.setText(String.valueOf(cus_dis));
+                        menu_inputPhone.setText("Name: " + cusName + "/" + "Disc:" + cusDisc);
+
+                        System.out.println("du lieu show" + bill.toString());
+                        menuGetSubtotal();
+                        menuDisplayTotal();
+                        updateBillUI(bill);
+                    }
+
+                } //ko co ket qua
+                else {
+//                    menu_InputDiscount.setText("");
+//                    menu_inputPhone.setText("null ");
+                    data.customerId = "New";
+                }
+            } else {
+                AlertError("Please insert billId number");
+            }
+
+        }
+    }
+
+    private void updateBillUI(Bill bill) {
+        Platform.runLater(() -> {
+            menu_Subtotal.setText("$ " + String.format("%,.2f", subtotal));
+            menu_Tax.setText("$ " + String.format("%,.2f", billtax));
+            menu_Service.setText("$ " + String.format("%,.2f", billservice));
+            menu_Discount.setText("$ " + "-" + String.format("%,.2f", discount));
+            if (total != 0) {
+                menu_Total.setText("$ " + String.format("%,.2f", total));
+            } else {
+                menu_Total.setText("");
+            }
+            txt_menuNoGuest.setText(String.valueOf(bill.getGuestNo()));
+            txt_menuTableNo.setText(String.valueOf(bill.getTableNo()));
+        });
+    }
+
     private void menu_DisplayChange() {
         try {
             String amountStr = menu_txtAmount.getText().trim();
-            if (amountStr.isEmpty()) {
+            if (amountStr.isEmpty() || amountStr.equals(null)) {
+                menu_Change.setText("$ 0");
+                amount = 0;
+                change = 0;
                 return;
             }
             amountStr = amountStr.replaceAll("[^\\d.]", "");
             amount = Double.parseDouble(amountStr);
-            if (amount >= subtotal) {
-                change = amount - subtotal;
+            if (amount >= total) {
+                change = amount - total;
             } else {
                 change = 0;
             }
         } catch (NumberFormatException e) {
             AlertError("Invalid amount entered. Please enter a valid number.");
         }
-        menu_Change.setText(String.format("%,.2f", change) + "VND ");
-
+        menu_Change.setText(String.format("$ " + "-" + "%,.2f", change));
     }
+
+    //MENU ->PAID 
     public CustomerDAO customerDAO = new CustomerDAO();
 
     @FXML
     private void menu_Pay(MouseEvent event) throws SQLException {
-        if (subtotal == 0 || menu_txtAmount.getText().isEmpty()) {
-            AlertError("Subtotal or Amount cant be blank");
-        } else {
+        if (menu_TbView.getItems().isEmpty() || menu_txtAmount.getText().isEmpty()) {
+            AlertError("List or Amount cant be blank");
+            return;
+        } else if (amount < total) {
+            AlertError(" Amount cant < total");
+            return;
+
+        } // bill da save truoc do
+        else {
             Connection cn = null;
             try {
                 cn = new ConnectDB().GetConnectDB();
                 cn.setAutoCommit(false); // Begin transaction
-                menuGetSubtotal();
                 String tableNo = "null";
                 if (txt_menuTableNo.getText() != null) {
                     tableNo = txt_menuTableNo.getText();
@@ -1556,25 +1673,47 @@ public class MenuController implements Initializable {
                 bill.setGuestNo(guestNo);
                 bill.setCus_id(data.customerId);
                 bill.setUserName(data.username);
-                bill.setBillTotal(total);
+                bill.setBillSubTotal(subtotal);
                 bill.setBillTax(billtax);
                 bill.setBillService(billservice);
                 bill.setBillDiscount(discount);
-                bill.setBillSubTotal(subtotal);
+                bill.setBillTotal(total);
                 java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
                 bill.setBillDate(sqlDate);
                 bill.setBillStatus("PAID");
-                int billId = billDAO.insertBillAndGetId(bill, cn);
-                List<Order> orderList = orderDAO.showOrderDB();
-                billDAO.insertOrderDetails(billId, orderList, cn);
-                orderDAO.archiveAndDeleteOrders(cn);
-                // Commit the transaction
-                cn.commit();
-                menu_DisplayChange();
-                menuShowOrderData();
-                menuRestart();
-                AlertInfor("Paid successful");
 
+                AlertConfirm("Are you sure you want to Paid bill?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    if (resultedBillId != -1) {
+                        menuGetSubtotal();
+                        System.out.println("bill exit" + bill.toString());
+                        billDAO.UpdateBill(resultedBillId, bill);
+                    } else {
+                        //bill chua save
+                        menuBillId = billDAO.insertBillAndGetId(bill, cn);
+                        List<Order> orderList = orderDAO.showOrderDB();
+                        billDAO.insertOrderDetails(menuBillId, orderList, cn);
+                        orderDAO.archiveAndDeleteOrders(cn);
+                        // Commit the transaction
+                        cn.commit();
+                        //bill da save 
+                    }
+                    AlertConfirm("Paid successful. Would you like to print bill");
+                    Optional<ButtonType> option1 = alert.showAndWait();
+
+                    if (option1.get().equals(ButtonType.OK)) {
+                        Print();
+                    } else if (option1.isPresent() && option1.get() == ButtonType.CANCEL) {
+                        AlertInfor("Print Process was canceled.");
+                    }
+                    resultedBillId = -1;
+                    menuShowOrderData();
+                    menuRestart();
+                } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
+                    AlertInfor("Paid bill was cancelled.");
+                }
             } catch (SQLException ex) {
                 if (cn != null) {
                     try {
@@ -1594,11 +1733,19 @@ public class MenuController implements Initializable {
                 }
             }
         }
-
     }
 
+    //MENU -> SAVE BILL
     @FXML
     private void menu_StoreBill(MouseEvent event) throws SQLException {
+        SaveBill();
+    }
+
+    public void SaveBill() {
+        if (menu_TbView.getItems().isEmpty()) {
+            AlertError("cant save empty list");
+            return;
+        }
         Connection cn = null;
         try {
             cn = new ConnectDB().GetConnectDB();
@@ -1624,24 +1771,41 @@ public class MenuController implements Initializable {
             bill.setGuestNo(guestNo);
             bill.setCus_id(data.customerId);
             bill.setUserName(data.username);
-            bill.setBillTotal(total);
+            bill.setBillSubTotal(subtotal);
             bill.setBillTax(billtax);
             bill.setBillService(billservice);
             bill.setBillDiscount(discount);
-            bill.setBillSubTotal(subtotal);
+            bill.setBillTotal(total);
             java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
             bill.setBillDate(sqlDate);
             bill.setBillStatus("UNPAID");
-            // Insert bill and get the generated bill ID
-            int billId = billDAO.insertBillAndGetId(bill, cn);
-            List<Order> orderList = orderDAO.showOrderDB();
-            billDAO.insertOrderDetails(billId, orderList, cn);
-            orderDAO.archiveAndDeleteOrders(cn);
-            cn.commit();
-            menuShowOrderData();
-            menuRestart();
-            AlertInfor("Save successful");
+            ArrayList<Order> orderList = new ArrayList();
 
+            AlertConfirm("Are you sure you want to save bill?");
+            Optional<ButtonType> option = alert.showAndWait();
+
+            if (option.get().equals(ButtonType.OK)) {
+                // da co billId
+                if (resultedBillId != -1) {
+                    menu_billNo.setText(String.valueOf(resultedBillId));
+                    System.out.println("thong tin bill de insert update" + bill.toString());
+                    billDAO.UpdateBill(resultedBillId, bill);
+                } else {//chua co bill id
+                    orderList = orderDAO.showOrderDB();
+                    menuBillId = billDAO.insertBillAndGetId(bill, cn);
+                    menu_billNo.setText(String.valueOf(menuBillId));
+                    billDAO.insertOrderDetails(menuBillId, orderList, cn);
+                    orderDAO.archiveAndDeleteOrders(cn);
+                }
+
+                cn.commit();
+                AlertInfor("Save successful");
+                resultedBillId = -1;
+                menuShowOrderData();
+                menuRestart();
+            } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
+                AlertInfor("Save bill was cancelled.");
+            }
         } catch (SQLException ex) {
             if (cn != null) {
                 try {
@@ -1662,21 +1826,44 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    private void menu_clear(ActionEvent event) {
-        menu_inputPhone.clear();
-        menu_TextNote.clear();
-        data.customerId = "New ";
-//        getCustomerId();
+    private void menu_ClearBillInput(ActionEvent event) {
+        txt_menuTableNo.clear();
+        txt_menuNoGuest.clear();
+//        discountvalue = 0;
+//        menuGetSubtotal();
+//        menuDisplayTotal();
     }
 
     @FXML
-    private void menu_ClearBillInput(ActionEvent event) {
+    private void menu_ClearSearchBill(ActionEvent event) {
+        menu_inputBillId.clear();
+        resultedBillId = -1;
         txt_menuTableNo.clear();
         menu_InputDiscount.clear();
+        menu_inputPhone.clear();
         txt_menuNoGuest.clear();
         discountvalue = 0;
-        menuGetSubtotal();
+//        data.customerId = "New ";
         menuDisplayTotal();
+        menuShowBillDetails(resultedBillId);
+        menu_billNo.setText("");
+        txt_BillText.setText("");
+        menu_btnPAY.setDisable(false);
+        menu_btnRemove.setDisable(false);
+        menu_btnSave.setDisable(false);
+
+    }
+
+    @FXML
+    private void menu_ClearNoteInput(ActionEvent event) {
+        clearNote();
+    }
+
+    @FXML
+    private void menu_ClearCusSearch(ActionEvent event) {
+        menu_InputDiscount.clear();
+        menu_inputPhone.clear();
+        data.customerId = "New ";
     }
 
     public void menuRestart() {
@@ -1694,12 +1881,15 @@ public class MenuController implements Initializable {
         txt_menuTableNo.clear();
         menu_inputPhone.clear();
         menu_InputDiscount.clear();
+        menu_inputBillId.clear();
 
         menu_Total.setText("0.0");
         menu_Tax.setText(" 0.0");
         menu_Service.setText("0.0");
         menu_Discount.setText("0.0");
         menu_Subtotal.setText(" 0.0");
+        menu_billNo.setText("");
+        menu_inputBillId.setText("");
 
     }
 
@@ -1718,39 +1908,211 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    private void menu_RemoveItem(MouseEvent event) {
-        if (getProId == null) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText("");
-            alert.setContentText("Please select the order you want to remove");
-            alert.showAndWait();
+    private void menu_RemoveItem(MouseEvent event) throws SQLException {
+        if (resultedBillId != -1 && orderDAO.showBillDB(resultedBillId).isEmpty()) {
+            DeletedEmptyOrder(resultedBillId);
+            menu_inputBillId.clear();
+            menu_billNo.setText("");
+            return;
+        }
+        if (menu_TbView.getSelectionModel().getSelectedItem() == null) {
+            AlertError("Please select the order you want to delete");
+            return;
         } else {
-            alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to delete ?");
-            Optional<ButtonType> option = alert.showAndWait();
-            if (option.get().equals(ButtonType.OK)) {
-                int quantity = menu_TbView.getSelectionModel().getSelectedItem().getQuantity();
-                orderDAO.DeleteProIdDB(getProId);
-                dao.UpdateStockDeleted(getProId, quantity);
-                menuShowOrderData();
-                menuDisplayCard();
-
+            int quantity = menu_TbView.getSelectionModel().getSelectedItem().getQuantity();
+            //da co save
+            if (resultedBillId != -1) {
+                //quantity > 1
+                if (quantity > 1) {
+                    TextInputDialog dialog = new TextInputDialog("1");
+                    dialog.setTitle("Delete Quantity");
+                    dialog.setHeaderText(null);
+                    dialog.setContentText("Enter quantity to delete:");
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        try {
+                            int deleteQuantity = Integer.parseInt(result.get());
+                            if (deleteQuantity > 0 && deleteQuantity <= quantity) {
+                                orderDAO.deletedProArchive(resultedBillId, getProId, deleteQuantity);
+                                dao.UpdateStockDeleted(getProId, deleteQuantity);
+                                Update_UIdeledted();
+                                if (orderDAO.showBillDB(resultedBillId).isEmpty()) {
+                                    DeletedEmptyOrder(resultedBillId);
+                                    menu_inputBillId.clear();
+                                    menu_billNo.setText("");
+                                }
+                            } else {
+                                AlertError("Invalid quantity. Please enter a number between 1 and " + quantity);
+                            }
+                        } catch (NumberFormatException e) {
+                            AlertError("Invalid input. Please enter a valid number.");
+                        }
+                    }
+                }//quantity=1
+                else {
+                    orderDAO.deletedProArchive(resultedBillId, getProId, 1);
+                    dao.UpdateStockDeleted(getProId, 1);
+                    Update_UIdeledted();
+                    if (orderDAO.showBillDB(resultedBillId).isEmpty()) {
+                        DeletedEmptyOrder(resultedBillId);
+                        menu_inputBillId.clear();
+                        menu_billNo.setText("");
+                    }
+                }
+            } //bill chua save
+            else {
+                if (quantity > 1) {
+                    TextInputDialog dialog = new TextInputDialog("1");
+                    dialog.setTitle("Delete Quantity");
+                    dialog.setHeaderText(null);
+                    dialog.setContentText("Enter quantity to delete:");
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        try {
+                            int deleteQuantity = Integer.parseInt(result.get());
+                            if (deleteQuantity > 0 && deleteQuantity <= quantity) {
+                                orderDAO.DeleteProIdDB(getProId, deleteQuantity);
+                                dao.UpdateStock(getProId, deleteQuantity);
+                                Update_UIdeledted();
+                                DeletedEmptyOrder();
+                            } else {
+                                AlertError("Invalid quantity. Please enter a number between 1 and " + quantity);
+                            }
+                        } catch (NumberFormatException e) {
+                            AlertError("Invalid input. Please enter a valid number.");
+                        }
+                    }
+                } else {
+                    orderDAO.DeleteProIdDB(getProId, 1);
+                    dao.UpdateStock(getProId, 1);
+                    Update_UIdeledted();
+                    DeletedEmptyOrder();
+                }
             }
         }
     }
 
+    public void DeletedEmptyOrder(int resultedBillId) throws SQLException {
+        AlertConfirm("The bill is now empty. Do you want to delete it?");
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
+            billDAO.DeleteBillIdDB(resultedBillId);
+            AlertInfor("Deleted Bill Successfully");
+        } else {
+            AlertInfor("Bill deletion was canceled.");
+        }
+
+    }
+
+    public void DeletedEmptyOrder() {
+        if (orderDAO.showOrderDB().isEmpty()) {
+            AlertConfirm("The bill is now empty. Do you want to delete it?");
+            Optional<ButtonType> option = alert.showAndWait();
+            if (option.isPresent() && option.get() == ButtonType.OK) {
+                orderDAO.CancelOrder();
+                AlertInfor("Deleted Bill Successfully");
+            } else {
+                AlertInfor("Bill deletion was canceled.");
+            }
+        }
+    }
+
+    public void Update_UIdeledted() {
+        menuShowOrderData();
+        menuDisplayCard();
+        menuDisplayTotal();
+    }
+
+    public void Print() throws SQLException {
+
+        if (resultedBillId != -1) {
+            menuBillId = resultedBillId;
+        }
+        if (menuBillId <= 0) {
+            AlertError("No bill has been stored yet.");
+            return;
+        }
+        // Kiểm tra giá trị của amount và change
+        System.out.println("Amount: " + amount);
+        System.out.println("Change: " + change);
+
+        try {
+            // Load the JasperReport
+            String reportPath = "/managementproject/resources/report.jrxml"; // Đường dẫn tương đối từ classpath
+            InputStream reportStream = getClass().getResourceAsStream(reportPath);
+            if (reportStream == null) {
+                throw new FileNotFoundException("Report file not found: " + reportPath);
+            }
+            JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+
+            // Parameters for the report
+            Map<String, Object> parameters = new HashMap<>();
+            String logoPath = "managementproject/resources/BLACKLOGO.png";
+            parameters.put("LogoPath", logoPath);
+            String logoPath2 = "managementproject/resources/Paid2.png";
+            parameters.put("LogoPath2", logoPath2);
+            parameters.put("Amount", String.format("%.2f", amount)); // Đảm bảo định dạng số chính xác
+            parameters.put("Change", String.format("%.2f", change)); // 
+            //ket noi DB
+            ConnectDB connectDB = new ConnectDB();
+            java.sql.Connection cn = connectDB.GetConnectDB();
+            String query = "SELECT  b.*, o.proId, o.proName, o.cateId, o.quantity, o.proPrice, o.note, o.archiveDate, c.cateName\n"
+                    + "FROM      dbo.Bill AS b INNER JOIN\n"
+                    + "                 dbo.OrderArchive AS o ON b.billId = o.billId INNER JOIN\n"
+                    + "                 dbo.Category AS c ON c.cateId = o.cateId where b.billId=?";
+            PreparedStatement pStatement = cn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            pStatement.setInt(1, menuBillId);
+            ResultSet resultSet = pStatement.executeQuery();
+
+            // Check the bill status
+            String billStatus = null;
+            if (resultSet.next()) {
+                billStatus = resultSet.getString("billStatus");
+                System.out.println("billStatus: " + billStatus);
+            }
+
+            // Update parameters based on bill status
+            if ("PAID".equals(billStatus)) {
+                parameters.put("LogoPath2", logoPath2);
+
+            } else {
+                parameters.put("LogoPath2", null);
+            }
+
+            // Reset ResultSet cursor to the beginning
+            resultSet.beforeFirst();
+            // Fill the report with data
+            JRResultSetDataSource jrResultSetDataSource = new JRResultSetDataSource(resultSet);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrResultSetDataSource);
+
+            // View the report
+            JasperViewer.viewReport(jasperPrint, false);
+
+        } catch (JRException e) {
+            e.printStackTrace();
+            AlertError("An error occurred while generating the receipt.");
+            alert.showAndWait();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        AlertConfirm("Print Receipt Successfully");
+        resultedBillId = -1;
+        menuShowOrderData();
+        menuRestart();
+    }
+
     @FXML
-    private void menu_Receipt(MouseEvent event) throws SQLException {
+    private void menu_printReceipt(MouseEvent event) throws SQLException {
+        Print();
+
     }
 
 //CUSTOMER
-    //CUSTOMER
     private void loadData() {
-        List<Customer> customers = CustomerDAO.getList();
-        customerTable.getItems().setAll(customers);
+//        List<Customer> customers = CustomerDAO.getAllCustomersWithBills();
+//        customerTable.getItems().setAll(customers);
     }
 
     private void handleTableRowClicked() {
@@ -1761,13 +2123,12 @@ public class MenuController implements Initializable {
             emailField.setText(selectedCustomer.getEmail());
             discountField.setText(String.valueOf(selectedCustomer.getDiscount()));
             deletedField.setText(String.valueOf(selectedCustomer.getDeleted()));
-
         }
     }
 
     @FXML
     private void handleAddCustomer(ActionEvent event) {
-        if (validateCustomerInput()) {
+        if (validateCustomerInput(event)) {
             String name = nameField.getText();
             String phone = phoneField.getText();
             String email = emailField.getText();
@@ -1780,7 +2141,7 @@ public class MenuController implements Initializable {
             if (inserted > 0) {
                 customerTable.getItems().add(newCustomer);
                 clearAllFields();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer added successfully");
+                textNotice2.setText("Customer added successfully");
             }
         }
     }
@@ -1788,7 +2149,7 @@ public class MenuController implements Initializable {
     @FXML
     private void handleUpdateCustomer(ActionEvent event) {
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
-        if (selectedCustomer != null && validateCustomerInput()) {
+        if (selectedCustomer != null && validateCustomerInput(event)) {
             String name = nameField.getText();
             String phone = phoneField.getText();
             String email = emailField.getText();
@@ -1802,10 +2163,9 @@ public class MenuController implements Initializable {
                 selectedCustomer.setEmail(email);
                 selectedCustomer.setDiscount(discount);
                 selectedCustomer.setDeleted(deleted);
-
                 customerTable.refresh();
                 clearAllFields();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer updated successfully");
+                textNotice2.setText("Customer updated successfully");
             }
         }
     }
@@ -1818,7 +2178,7 @@ public class MenuController implements Initializable {
             if (deleted > 0) {
                 customerTable.getItems().remove(selectedCustomer);
                 clearAllFields();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Customer deleted successfully");
+                textNotice2.setText("Customer deleted successfully");
             }
         }
     }
@@ -1835,52 +2195,38 @@ public class MenuController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleClearAllCustomer(ActionEvent event) {
-        clearAllFields();
-    }
-
     private void clearAllFields() {
         nameField.clear();
         phoneField.clear();
         emailField.clear();
         discountField.clear();
         deletedField.clear();
+    }
+
+    @FXML
+    private void handleClearAllCustomer(ActionEvent event) {
+        clearAllFields();
 
     }
 
-    private boolean validateCustomerInput() {
+    private boolean validateCustomerInput(ActionEvent event) {
         boolean isValid = true;
+        errorMessage validate = new errorMessage();
 
         if (nameField.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Name is required");
+            textNotice2.setText("Name " + validate.getErrorMsg1());
             isValid = false;
-        }
-
-        String phone = phoneField.getText().trim();
-        if (phone.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Phone number is required");
+        } else if (!phoneField.getText().matches("\\d{1,10}")) {
+            textNotice2.setText("Phone " + validate.getErrorMsg2());
             isValid = false;
-        } else if (!phone.matches("\\d{10}")) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Phone must be exactly 10 digits");
+        } else if (!emailField.getText().isEmpty() && !emailField.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            textNotice2.setText("Email " + validate.getErrorMsg3());
             isValid = false;
-        }
-
-        String email = emailField.getText().trim();
-        if (!email.isEmpty() && !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Email is not valid");
-            isValid = false;
+        } else {
+            textNotice2.setText(null);
         }
 
         return isValid;
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
     //STAFF
     static ObservableList<String> positionList;
@@ -1953,29 +2299,20 @@ public class MenuController implements Initializable {
 
             if (udao.addDB(u) != null) {
                 uList.add(u);
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information:");
-                alert.setHeaderText(null);
-                alert.setContentText("Add successful !");
-                alert.showAndWait();
+                AlertInfor("Add successful !");
                 txt_ReUserId.clear();
                 txt_ReUserName.clear();
                 txt_RePass.clear();
                 txt_ReAnswer.clear();
             } else {
-                alert.setContentText("Add failed, User might already exist");
-                alert.showAndWait();
+                AlertError("Add failed, User might already exist");
             }
         }
     }
 
     @FXML
     private void Staff_Delete(ActionEvent event) {
-        alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Notice:");
-        alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete?");
-
+        AlertConfirm("Are you sure you want to delete?");
         if (userSelected != null) {
             Optional<ButtonType> option = alert.showAndWait();
             if (option.isPresent() && option.get() == ButtonType.OK) {
@@ -1985,27 +2322,15 @@ public class MenuController implements Initializable {
                 userSelected = null;
                 userindexSelected = -1;
             } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Notice:");
-                alert.setHeaderText(null);
-                alert.setContentText("Delete operation was cancelled.");
-                alert.showAndWait();
+                AlertInfor("Delete operation was cancelled.");
             }
         } else {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Notice:");
-            alert.setHeaderText(null);
-            alert.setContentText("Please choose a user to delete.");
-            alert.showAndWait();
+            AlertError("Please choose a user to delete.");
         }
     }
 
     @FXML
     private void Staff_Update(ActionEvent event) {
-        alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error:");
-        alert.setHeaderText(null);
-
         if (userSelected != null) {
             String rId = userSelected.getUserId();
             if (!txt_ReUserId.getText().equals(rId)) {
@@ -2035,13 +2360,10 @@ public class MenuController implements Initializable {
             UserInfo u = new UserInfo(rId, rName, rPass, rPosition, rQuestion, rAnswer, sqlDate);
             udao.AdminEditDB(u);
             uList.set(userindexSelected, u);
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setContentText("Update successful");
-            alert.showAndWait();
+            AlertInfor("Update successful");
             StaffClear();
         } else {
-            alert.setContentText("Please choose updated product");
-            alert.showAndWait();
+            AlertError("Please choose updated Staff");
         }
     }
 
@@ -2070,7 +2392,7 @@ public class MenuController implements Initializable {
 
     }
 
-    //Bill page
+   //Bill page
     // ===================================================================================================  BILL =======================================
 //    private BillDAO billDao = new BillDAO();
     private ObservableList<Bill> billList;
@@ -2108,6 +2430,7 @@ public class MenuController implements Initializable {
         bill_tbView_main.setItems(sortedBillList);
         sortedBillList.comparatorProperty().bind(bill_tbView_main.comparatorProperty());
     }
+
 
     @FXML
     private void Bill_HandleSplitButton(ActionEvent event) {
@@ -2173,8 +2496,7 @@ public class MenuController implements Initializable {
         tb2.setCus_name(bill_table1_Selected.getCus_name());
 
         if (bill_table1_Selected.getQuantity() == 1 || quantity == bill_table1_Selected.getQuantity()) {
-
-            billtable1.remove(indexbill_table1Selected);
+billtable1.remove(indexbill_table1Selected);
 
         } else if (bill_table1_Selected.getQuantity() > 1 && quantity < bill_table1_Selected.getQuantity()) {
 
@@ -2202,7 +2524,7 @@ public class MenuController implements Initializable {
         showtable2();
     }
 
-    @FXML
+  @FXML
     private void Bill_HandleSelected_main(MouseEvent event) {
         billSelected = bill_tbView_main.getSelectionModel().getSelectedItem();
         indexbillSelected = bill_tbView_main.getSelectionModel().getSelectedIndex();
@@ -2268,7 +2590,6 @@ public class MenuController implements Initializable {
         }
 
     }
-
     private void showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -2297,8 +2618,7 @@ public class MenuController implements Initializable {
             }
         });
     }
-
-    private void mergeBills() {
+private void mergeBills() {
         // In số lượng sản phẩm trước khi gộp
         System.out.println("Trước khi gộp:");
         for (Bill_Table2 item2 : billtable2_merge) {
@@ -2356,8 +2676,7 @@ public class MenuController implements Initializable {
 //    }
 
     }
-
-    private double bill_sumTotal_1() {
+private double bill_sumTotal_1() {
 
         double total = 0.0;
         for (Bill_Table1 bill : billtable1) {
@@ -2366,7 +2685,7 @@ public class MenuController implements Initializable {
         return total;
     }
 
-    private void updateDiscountAndTotals(String discountText) {
+   private void updateDiscountAndTotals(String discountText) {
         double discountPercentage;
         try {
             discountPercentage = Double.parseDouble(discountText);
@@ -2438,12 +2757,10 @@ public class MenuController implements Initializable {
 
         double taxAmount = (total - discountAmount + serviceAmount) * 0.08;
         bill_Tax2.setText("$ " + String.format("%.2f", taxAmount));
-
-        double subtotal = total - discountAmount + serviceAmount + taxAmount;
+double subtotal = total - discountAmount + serviceAmount + taxAmount;
         bill_Subtotal2.setText("$ " + String.format("%.2f", subtotal));
     }
-
-// Initial call to set values on load
+    // Initial call to set values on load
     private void bill_showtable2_total() {
 
         bill_Total2.setText("$ " + String.format("%.2f", bill_sumTotal_2()));
@@ -2498,7 +2815,7 @@ public class MenuController implements Initializable {
         //billtable2 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
         tb2_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tb2_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
 
         // Set the data to the table
         ObservableList<Bill_Table2> observableList2 = FXCollections.observableArrayList(tlist2);
@@ -2514,7 +2831,6 @@ public class MenuController implements Initializable {
         System.out.println("Merged Table2 data:");
         bill_tbView_2.setItems(billtable2_merge);
     }
-
     @FXML
     private void Bill_HandleSelected_table1(MouseEvent event) {
         bill_table1_Selected = bill_tbView_1.getSelectionModel().getSelectedItem();
@@ -2585,7 +2901,7 @@ public class MenuController implements Initializable {
                 double billSubTotal = billSelected.getBillSubTotal();
                 if (paymentAmount >= billSubTotal) {
                     double change = paymentAmount - billSubTotal;
-                    changeLabel.setText("Change: $" + String.format("%.2f", change));
+changeLabel.setText("Change: $" + String.format("%.2f", change));
                 } else {
                     changeLabel.setText("Change: Not enough payment.");
                 }
@@ -2659,7 +2975,6 @@ public class MenuController implements Initializable {
             cancelAlert.showAndWait();
         }
     }
-
     public void refreshBillTableView() {
         // Clear the existing data
         //billList.clear();
@@ -2691,9 +3006,10 @@ public class MenuController implements Initializable {
             }
         }
     }
+    
 //============================================================================================================     MERGE       ============================================
     // Handle Merge Button Action
-    boolean checkMerge = true;
+   boolean checkMerge = true;
 
     @FXML
     private void Bill_HandleMergeButton(ActionEvent event) {
@@ -2764,7 +3080,6 @@ public class MenuController implements Initializable {
             }
         }
     }
-
     private void Bill_updateOrderArchive() {
         try {
             // Get all proId from OrderArchive for the given billId
@@ -2809,7 +3124,6 @@ public class MenuController implements Initializable {
             e.printStackTrace();
         }
     }
-
     private void Bill_addnewBill() {
         Bill b = new Bill();
         //b.setBillId(billSelected.getBillId());
@@ -2869,7 +3183,7 @@ public class MenuController implements Initializable {
                 }
             } else {
                 b.setCus_id(data.customerId);
-            }
+}
 
             System.out.println("check show b " + b);
 
@@ -2886,7 +3200,6 @@ public class MenuController implements Initializable {
             return; // Exit the method
         }
     }
-
     @FXML
     private void bill_handleSearchBillId(ActionEvent event) {
     }
@@ -2945,10 +3258,6 @@ public class MenuController implements Initializable {
             alert.setContentText("Please insert phone number");
             alert.showAndWait();
         }
-    }
-
-    @FXML
-    private void menu_SearchCus_id(MouseEvent event) {
     }
 
     private void Bill_updateBill_Merge2() {
@@ -3010,7 +3319,7 @@ public class MenuController implements Initializable {
         for (Bill_Table2 pro : billtable2_merge) {
             //gán billId vừa được selected cho phần tử trong billtable2_merge 
             pro.setBillId(billSelected.getBillId());
-            pro.setProPrice(pro.getProPrice() / pro.getQuantity());
+pro.setProPrice(pro.getProPrice() / pro.getQuantity());
             //nếu orderArchive có proId trùng proId với phần tử trong billtable2_merge 
             if (orderArchiveProIds.contains(pro.getProId())) {
                 billDao.UpdateOrderArchiveMerge(pro);
@@ -3067,6 +3376,86 @@ public class MenuController implements Initializable {
         } else {
 
         }
+    }
+    //------------------
+    //CHI
+
+    public void SystemDisplay() {
+        system_serDisplay.setText(String.valueOf(data.service));
+        system_taxDisplay.setText(String.valueOf(data.tax));
+
+    }
+
+    @FXML
+    private void system_Set(ActionEvent event) {
+        ArrayList<Bill> checkList = new ArrayList();
+        checkList = billDAO.listDB();
+        if (!checkList.isEmpty()) {
+            for (Bill b : checkList) {
+                if (b.getBillStatus().equals("UNPAID")) {
+                    AlertConfirm("There're UNPAID bills in system. Total could be effect when reset.Are you sure to reset?");
+                    Optional<ButtonType> option = alert.showAndWait();
+
+                    if (option.get().equals(ButtonType.OK)) {
+                        String service = service = system_txtService.getText();
+                        String tax = system_txtTax.getText();
+                        boolean Error = false;
+                        try {
+                            if (!service.isEmpty()) {
+                                double inputService = Double.parseDouble(service);
+                                if (inputService > 0 && !service.isEmpty()) {
+                                    data.service = inputService;
+                                } else {
+                                    data.service = 0;
+                                }
+                                                        System.out.println("service"+data.service);
+
+                            }
+                        } catch (Exception e) {
+                            data.service = 0;
+                            Error = true;
+                        }
+
+                        try {
+                            if (!tax.isEmpty()) {
+                                double inputTax = Double.parseDouble(tax);
+                                if (inputTax > 0 && !tax.isEmpty()) {
+                                    data.tax = inputTax;
+                                } else {
+                                    data.tax = 0;
+                                }
+                            }
+                        } catch (Exception e) {
+                            data.service = 0;
+                            Error = true;
+                        }
+                        if (Error) {
+                            AlertError("Please input positive number");
+                            return;
+                        }
+                        SystemDisplay();
+                        AlertInfor("System set successful");
+                        system_txtService.clear();
+                        system_txtTax.clear();
+                    } else if (option.isPresent() && option.get() == ButtonType.CANCEL) {
+                        AlertInfor("System set process was cancelled.");
+                        return;
+                    }
+
+                }
+
+                break;
+            }
+        }
+
+    }
+
+    @FXML
+    private void system_ClearInput(ActionEvent event
+    ) {
+        system_txtService.clear();
+        system_txtTax.clear();
+
     }
 
 }
