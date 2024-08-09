@@ -3,6 +3,7 @@ package managementproject;
 import Database.BillDAO;
 import Database.ConnectDB;
 import Database.CustomerDAO;
+import Database.DashBoardDAO;
 import Database.OrderDAO;
 import Database.ProductDAO;
 import Database.UserDAO;
@@ -308,10 +309,6 @@ public class MenuController implements Initializable {
     @FXML
     private TextField txt_SeachStaff;
     @FXML
-    private AreaChart<?, ?> areaChart2;
-    @FXML
-    private CategoryAxis xAxis2;
-    @FXML
     private TextField invent_txtSearch;
 
     private ProductDAO dao = new ProductDAO();
@@ -336,8 +333,6 @@ public class MenuController implements Initializable {
     private DatePicker bill_from;
     @FXML
     private DatePicker bill_to;
-    @FXML
-    private Button bill_searchDate;
     @FXML
     private Button bill_cancelButton1;
     @FXML
@@ -432,8 +427,6 @@ public class MenuController implements Initializable {
     @FXML
     private TextField bill_searchBillId;
     @FXML
-    private Button bill_searchBillIdButton;
-    @FXML
     private AnchorPane bill_view11;
     @FXML
     private TextField bill_inputPhone2;
@@ -446,7 +439,7 @@ public class MenuController implements Initializable {
     @FXML
     private TextField bill_NoGuest2;
     @FXML
-    private ComboBox<?> bill_sortBillStatus;
+    private ComboBox<String> bill_sortBillStatus;
 
     @FXML
     private FontAwesomeIcon menu_btn_SearchCus;
@@ -489,6 +482,47 @@ public class MenuController implements Initializable {
     private Text system_serDisplay;
     @FXML
     private Text system_taxDisplay;
+    @FXML
+    private DatePicker DashBoard_datefrom;
+    @FXML
+    private DatePicker DashBoard_dateto;
+    @FXML
+    private Button DashBoard_exportButton;
+    @FXML
+    private Label totalGuests;
+    @FXML
+    private Label DB_sum_BillId;
+    @FXML
+    private Label DB_sum_GuestNo;
+    @FXML
+    private Label DB_sum_Total;
+    @FXML
+    private Label DB_sum_Discount;
+    @FXML
+    private Label DB_sum_Service;
+    @FXML
+    private Label DB_sum_Tax;
+    @FXML
+    private Label DB_sum_SubTotal;
+    @FXML
+    private TableView<Order> DB_TableView;
+    @FXML
+    private TableColumn<Order, String> DB_Table_ProName;
+    @FXML
+    private TableColumn<Order, Integer> DB_Table_Quantity;
+    @FXML
+    private TableColumn<Order, Double> DB_Table_TotalPrice;
+    private DashBoardDAO DBDao = new DashBoardDAO();
+    @FXML
+    private TableColumn<?, ?> tb1_tc_bill_billId;
+    @FXML
+    private Label bill_cusId1;
+    @FXML
+    private TableColumn<?, ?> tb2_tc_bill_billId;
+    @FXML
+    private Label bill_cusId2;
+    @FXML
+    private FontAwesomeIcon bill_buttonSphone11;
     @FXML
     private Button bill_deleteButton;
 
@@ -566,20 +600,45 @@ public class MenuController implements Initializable {
         questionList();
         showUser();
 
-        billList = FXCollections.observableArrayList(billDao.listDB());
-        filteredBillList = new FilteredList<>(billList, p -> true);
-        sortedBillList = new SortedList<>(filteredBillList);
+//        billList = FXCollections.observableArrayList(billDao.listDB());
+//        filteredBillList = new FilteredList<>(billList, p -> true);
+//        sortedBillList = new SortedList<>(filteredBillList);
         //sortedBillList.setComparator((p1, p2) -> p1.getBillId().compareTo(p2.getBillId()));     
         // Initialize DatePickers
         bill_from.setValue(LocalDate.now());
         bill_to.setValue(LocalDate.now());
+        //billShowData();
+        bill_sortBillStatus.getItems().addAll("PAID", "UNPAID");
+        bill_sortBillStatus.setValue("UNPAID");
+        // Add listener for ComboBox selection changes
+        bill_sortBillStatus.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Bill_updateTable(); // Call the method to update the table with the selected value
+        });
+        bill_from.valueProperty().addListener((observable, oldValue, newValue) -> Bill_updateTable());
+        bill_to.valueProperty().addListener((observable, oldValue, newValue) -> Bill_updateTable());
+        bill_searchBillId.textProperty().addListener((observable, oldValue, newValue) -> Bill_updateTable());
         //filterBillList();
-        // Add listeners to DatePickers to filter the list when the date is changed
-//        bill_from.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
-//        bill_to.valueProperty().addListener((observable, oldValue, newValue) -> filterBillList());
-
         // Set up TableView
-        billShowData();
+        bill_InputDiscount1.setEditable(true); // Make sure the TextField is editable
+
+        bill_InputDiscount1.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateDiscountAndTotals(newValue);
+        });
+        bill_InputDiscount2.setEditable(true); // Make sure the TextField is editable
+
+        bill_InputDiscount2.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateDiscountAndTotals2(newValue);
+        });
+        //billShowData();
+
+        //        DashBoard
+        DashBoard_datefrom.setValue(LocalDate.now());
+        DashBoard_dateto.setValue(LocalDate.now());
+        // Add listeners to date pickers
+        DashBoard_datefrom.valueProperty().addListener((observable, oldValue, newValue) -> DB_updateTable());
+        DashBoard_dateto.valueProperty().addListener((observable, oldValue, newValue) -> DB_updateTable());
+        //DB_updateTable();
+        // Initial table view load
     }
     //ALERT
     public Alert alert;
@@ -647,6 +706,14 @@ public class MenuController implements Initializable {
             Customer_Anchor.setVisible(false);
             staff_Anchor.setVisible(false);
             Bill_Anchor.setVisible(false);
+            DB_updateTable();
+            if (connectDb != null) {
+                getTotalData();
+                ratioDay.setSelected(true);
+                getDataByDay();
+            } else {
+                System.err.println("Database connection failed.");
+            }
 
         } else if (event.getSource() == inventory_btn) {
             DashBoard_Anchor.setVisible(false);
@@ -707,20 +774,6 @@ public class MenuController implements Initializable {
             }
 
             //billShowData();
-            if (billList.isEmpty() || billList == null) {
-                System.out.println("bill trong 2");
-            }
-            for (Bill b : billList) {
-                System.out.println(b.toString());
-            }
-            if (sortedBillList.isEmpty() || sortedBillList == null) {
-                System.out.println("sortedBillList trong 2");
-            }
-            System.out.println("moiw 2");
-            for (Bill b : sortedBillList) {
-                System.out.println(b.toString());
-            }
-
         } else if (event.getSource() == system_Logout) {
             LogOut();
         }
@@ -770,35 +823,106 @@ public class MenuController implements Initializable {
     }
 // DASHBOARD
 
+    private ObservableList<Order> menuOrderList1;
+
+    @FXML
+    private void DB_handleExportButton(ActionEvent event) {
+        menuOrderList1 = FXCollections.observableArrayList(DBDao.listOrder());
+        DashBoardDAO excelExport = new DashBoardDAO();
+        excelExport.exportAndOpenExcelWithTemplate2(billList, menuOrderList1);
+    }
+
+    private void DB_updateTable() {
+        String from = null;
+        String to = null;
+
+        if (DashBoard_datefrom.getValue() != null) {
+            from = DashBoard_datefrom.getValue().toString();
+        }
+        if (DashBoard_dateto.getValue() != null) {
+            to = DashBoard_dateto.getValue().toString();
+        }
+
+        DB_tableView(from, to);
+    }
+    private ObservableList<Order> orderList;
+
+    private void DB_tableView(String from, String to) {
+
+        billList = FXCollections.observableArrayList(DBDao.listDB(from, to));
+
+        // Calculate totals
+        int billCount = 0;
+        int totalGuestNo = 0;
+        double totalBill = 0;
+        double totalDiscount = 0;
+        double totalService = 0;
+        double totalTax = 0;
+        double totalSubTotal = 0;
+
+        for (Bill bill : billList) {
+            billCount += 1;
+            totalGuestNo += bill.getGuestNo();
+            totalBill += bill.getBillTotal();
+            totalDiscount += bill.getBillDiscount();
+            totalService += bill.getBillService();
+            totalTax += bill.getBillTax();
+            totalSubTotal += bill.getBillSubTotal();
+
+        }
+
+        DB_sum_BillId.setText(String.valueOf(billCount));
+        DB_sum_GuestNo.setText(String.valueOf(totalGuestNo));
+        DB_sum_Total.setText("$ " + String.format("%.2f", totalBill));
+        DB_sum_Discount.setText("- $ " + String.format("%.2f", totalDiscount));
+        DB_sum_Service.setText("$ " + String.format("%.2f", totalService));
+        DB_sum_Tax.setText("$ " + String.format("%.2f", totalTax));
+        DB_sum_SubTotal.setText("$ " + String.format("%.2f", totalSubTotal));
+
+        orderList = FXCollections.observableArrayList(DBDao.listTable(from, to));
+        //menuOrderList.addAll(DBDao.listTable(from, to));
+        DB_Table_ProName.setCellValueFactory(new PropertyValueFactory<>("proName"));
+        DB_Table_Quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        DB_Table_TotalPrice.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+        System.out.println("Merged Table2 data:");
+        DB_TableView.setItems(orderList);
+    }
+
     private void getTotalData() {
         try (java.sql.Statement statement = connectDb.createStatement()) {
-            String getTotalSaleQuery = "SELECT COUNT(proId) AS total_sale FROM Product;";
+            String getTotalSaleQuery = "SELECT COUNT(BillId) AS total_sale FROM Bill where billStatus='PAID';";
             ResultSet queryResult1 = statement.executeQuery(getTotalSaleQuery);
             if (queryResult1.next()) {
                 totalSale.setText(queryResult1.getString("total_sale"));
             }
             queryResult1.close();
 
-            String getTotalCustomerQuery = "SELECT COUNT(cateId) AS total_customer FROM Category;";
+            String getTotalCustomerQuery = "SELECT COUNT(cus_id) AS total_customer FROM tbCustomer;";
             ResultSet queryResult2 = statement.executeQuery(getTotalCustomerQuery);
             if (queryResult2.next()) {
                 totalCustomer.setText(queryResult2.getString("total_customer"));
             }
             queryResult2.close();
 
-            String getTotalRevenueQuery = "SELECT COUNT(userId) AS total_earn FROM UserInfo;";
+            String getTotalRevenueQuery = "SELECT sum(billSubTotal) AS total_earn FROM Bill where billStatus='PAID';";
             ResultSet queryResult3 = statement.executeQuery(getTotalRevenueQuery);
             if (queryResult3.next()) {
                 totalRevenue.setText(queryResult3.getString("total_earn"));
             }
             queryResult3.close();
+            String getTotalGuestQuery = "SELECT sum(guestNo) AS total_guest FROM Bill where billStatus='PAID';";
+            ResultSet queryResult4 = statement.executeQuery(getTotalGuestQuery);
+            if (queryResult4.next()) {
+                totalGuests.setText(queryResult4.getString("total_guest"));
+            }
+            queryResult4.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void getDataByDay() {
-        loadData("Day of the Month", "Earning Per Day", "Sales Per Day", LocalDate.now().getMonth().name(), 0, LocalDate.now().getDayOfMonth(), "day", String.valueOf(LocalDate.now().getYear()) + "-07-", "");
+        loadData("Day of the Month", "Earning Per Day", "Sales Per Day", LocalDate.now().getMonth().name(), 0, LocalDate.now().getDayOfMonth(), "day", String.valueOf(LocalDate.now().getYear()) + "-" + (LocalDate.now().getMonthValue() < 10 ? "0" + String.valueOf(LocalDate.now().getMonthValue()) : String.valueOf(LocalDate.now().getMonthValue())) + "-", "");
     }
 
     private void getDataByMonth() {
@@ -806,7 +930,7 @@ public class MenuController implements Initializable {
     }
 
     private void getDataByYear() {
-        loadData("Year", "Earning Per Year", "Sales Per Year", "per Year", 2020, LocalDate.now().getYear(), "year", "", "-%");
+        loadData("Year", "Earning Per Year", "Sales Per Year", "per Year", 2023, LocalDate.now().getYear(), "year", "", "-%");
     }
 
     private void loadData(String xAxisLabel, String series1Name, String series2Name, String title, int minPeriod, int maxPeriod, String periodType, String dateFormat1, String dateFormat2) {
@@ -824,7 +948,7 @@ public class MenuController implements Initializable {
             String formattedPeriod = (period < 10 ? "0" : "") + period;
             categories.add(formattedPeriod);
             try (java.sql.Statement statement = connectDb.createStatement()) {
-                String getSaleQuery = "SELECT SUM(proPrice) AS sale FROM Product WHERE proDate LIKE '" + dateFormat1 + formattedPeriod + dateFormat2 + "';";
+                String getSaleQuery = "select sum(billSubTotal) as sale from Bill where billStatus='PAID' and billDate LIKE '" + dateFormat1 + formattedPeriod + dateFormat2 + "';";
                 ResultSet queryResult1 = statement.executeQuery(getSaleQuery);
                 double sale = 0;
                 if (queryResult1.next()) {
@@ -921,7 +1045,7 @@ public class MenuController implements Initializable {
 //        tvProduct.refresh();
     }
 
- private String getCategoryName(int cateId) {
+    private String getCategoryName(int cateId) {
         String categoryName;
         switch (cateId) {
             case 1:
@@ -964,7 +1088,7 @@ public class MenuController implements Initializable {
         clearFields();
     }
 
-  private boolean validateInput() {
+    private boolean validateInput() {
         boolean isValid = true;
         errorMessage validate = new errorMessage();
 
@@ -1025,7 +1149,7 @@ public class MenuController implements Initializable {
         return isValid;
     }
 
-   @FXML
+    @FXML
     private void HanleImportImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Image File");
@@ -1077,7 +1201,7 @@ public class MenuController implements Initializable {
         return false; // ID chưa tồn tại
     }
 
-  @FXML
+    @FXML
     private void inven_Add(ActionEvent event) {
 
         if (validateInput()) {
@@ -1147,7 +1271,7 @@ public class MenuController implements Initializable {
             proSelected.setProDate(new Date());
 
             // Cập nhật sản phẩm trong cơ sở dữ liệu
-if (dao.UpdateDB(proSelected)) {
+            if (dao.UpdateDB(proSelected)) {
                 // Cập nhật danh sách sản phẩm
                 tvProduct.refresh();
                 clearFields();
@@ -1166,7 +1290,7 @@ if (dao.UpdateDB(proSelected)) {
         }
     }
 
-  @FXML
+    @FXML
     private void Inven_Delete(ActionEvent event) {
         if (showConfirmation("DELETE " + proSelected.getProId())) {
             if (proSelected != null) {
@@ -1238,7 +1362,7 @@ if (dao.UpdateDB(proSelected)) {
 
             return matchesSearch && matchesCategory && matchesStatus;
         });
-tvProduct.setItems(filteredList);
+        tvProduct.setItems(filteredList);
         textNotice.setText("Search and sort successfully applied.");
     }
     //MENU 
@@ -2392,7 +2516,7 @@ tvProduct.setItems(filteredList);
 
     }
 
-   //Bill page
+    //Bill page
     // ===================================================================================================  BILL =======================================
 //    private BillDAO billDao = new BillDAO();
     private ObservableList<Bill> billList;
@@ -2407,10 +2531,39 @@ tvProduct.setItems(filteredList);
     private ArrayList<Bill_Table1> tlist1 = new ArrayList<Bill_Table1>();
     private ArrayList<Bill_Table2> tlist2 = new ArrayList<Bill_Table2>();
 
-    public void billShowData() {
-        billList = FXCollections.observableArrayList(billDao.listDB());
-        filteredBillList = new FilteredList<>(billList, p -> true);
-        sortedBillList = new SortedList<>(filteredBillList);
+    private void Bill_updateTable() {
+        String from = null;
+        String to = null;
+        String status = null;
+        String sBillId = null;
+
+        if (bill_from.getValue() != null) {
+            from = bill_from.getValue().toString();
+        } else {
+            bill_from.setValue(LocalDate.now());
+            from = bill_from.getValue().toString();
+        }
+        if (bill_to.getValue() != null) {
+            to = bill_to.getValue().toString();
+        } else {
+            bill_to.setValue(LocalDate.now());
+            to = bill_to.getValue().toString();
+        }
+        if (bill_sortBillStatus.getValue() != null) {
+            status = bill_sortBillStatus.getValue().toString();
+        }
+        if (bill_sortBillStatus.getValue() != null) {
+            sBillId = bill_searchBillId.getText().toString();
+        }
+
+        billShowData(from, to, status, sBillId);
+    }
+
+    public void billShowData(String from, String to, String status, String sBillId) {
+        billList = FXCollections.observableArrayList(billDao.listDB(from, to, status, sBillId));
+        //billList = FXCollections.observableArrayList(billDao.listDB());
+//        filteredBillList = new FilteredList<>(billList, p -> true);
+//        sortedBillList = new SortedList<>(filteredBillList);
 
         // Initialize table columns
         tc_bill_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
@@ -2427,10 +2580,9 @@ tvProduct.setItems(filteredList);
         tc_bill_billDate.setCellValueFactory(new PropertyValueFactory<>("billDate"));
         tc_bill_billStatus.setCellValueFactory(new PropertyValueFactory<>("billStatus"));
 
-        bill_tbView_main.setItems(sortedBillList);
-        sortedBillList.comparatorProperty().bind(bill_tbView_main.comparatorProperty());
+        bill_tbView_main.setItems(billList);
+        //sortedBillList.comparatorProperty().bind(bill_tbView_main.comparatorProperty());
     }
-
 
     @FXML
     private void Bill_HandleSplitButton(ActionEvent event) {
@@ -2485,6 +2637,7 @@ tvProduct.setItems(filteredList);
         bill_tbView_main.setDisable(true);
 
         Bill_Table2 tb2 = new Bill_Table2();
+        tb2.setBillId(billDao.Next_BillId());
         tb2.setProId(bill_table1_Selected.getProId());
         tb2.setProName(bill_table1_Selected.getProName());
         tb2.setCateId(bill_table1_Selected.getCateId());
@@ -2496,7 +2649,7 @@ tvProduct.setItems(filteredList);
         tb2.setCus_name(bill_table1_Selected.getCus_name());
 
         if (bill_table1_Selected.getQuantity() == 1 || quantity == bill_table1_Selected.getQuantity()) {
-billtable1.remove(indexbill_table1Selected);
+            billtable1.remove(indexbill_table1Selected);
 
         } else if (bill_table1_Selected.getQuantity() > 1 && quantity < bill_table1_Selected.getQuantity()) {
 
@@ -2524,7 +2677,7 @@ billtable1.remove(indexbill_table1Selected);
         showtable2();
     }
 
-  @FXML
+    @FXML
     private void Bill_HandleSelected_main(MouseEvent event) {
         billSelected = bill_tbView_main.getSelectionModel().getSelectedItem();
         indexbillSelected = bill_tbView_main.getSelectionModel().getSelectedIndex();
@@ -2590,6 +2743,7 @@ billtable1.remove(indexbill_table1Selected);
         }
 
     }
+
     private void showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -2618,7 +2772,8 @@ billtable1.remove(indexbill_table1Selected);
             }
         });
     }
-private void mergeBills() {
+
+    private void mergeBills() {
         // In số lượng sản phẩm trước khi gộp
         System.out.println("Trước khi gộp:");
         for (Bill_Table2 item2 : billtable2_merge) {
@@ -2676,7 +2831,8 @@ private void mergeBills() {
 //    }
 
     }
-private double bill_sumTotal_1() {
+
+    private double bill_sumTotal_1() {
 
         double total = 0.0;
         for (Bill_Table1 bill : billtable1) {
@@ -2685,7 +2841,7 @@ private double bill_sumTotal_1() {
         return total;
     }
 
-   private void updateDiscountAndTotals(String discountText) {
+    private void updateDiscountAndTotals(String discountText) {
         double discountPercentage;
         try {
             discountPercentage = Double.parseDouble(discountText);
@@ -2714,7 +2870,8 @@ private double bill_sumTotal_1() {
         bill_InputDiscount1.setText(String.format("%.2f", discountPercentage1));
         updateDiscountAndTotals(bill_InputDiscount1.getText()); // Call the method to update values
 
-        bill_cusName1.setText(billSelected.getCustomer().getName() + " " + billSelected.getCustomer().getPhone());
+        bill_cusId1.setText(billSelected.getCustomer().getCus_id());
+        bill_cusName1.setText(billSelected.getCustomer().getName());
         bill_TableNo1.setText(billSelected.getTableNo());
         bill_NoGuest1.setText(String.valueOf(billSelected.getGuestNo()));
         bill_inputPhone1.setText(String.valueOf(billSelected.getCustomer().getPhone()));
@@ -2757,9 +2914,10 @@ private double bill_sumTotal_1() {
 
         double taxAmount = (total - discountAmount + serviceAmount) * 0.08;
         bill_Tax2.setText("$ " + String.format("%.2f", taxAmount));
-double subtotal = total - discountAmount + serviceAmount + taxAmount;
+        double subtotal = total - discountAmount + serviceAmount + taxAmount;
         bill_Subtotal2.setText("$ " + String.format("%.2f", subtotal));
     }
+
     // Initial call to set values on load
     private void bill_showtable2_total() {
 
@@ -2769,7 +2927,8 @@ double subtotal = total - discountAmount + serviceAmount + taxAmount;
         bill_InputDiscount2.setText(String.format("%.2f", discountPercentage1));
         updateDiscountAndTotals2(bill_InputDiscount2.getText()); // Call the method to update values
 
-        bill_cusName2.setText(billSelected.getCustomer().getName() + " " + billSelected.getCustomer().getPhone());
+        bill_cusId2.setText(billSelected.getCustomer().getCus_id());
+        bill_cusName2.setText(billSelected.getCustomer().getName());
         bill_TableNo2.setText("0");
         bill_NoGuest2.setText("0");
         bill_inputPhone2.setText(String.valueOf(billSelected.getCustomer().getPhone()));
@@ -2782,7 +2941,8 @@ double subtotal = total - discountAmount + serviceAmount + taxAmount;
             bill_Tax1.setText("$ " + billSelected.getBillTax());
             bill_Service1.setText("$ " + billSelected.getBillService());
             bill_Subtotal1.setText("$ " + billSelected.getBillSubTotal());
-            bill_cusName1.setText(billSelected.getCustomer().getName() + " " + billSelected.getCustomer().getPhone());
+            bill_cusId1.setText(billSelected.getCustomer().getCus_id());
+            bill_cusName1.setText(billSelected.getCustomer().getName());
         } else {
             System.out.println("No bill selected for detail update.");
         }
@@ -2795,7 +2955,9 @@ double subtotal = total - discountAmount + serviceAmount + taxAmount;
             bill_Tax2.setText("$ " + billSelected.getBillTax());
             bill_Service2.setText("$ " + billSelected.getBillService());
             bill_Subtotal2.setText("$ " + billSelected.getBillSubTotal());
-            bill_cusName2.setText(billSelected.getCustomer().getName() + " " + billSelected.getCustomer().getPhone());
+
+            bill_cusId2.setText(billSelected.getCustomer().getCus_id());
+            bill_cusName2.setText(billSelected.getCustomer().getName());
         } else {
             System.out.println("No bill selected for detail update.");
         }
@@ -2803,6 +2965,7 @@ double subtotal = total - discountAmount + serviceAmount + taxAmount;
 
     private void showtable1() {
         billtable1 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
+        tb1_tc_bill_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
         tb1_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tb1_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         tb1_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
@@ -2813,9 +2976,10 @@ double subtotal = total - discountAmount + serviceAmount + taxAmount;
 
     private void showtable2() {
         //billtable2 = FXCollections.observableArrayList(billDao.Addtable1(billSelected.getBillId()));
+        tb2_tc_bill_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
         tb2_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tb2_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
+        tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
 
         // Set the data to the table
         ObservableList<Bill_Table2> observableList2 = FXCollections.observableArrayList(tlist2);
@@ -2825,12 +2989,14 @@ tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
 
     private void showtable2_merge() {
         billtable2_merge = FXCollections.observableArrayList(billDao.Addtable2(billSelected.getBillId()));
+        tb2_tc_bill_billId.setCellValueFactory(new PropertyValueFactory<>("billId"));
         tb2_tc_bill_proName.setCellValueFactory(new PropertyValueFactory<>("proName"));
         tb2_tc_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
         System.out.println("Merged Table2 data:");
         bill_tbView_2.setItems(billtable2_merge);
     }
+
     @FXML
     private void Bill_HandleSelected_table1(MouseEvent event) {
         bill_table1_Selected = bill_tbView_1.getSelectionModel().getSelectedItem();
@@ -2901,7 +3067,7 @@ tb2_tc_bill_price.setCellValueFactory(new PropertyValueFactory<>("proPrice"));
                 double billSubTotal = billSelected.getBillSubTotal();
                 if (paymentAmount >= billSubTotal) {
                     double change = paymentAmount - billSubTotal;
-changeLabel.setText("Change: $" + String.format("%.2f", change));
+                    changeLabel.setText("Change: $" + String.format("%.2f", change));
                 } else {
                     changeLabel.setText("Change: Not enough payment.");
                 }
@@ -2975,19 +3141,18 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
             cancelAlert.showAndWait();
         }
     }
+
     public void refreshBillTableView() {
         // Clear the existing data
         //billList.clear();
         //sortedBillList.clear();
         // Reload the data from the database and add it to the billList
         //billList.addAll(billDao.listDB());
-        billList = FXCollections.observableArrayList(billDao.listDB());
-        filteredBillList = new FilteredList<>(billList, p -> true);
-        sortedBillList = new SortedList<>(filteredBillList);
+        Bill_updateTable();
 
         // Refresh the table view
         bill_tbView_main.refresh();
-        billShowData();
+        //billShowData();
     }
 
     public void Bill_clearFields(Parent parent) {
@@ -3006,10 +3171,10 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
             }
         }
     }
-    
+
 //============================================================================================================     MERGE       ============================================
     // Handle Merge Button Action
-   boolean checkMerge = true;
+    boolean checkMerge = true;
 
     @FXML
     private void Bill_HandleMergeButton(ActionEvent event) {
@@ -3080,6 +3245,7 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
             }
         }
     }
+
     private void Bill_updateOrderArchive() {
         try {
             // Get all proId from OrderArchive for the given billId
@@ -3124,6 +3290,7 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
             e.printStackTrace();
         }
     }
+
     private void Bill_addnewBill() {
         Bill b = new Bill();
         //b.setBillId(billSelected.getBillId());
@@ -3136,16 +3303,17 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
         b.setTableNo(String.valueOf(bill_TableNo2.getText()));
         b.setGuestNo(Integer.parseInt(bill_NoGuest2.getText()));
         b.setBillStatus("UNPAID");
-        if (data.customerId == null || data.customerId.equals("")) {
-            if (billSelected != null) {
-                b.setCus_id(billSelected.getCus_id());
-            } else {
-                // Handle the case where billSelected or billSelected.getCus_id() is null
-                System.out.println("billSelected or billSelected.getCus_id() is null");
-            }
-        } else {
-            b.setCus_id(data.customerId);
-        }
+        b.setCus_id(String.valueOf(bill_cusId2.getText()));
+//        if (data.customerId == null || data.customerId.equals("")) {
+//            if (billSelected != null) {
+//                b.setCus_id(billSelected.getCus_id());
+//            } else {
+//                // Handle the case where billSelected or billSelected.getCus_id() is null
+//                System.out.println("billSelected or billSelected.getCus_id() is null");
+//            }
+//        } else {
+//            b.setCus_id(data.customerId);
+//        }
         billDao.AddBillSlit(b);
 
         refreshBillTableView();
@@ -3174,16 +3342,17 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
             b.setBillSubTotal(Double.parseDouble(bill_Subtotal1.getText().replace("$", "")));
             b.setTableNo(String.valueOf(bill_TableNo1.getText()));
             b.setGuestNo(Integer.parseInt(bill_NoGuest1.getText()));
-            if (data.customerId == null || data.customerId.equals("")) {
-                if (billSelected != null) {
-                    b.setCus_id(billSelected.getCus_id());
-                } else {
-                    // Handle the case where billSelected or billSelected.getCus_id() is null
-                    System.out.println("billSelected or billSelected.getCus_id() is null");
-                }
-            } else {
-                b.setCus_id(data.customerId);
-}
+            b.setCus_id(String.valueOf(bill_cusId1.getText()));
+//            if (data.customerId == null || data.customerId.equals("")) {
+//                if (billSelected != null) {
+//                    b.setCus_id(billSelected.getCus_id());
+//                } else {
+//                    // Handle the case where billSelected or billSelected.getCus_id() is null
+//                    System.out.println("billSelected or billSelected.getCus_id() is null");
+//                }
+//            } else {
+//                b.setCus_id(data.customerId);
+//            }
 
             System.out.println("check show b " + b);
 
@@ -3199,9 +3368,6 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
             alert.showAndWait();
             return; // Exit the method
         }
-    }
-    @FXML
-    private void bill_handleSearchBillId(ActionEvent event) {
     }
 
     @FXML
@@ -3222,7 +3388,9 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
         List<Customer> cusList = CustomerDAO.searchByPhone(cusPhoneSearching);
         if (!cusList.isEmpty()) {
             Customer c = cusList.get(0);
-            bill_cusName1.setText(c.getName() + " " + c.getPhone());
+            bill_cusId1.setText(c.getCus_id());
+            bill_cusName1.setText(c.getName());
+            data.customerId = c.getCus_id();
             data.customerId = c.getCus_id();
         } else {
             data.customerId = "New ";
@@ -3237,7 +3405,8 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
         List<Customer> cusList = CustomerDAO.searchByPhone(cusPhoneSearching);
         if (!cusList.isEmpty()) {
             Customer c = cusList.get(0);
-            bill_cusName2.setText(c.getName() + " " + c.getPhone());
+            bill_cusId2.setText(c.getCus_id());
+            bill_cusName2.setText(c.getName());
             data.customerId = c.getCus_id();
         } else {
             data.customerId = "New ";
@@ -3319,7 +3488,7 @@ changeLabel.setText("Change: $" + String.format("%.2f", change));
         for (Bill_Table2 pro : billtable2_merge) {
             //gán billId vừa được selected cho phần tử trong billtable2_merge 
             pro.setBillId(billSelected.getBillId());
-pro.setProPrice(pro.getProPrice() / pro.getQuantity());
+            pro.setProPrice(pro.getProPrice() / pro.getQuantity());
             //nếu orderArchive có proId trùng proId với phần tử trong billtable2_merge 
             if (orderArchiveProIds.contains(pro.getProId())) {
                 billDao.UpdateOrderArchiveMerge(pro);
@@ -3358,7 +3527,7 @@ pro.setProPrice(pro.getProPrice() / pro.getQuantity());
                     System.out.println("proId: " + itemDel.getProId() + " quantity: " + itemDel.getQuantity());
                     dao.updateQuantity(itemDel.getProId(), itemDel.getQuantity());
                 }
-                
+
                 int billId_Del = billSelected.getBillId();
                 //delete orderArchive
                 billDao.DeleteDB(billId_Del);
@@ -3408,7 +3577,7 @@ pro.setProPrice(pro.getProPrice() / pro.getQuantity());
                                 } else {
                                     data.service = 0;
                                 }
-                                                        System.out.println("service"+data.service);
+                                System.out.println("service" + data.service);
 
                             }
                         } catch (Exception e) {

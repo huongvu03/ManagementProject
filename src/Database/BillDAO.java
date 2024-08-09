@@ -132,6 +132,69 @@ public class BillDAO {
         return list;
     }
 
+    public ArrayList<Bill> listDB(String from, String to, String status, String sBillId) {
+        ArrayList<Bill> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT DISTINCT b.*, \n"
+                + "                c.*,\n"
+                + "                o.archiveDate\n"
+                + "FROM Bill b\n"
+                + "LEFT JOIN tbCustomer c ON b.cus_id = c.cus_id\n"
+                + "LEFT JOIN OrderArchive o ON b.billId = o.billId\n"
+                + "WHERE b.billStatus = ? \n");
+
+        if (sBillId != null && !sBillId.isEmpty()) {
+            sql.append("  AND b.billId = ?\n");
+        }
+
+        sql.append("  AND b.billDate BETWEEN ? AND ?;");
+
+        try (Connection cn = connect.GetConnectDB(); PreparedStatement pstmt = cn.prepareStatement(sql.toString())) {
+
+            // Set parameters for the query
+            int paramIndex = 1;
+            pstmt.setString(paramIndex++, status);
+
+            if (sBillId != null && !sBillId.isEmpty()) {
+                pstmt.setString(paramIndex++, sBillId);
+            }
+
+            pstmt.setDate(paramIndex++, java.sql.Date.valueOf(from));
+            pstmt.setDate(paramIndex++, java.sql.Date.valueOf(to));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Bill pro = new Bill();
+                    pro.setBillId(rs.getInt("billId"));
+                    pro.setTableNo(rs.getString("tableNo"));
+                    pro.setGuestNo(rs.getInt("guestNo"));
+                    pro.setCus_id(rs.getString("cus_id"));
+                    pro.setUserName(rs.getString("userName"));
+                    pro.setBillTotal(rs.getDouble("billTotal"));
+                    pro.setBillDiscount(rs.getDouble("billDiscount"));
+                    pro.setBillTax(rs.getDouble("billTax"));
+                    pro.setBillService(rs.getDouble("billService"));
+                    pro.setBillSubTotal(rs.getDouble("billSubTotal"));
+                    pro.setBillDate(rs.getDate("billDate"));
+                    pro.setBillStatus(rs.getString("billStatus"));
+                    pro.setArchiveDate(rs.getDate("archiveDate"));
+
+                    Customer cus = new Customer();
+                    cus.setCus_id(rs.getString("cus_id"));
+                    cus.setName(rs.getString("name"));
+                    cus.setPhone(rs.getString("phone"));
+                    cus.setDiscount(rs.getInt("discount"));
+                    pro.setCustomer(cus);
+
+                    list.add(pro);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log or handle the exception
+        }
+
+        return list;
+    }
+
     public ArrayList<Bill_Table1> Addtable1(Integer billId) {
         ArrayList<Bill_Table1> tablelist1 = new ArrayList<>();
         String checksql = "SELECT * FROM OrderArchive WHERE billId = ?";
@@ -185,6 +248,7 @@ public class BillDAO {
 
             while (rs.next()) {
                 Bill_Table2 btb1 = new Bill_Table2();
+                btb1.setBillId(rs.getInt("billId"));
                 btb1.setProId(rs.getString("proId"));
                 btb1.setProName(rs.getString("proName"));
                 btb1.setCateId(rs.getInt("cateId"));
@@ -286,44 +350,49 @@ public class BillDAO {
             }
         }
     }
-public Bill AddBillSlit(Bill pro) {
-    if (pro == null) {
-        throw new IllegalArgumentException("Bill object cannot be null");
-    }
 
-    String sql = "insert into Bill (tableNo,guestNo,cus_id,userName,billTotal,billTax,billService,billDiscount,billSubTotal,billDate,billStatus) values (?,?,?,?,?,?,?,?,?,?,?)";
-    try {
-        cn = connect.GetConnectDB();
-        pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-        pStm.setString(1, pro.getTableNo());
-        pStm.setInt(2, pro.getGuestNo());
-        pStm.setString(3, pro.getCus_id());
-        pStm.setString(4, pro.getUserName());
-        pStm.setDouble(5, pro.getBillTotal());
-        pStm.setDouble(6, pro.getBillTax());
-        pStm.setDouble(7, pro.getBillService());
-        pStm.setDouble(8, pro.getBillDiscount());
-        pStm.setDouble(9, pro.getBillSubTotal());
-        
-        // Sử dụng thời gian hiện tại
-        pStm.setDate(10, new java.sql.Date(System.currentTimeMillis()));
-        
-        pStm.setString(11, pro.getBillStatus());
-        pStm.execute();
+    public Bill AddBillSlit(Bill pro) {
+        if (pro == null) {
+            throw new IllegalArgumentException("Bill object cannot be null");
+        }
 
-        rs = pStm.getGeneratedKeys();
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
+        String sql = "insert into Bill (tableNo,guestNo,cus_id,userName,billTotal,billTax,billService,billDiscount,billSubTotal,billDate,billStatus) values (?,?,?,?,?,?,?,?,?,?,?)";
         try {
-            if (cn != null) cn.close();
-            if (pStm != null) pStm.close();
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pStm.setString(1, pro.getTableNo());
+            pStm.setInt(2, pro.getGuestNo());
+            pStm.setString(3, pro.getCus_id());
+            pStm.setString(4, pro.getUserName());
+            pStm.setDouble(5, pro.getBillTotal());
+            pStm.setDouble(6, pro.getBillTax());
+            pStm.setDouble(7, pro.getBillService());
+            pStm.setDouble(8, pro.getBillDiscount());
+            pStm.setDouble(9, pro.getBillSubTotal());
+
+            // Sử dụng thời gian hiện tại
+            pStm.setDate(10, new java.sql.Date(System.currentTimeMillis()));
+
+            pStm.setString(11, pro.getBillStatus());
+            pStm.execute();
+
+            rs = pStm.getGeneratedKeys();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return pro;
     }
-    return pro;
-}
 //    public Bill AddBillSlit(Bill pro) {
 //        String sql = "INSERT INTO Product (name, description, price, imagePath) VALUES (?, ?, ?, ?)";
 //        try {
@@ -472,6 +541,7 @@ public Bill AddBillSlit(Bill pro) {
         }
     }
 //BILL
+
     public List<String> getProIdsForBill(int billId) {
         List<String> proIds = new ArrayList<>();
         String selectSql = "select proId from OrderArchive where billId = ?;";
@@ -502,6 +572,7 @@ public Bill AddBillSlit(Bill pro) {
         }
         return proIds;
     }
+
     public void UpdateOrderArchiveSplit1(Bill_Table1 pro) {
         try {
             cn = connect.GetConnectDB();
@@ -522,7 +593,8 @@ public Bill AddBillSlit(Bill pro) {
             }
         }
     }
-public void deleteProIdFromBill(int billId, String proId) {
+
+    public void deleteProIdFromBill(int billId, String proId) {
         String sql = "delete from OrderArchive where billId = ? and proId = ?;";
         try {
             cn = connect.GetConnectDB();
@@ -545,68 +617,74 @@ public void deleteProIdFromBill(int billId, String proId) {
             }
         }
     }
-public Bill_Table2 AddBillOrderArchive(Bill_Table2 pro) {
-    int maxBillId = 0;
 
-    // Bước 1: Lấy billId lớn nhất từ bảng Bill
-    String selectMaxBillIdSql = "SELECT MAX(billId) FROM Bill";
-    try {
-        cn = connect.GetConnectDB();
+    public Bill_Table2 AddBillOrderArchive(Bill_Table2 pro) {
+        int maxBillId = 0;
 
-        // Thực hiện truy vấn để lấy billId lớn nhất
-        Statement stmt = cn.createStatement();
-        ResultSet rs = stmt.executeQuery(selectMaxBillIdSql);
-        if (rs.next()) {
-            maxBillId = rs.getInt(1); // Lấy giá trị của billId lớn nhất
-        }
+        // Bước 1: Lấy billId lớn nhất từ bảng Bill
+        String selectMaxBillIdSql = "SELECT MAX(billId) FROM Bill";
+        try {
+            cn = connect.GetConnectDB();
 
-        // Bước 2: Kiểm tra sự tồn tại của bản ghi trong bảng OrderArchive
-        String checkExistSql = "SELECT COUNT(*) FROM OrderArchive WHERE billId = ? AND proId = ?";
-        pStm = cn.prepareStatement(checkExistSql);
-        pStm.setInt(1, maxBillId);
-        pStm.setString(2, pro.getProId());
-        rs = pStm.executeQuery();
-        
-        boolean exists = false;
-        if (rs.next()) {
-            exists = rs.getInt(1) > 0; // Kiểm tra số lượng bản ghi trả về
-        }
-        
-        if (exists) {
-            // Bước 3: Cập nhật số lượng nếu bản ghi đã tồn tại
-            String updateSql = "UPDATE OrderArchive SET quantity = quantity + ? WHERE billId = ? AND proId = ?";
-            pStm = cn.prepareStatement(updateSql);
-            pStm.setInt(1, pro.getQuantity());
-            pStm.setInt(2, maxBillId);
-            pStm.setString(3, pro.getProId());
-            pStm.executeUpdate();
-        } else {
-            // Bước 4: Chèn dữ liệu mới nếu bản ghi không tồn tại
-            String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, archiveDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            pStm = cn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS);
+            // Thực hiện truy vấn để lấy billId lớn nhất
+            Statement stmt = cn.createStatement();
+            ResultSet rs = stmt.executeQuery(selectMaxBillIdSql);
+            if (rs.next()) {
+                maxBillId = rs.getInt(1); // Lấy giá trị của billId lớn nhất
+            }
+
+            // Bước 2: Kiểm tra sự tồn tại của bản ghi trong bảng OrderArchive
+            String checkExistSql = "SELECT COUNT(*) FROM OrderArchive WHERE billId = ? AND proId = ?";
+            pStm = cn.prepareStatement(checkExistSql);
             pStm.setInt(1, maxBillId);
             pStm.setString(2, pro.getProId());
-            pStm.setString(3, pro.getProName());
-            pStm.setInt(4, pro.getCateId());
-            pStm.setInt(5, pro.getQuantity());
-            pStm.setDouble(6, pro.getProPrice());
-            pStm.setDate(7, new java.sql.Date(System.currentTimeMillis()));
-            pStm.execute();
-        }
+            rs = pStm.executeQuery();
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (cn != null) cn.close();
-            if (pStm != null) pStm.close();
+            boolean exists = false;
+            if (rs.next()) {
+                exists = rs.getInt(1) > 0; // Kiểm tra số lượng bản ghi trả về
+            }
+
+            if (exists) {
+                // Bước 3: Cập nhật số lượng nếu bản ghi đã tồn tại
+                String updateSql = "UPDATE OrderArchive SET quantity = quantity + ? WHERE billId = ? AND proId = ?";
+                pStm = cn.prepareStatement(updateSql);
+                pStm.setInt(1, pro.getQuantity());
+                pStm.setInt(2, maxBillId);
+                pStm.setString(3, pro.getProId());
+                pStm.executeUpdate();
+            } else {
+                // Bước 4: Chèn dữ liệu mới nếu bản ghi không tồn tại
+                String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, archiveDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                pStm = cn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS);
+                pStm.setInt(1, maxBillId);
+                pStm.setString(2, pro.getProId());
+                pStm.setString(3, pro.getProName());
+                pStm.setInt(4, pro.getCateId());
+                pStm.setInt(5, pro.getQuantity());
+                pStm.setDouble(6, pro.getProPrice());
+                pStm.setDate(7, new java.sql.Date(System.currentTimeMillis()));
+                pStm.execute();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return pro;
     }
-    return pro;
-}
-public void DeleteDB_tableBill(int id) {
+
+    public void DeleteDB_tableBill(int id) {
         String sql = "delete Bill where billId =?;";
         try {
             cn = connect.GetConnectDB();
@@ -628,7 +706,8 @@ public void DeleteDB_tableBill(int id) {
             }
         }
     }
-public void UpdateOrderArchiveMerge(Bill_Table2 pro) {
+
+    public void UpdateOrderArchiveMerge(Bill_Table2 pro) {
         try {
             cn = connect.GetConnectDB();
             String sql = "update OrderArchive set quantity =? where billId =? and proId =?;";
@@ -648,12 +727,12 @@ public void UpdateOrderArchiveMerge(Bill_Table2 pro) {
             }
         }
     }
-     
+
     public Bill_Table2 AddOrderArchiveMerge(Bill_Table2 pro) {
-     String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, archiveDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try {
+        String insertSql = "INSERT INTO OrderArchive (billId, proId, proName, cateId, quantity, proPrice, archiveDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try {
             cn = connect.GetConnectDB();
-           
+
             pStm = cn.prepareStatement(insertSql, PreparedStatement.RETURN_GENERATED_KEYS);
             pStm.setInt(1, pro.getBillId());
             pStm.setString(2, pro.getProId());
@@ -676,10 +755,41 @@ public void UpdateOrderArchiveMerge(Bill_Table2 pro) {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-     
-           
+
         }
-             return pro;
+        return pro;
     }
-    
+
+    public Integer Next_BillId() {
+        int maxBillId = 0;
+
+        // Bước 1: Lấy billId lớn nhất từ bảng Bill
+        String selectMaxBillIdSql = "SELECT MAX(billId) FROM Bill";
+        try {
+            cn = connect.GetConnectDB();
+
+            // Thực hiện truy vấn để lấy billId lớn nhất
+            Statement stmt = cn.createStatement();
+            ResultSet rs = stmt.executeQuery(selectMaxBillIdSql);
+            if (rs.next()) {
+                maxBillId = (rs.getInt(1)) + 1; // Lấy giá trị của billId lớn nhất +1
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+                if (pStm != null) {
+                    pStm.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return maxBillId;
+
+    }
 }
